@@ -3,7 +3,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC_DIR = functions
+SRC_DIR = src
 OBJ_DIR = obj
 LIBFT_DIR = libft
 
