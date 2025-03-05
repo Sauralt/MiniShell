@@ -36,19 +36,21 @@ prendre en compte ctrl-\ (jokes on you c'est pas a faire) OK
 
 prendre en compte les commandes suivantes :
 
-echo avec option -n () KO
+echo avec option -n (affiche un message (sans saut de ligne avec -n)) KO
 
-cd avec soit un chemin relatif ou absolu () KO
+cd avec soit un chemin relatif ou absolu (change le dossier) KO
 
-pwd sans options () KO
+pwd sans options (affiche le chemin du dossier actuel) KO
 
-export sans options () KO
+export sans options (ajoute une variable aux variables d'environnement) KO
 
-unset sans options () KO
+unset sans options (inversement de export, unset va desactiver les variables environnements) KO
 
-env sans options () KO
+env sans options (cree un environnement "virtuel" ou affiche juste les variables d'environnements) KO
 
-exit sans options () KO
+exit sans options (quitte Shell) KO
+
+
 
 Pas a faire :
 
@@ -56,6 +58,8 @@ Pas a faire :
 
 prendre en compte les leaks de readline
 (je crois qu'il y a des trucs pour se faciliter la tache)
+
+
 
 Bonus (on verra parce que je pense qu'on sera plus a ca pres)
 
