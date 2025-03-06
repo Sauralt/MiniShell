@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/06 16:32:16 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:15:17 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*ft_stacknew(char *content)
+t_token	*ft_new_token(char *content)
 {
 	t_stack	*c;
 
@@ -25,7 +25,7 @@ t_token	*ft_stacknew(char *content)
 	return (c);
 }
 
-void	ft_stackadd(t_token **s, t_token *new)
+void	ft_add_token(t_token **s, t_token *new)
 {
 	t_token	*p;
 
@@ -45,7 +45,7 @@ void	ft_stackadd(t_token **s, t_token *new)
 	(*s)->prev = new;
 }
 
-void	delfirst(t_stack **s)
+void	delfirst(t_token **s)
 {
 	t_token	*p;
 	t_token	*t;
