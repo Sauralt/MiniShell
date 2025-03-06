@@ -12,13 +12,27 @@
 
 #include "../Include/minishell.h"
 
+void	handle_sigint(int sig)
+{
+	(void)sig;
+	printf("\nminishell> ");
+}
+
 int	main(int argc, char **argv)
 {
-	char *line;
+	char	*line;
+
+	signal(SIGINT, handle_sigint);
+	line = NULL;
 	while (1)
 	{
-		line = readline("Minishell> ");
+		line = readline("minishell> ");
+		if (!line || strcmp(line, "exit") == 0)
+			break ;
+		add_history(line);
+		free(line);
 	}
 	argc = 1;
 	argv[0] = argv[1];
+	return (0);
 }

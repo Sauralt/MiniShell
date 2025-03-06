@@ -15,6 +15,9 @@
 # include "../libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
+
+# define BUFFER_SIZE 1024
 
 typedef struct s_shell
 {
@@ -22,4 +25,6 @@ typedef struct s_shell
 }			t_shell;
 
 int		main(int argc, char **argv);
+void	handle_sigint(int sig);
+
 #endif
