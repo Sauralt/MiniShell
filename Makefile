@@ -1,9 +1,9 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -lreadline
 
-SRC_DIR = src
+SRC_DIR = srcs
 OBJ_DIR = obj
 LIBFT_DIR = libft
 
