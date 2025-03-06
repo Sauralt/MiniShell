@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:05 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/06 13:09:13 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:31:49 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*find_path(char *cmd, char **envp, int i)
 		part_path = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(part_path, cmd);
 		free(part_path);
-		if (access(path, F_OK | X_OK) == 0)
+		if (access(path, F_OK) == 0)
 		{
 			free_str(paths);
 			return (path);
