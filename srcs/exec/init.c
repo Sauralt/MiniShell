@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/10 16:33:56 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/10 17:56:44 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ static void	init_list_tok(t_shell *data, char **str)
 
 static int	meta_char(char *str)
 {
-	if (ft_strncmp(str, "<", 1) == 1 || ft_strncmp(str, ">", 1) == 1
-		|| ft_strncmp(str, ">>", 2) == 1 || ft_strncmp(str, "<<", 2) == 1
-		|| ft_strncmp(str, "|", 1) == 1 || ft_strncmp(str, "$", 2) == 1
-		|| ft_strncmp(str, "$?", 2) == 1)
+	if (ft_strncmp(str, "<", 1) != 0 || ft_strncmp(str, ">", 1) != 0
+		|| ft_strncmp(str, ">>", 2) != 0 || ft_strncmp(str, "<<", 2) != 0
+		|| ft_strncmp(str, "|", 1) != 0 || ft_strncmp(str, "$", 1) != 0
+		|| ft_strncmp(str, "$?", 2) != 0)
 		return (1);
 	return (0);
 }
