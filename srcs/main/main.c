@@ -27,11 +27,14 @@ int	main(int argc, char **argv)
 	while (1)
 	{
 		line = readline("minishell> ");
-		if (!line || strcmp(line, "exit") == 0)
+		if (!line || ft_strcmp(line, "exit") == 0)
 			break ;
+		if (is_builtin(line) == true)
+			exec_cmd(line);
 		add_history(line);
 		free(line);
 	}
+	rl_clear_history();
 	argc = 1;
 	argv[0] = argv[1];
 	return (0);

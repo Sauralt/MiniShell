@@ -26,5 +26,10 @@ typedef struct s_shell
 
 int		main(int argc, char **argv);
 void	handle_sigint(int sig);
+bool	is_builtin(char *cmd);
+void	exec_cmd(char *line);
+void	ft_cd(char **cmd);
+void	ft_pwd(void);
+void	ft_env(void);
 
 #endif
