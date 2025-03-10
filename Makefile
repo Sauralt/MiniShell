@@ -7,14 +7,15 @@ SRC_DIR = srcs
 OBJ_DIR = obj
 LIBFT_DIR = libft
 LIBS = -lreadline
+INCLUDE_DIR = Include
 
-MINISHELL = $(wildcard $(SRC_DIR)/*.c)
+MINISHELL = $(wildcard $(SRC_DIR)/**/*.c)
 
 OBJS = $(MINISHELL:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 LIBFT = $(LIBFT_DIR)/libft.a
 
-INCLUDES = -I$(LIBFT_DIR)
+INCLUDES = -I$(LIBFT_DIR) -I$(INCLUDE_DIR)
 
 all: $(NAME)
 

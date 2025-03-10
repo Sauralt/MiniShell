@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/06 17:15:18 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:33:13 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,18 @@ static void	init_data(int argc, char **argv, char **env, t_shell *data)
 {
 	(void)argc;
 	(void)argv;
-	data->hist = malloc(sizeof(t_hist));
-	data->cmd = malloc(sizeof(t_cmd));
-	data->token = malloc(sizeof(t_token));
+	data->cmd = NULL;
+	data->token = NULL;
 	data->exit_code = 0;
 	data->env = env;
 }
+
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*data;
 	char	*line;
 
+	data = malloc(sizeof(t_shell));
 	init_data(argc, argv, env, data);
 	while (1)
 	{
@@ -35,6 +36,11 @@ int	main(int argc, char **argv, char **env)
 			return (1);
 		if (init_tokens(data, line) == 1)
 			return (1);
+		while (data->token && data->token->next != data->token)
+		{
+			printf("%d\n", data->token->type);
+			data->token = data->token->next;
+		}
 	}
 	return (0);
 }

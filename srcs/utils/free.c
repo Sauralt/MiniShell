@@ -1,42 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   find.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 15:37:50 by cfleuret          #+#    #+#             */
+/*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
 /*   Updated: 2025/03/10 15:41:59 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_path(char *cmd, char **envp, int i)
+void	free_str(char **str)
 {
-	char	**paths;
-	char	*path;
-	char	*part_path;
+	int	i;
 
-	while (envp[i] && ft_strnstr(envp[i], "PATH", 4) == 0)
-		i++;
-	if (!envp[i])
-		return (0);
-	paths = ft_split(envp[i] + 5, ':');
 	i = 0;
-	while (paths[i])
+	while (str[i])
 	{
-		part_path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(part_path, cmd);
-		free(part_path);
-		if (access(path, F_OK) == 0)
-		{
-			free_str(paths);
-			return (path);
-		}
-		free(path);
+		free(str[i]);
 		i++;
 	}
-	free_str(paths);
-	return (0);
+	free(str);
 }

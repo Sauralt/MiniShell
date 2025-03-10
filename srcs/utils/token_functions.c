@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/06 17:15:17 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:41:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 t_token	*ft_new_token(char *content)
 {
-	t_stack	*c;
+	t_token	*c;
 
 	c = malloc(sizeof(*c));
 	if (c == NULL)
 		return (NULL);
-	c->token = content;
+	c->str = ft_strdup(content);
 	c->next = NULL;
 	c->prev = NULL;
 	return (c);
