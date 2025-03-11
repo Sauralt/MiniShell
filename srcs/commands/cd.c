@@ -12,13 +12,36 @@
 
 #include "../Include/minishell.h"
 
-void	ft_cd(char **cmd)
+void	ft_cd(char *path)
 {
-	if (cmd[1] == NULL)
+	static char	prev_dir[1024] = "";
+	char		current_dir[1024];
+
+	if (!path)
+		return ;
+	if (getcwd(current_dir, sizeof(current_dir)) == NULL)
 	{
-		if (chdir(getenv("HOME")) == -1)
-			perror("minishell");
+		perror("getcwd");
+		return ;
 	}
-	else if (chdir(cmd[1]) == -1)
-		printf("minishell: cd: %s: No such file or directory\n", cmd[1]);
+	if (strcmp(path, "..") == 0)
+	{
+		if (prev_dir[0] == '\0')
+		{
+			fprintf(stderr, "cd: OLDPWD not set\n");
+			return ;
+		}
+		path = prev_dir;
+	}
+	if (chdir(path) != 0)
+	{
+		perror("cd");
+	}
+	else
+	{
+		strncpy(prev_dir, current_dir, sizeof(prev_dir) - 1);
+		prev_dir[sizeof(prev_dir) - 1] = '\0';
+		if (getcwd(current_dir, sizeof(current_dir)) != NULL)
+			setenv("PWD", current_dir, 1);
+	}
 }
