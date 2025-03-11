@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_functions.c                                  :+:      :+:    :+:   */
+/*   stack_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 14:53:33 by cfleuret         ###   ########.fr       */
+/*   Created: 2025/03/11 15:25:22 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/03/11 15:27:18 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*ft_new_token(char *content)
+t_stack	*ft_new_stack(char *content)
 {
-	t_token	*c;
+	t_stack	*c;
 
 	c = malloc(sizeof(*c));
 	if (c == NULL)
@@ -22,13 +22,12 @@ t_token	*ft_new_token(char *content)
 	c->str = ft_strdup(content);
 	c->next = c;
 	c->prev = c;
-	c->type = -1;
 	return (c);
 }
 
-void	ft_add_token(t_token **s, t_token *new)
+void	ft_add_stack(t_stack **s, t_stack *new)
 {
-	t_token	*p;
+	t_stack	*p;
 
 	if (new == NULL || s == NULL)
 		return ;
@@ -46,10 +45,10 @@ void	ft_add_token(t_token **s, t_token *new)
 	(*s)->prev = new;
 }
 
-void	delfirst(t_token **s)
+void	delfirst_stack(t_stack **s)
 {
-	t_token	*p;
-	t_token	*t;
+	t_stack	*p;
+	t_stack	*t;
 
 	if (!s || !*s)
 		return ;
@@ -66,3 +65,4 @@ void	delfirst(t_token **s)
 	*s = (*s)->next;
 	free(t);
 }
+

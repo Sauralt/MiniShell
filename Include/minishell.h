@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/10 16:38:08 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:22:47 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef struct s_cmd
+typedef struct s_stack
 {
 	char				**str;
 	int					infile;
 	int					outfile;
-	struct s_cmd		*prev;
-	struct s_cmd		*next;
-}						t_cmd;
+	int					id;
+	struct s_stack		*prev;
+	struct s_stack		*next;
+}						t_stack;
 
 typedef struct s_token
 {
@@ -35,8 +36,9 @@ typedef struct s_token
 
 typedef struct s_shell
 {
-	t_cmd	*cmd;
-	t_cmd	*rand;
+	t_stack	*cmd;
+	t_stack	*meta;
+	t_stack	*rand;
 	t_token	*token;
 	int		exit_code;
 	int		fd[2];
@@ -50,5 +52,8 @@ void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	free_str(char **str);
 char	*find_path(char *cmd, char **envp, int i);
+t_stack	*ft_new_stack(char *content);
+void	ft_add_stack(t_stack **s, t_stack *new);
+void	delfirst_stack(t_stack **s);
 
 #endif

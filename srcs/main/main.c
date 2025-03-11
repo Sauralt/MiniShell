@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/10 16:52:11 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:22:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	init_data(int argc, char **argv, char **env, t_shell *data)
 	(void)argc;
 	(void)argv;
 	data->cmd = NULL;
+	data->rand = NULL;
+	data->meta = NULL;
 	data->token = NULL;
 	data->exit_code = 0;
 	data->env = env;
@@ -25,6 +27,7 @@ static void	init_data(int argc, char **argv, char **env, t_shell *data)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*data;
+	t_token	*test;
 	char	*line;
 
 	data = malloc(sizeof(t_shell));
@@ -36,11 +39,15 @@ int	main(int argc, char **argv, char **env)
 			return (1);
 		if (init_tokens(data, line) == 1)
 			return (1);
-		while (data->token && data->token->next != data->token)
+		if (init_stacks(data) == 1)
+			return (1);
+		test = data->token;
+		while (test && test->next != data->token)
 		{
-			printf("%d\n", data->token->type);
-			data->token = data->token->next;
+			printf("%d\n", test->type);
+			test = test->next;
 		}
+		printf("%d\n", test->type);
 	}
 	return (0);
 }
