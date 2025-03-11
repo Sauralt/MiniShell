@@ -6,20 +6,20 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:25:22 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 15:27:18 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:11:40 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_stack	*ft_new_stack(char *content)
+t_stack	*ft_new_stack(t_token *t)
 {
 	t_stack	*c;
 
 	c = malloc(sizeof(*c));
 	if (c == NULL)
 		return (NULL);
-	c->str = ft_strdup(content);
+	c->str = ft_strdup(t->str);
 	c->next = c;
 	c->prev = c;
 	return (c);

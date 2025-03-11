@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 16:22:47 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:11:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 typedef struct s_stack
 {
-	char				**str;
+	char				*str;
 	int					infile;
 	int					outfile;
 	int					id;
@@ -52,8 +52,11 @@ void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	free_str(char **str);
 char	*find_path(char *cmd, char **envp, int i);
-t_stack	*ft_new_stack(char *content);
+t_stack	*ft_new_stack(t_token *t);
 void	ft_add_stack(t_stack **s, t_stack *new);
 void	delfirst_stack(t_stack **s);
+int		init_stacks(t_shell *data);
+void	free_tokens(t_token *t);
+void	free_stack(t_stack *t);
 
 #endif
