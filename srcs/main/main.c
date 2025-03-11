@@ -15,7 +15,7 @@
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	printf("\nminishell> ");
+	printf("\nMinishell> ");
 }
 
 static void	init_data(int argc, char **argv, char **env, t_shell *data)
@@ -37,18 +37,19 @@ int	main(int argc, char **argv, char **env)
 	char	*line;
 
 	data = malloc(sizeof(t_shell));
+	signal(SIGINT, handle_sigint);
 	while (1)
 	{
-		init_data(argc, argv, env, data);
 		line = readline("Minishell> ");
 		if (!line || ft_strcmp(line, "exit") == 0)
 			return (1);
-		if (is_builtin(line) == true)
+		if (ft_strncmp(line, "\0", 2) != 0 && is_builtin(line) == true)
 			exec_cmd(line);
 		add_history(line);
-		if (init_tokens(data, line) == 1)
+		init_data(argc, argv, env, data);
+		if (ft_strncmp(line, "\0", 2) != 0 && init_tokens(data, line) == 1)
 			return (1);
-		if (init_stacks(data) == 1)
+		if (ft_strncmp(line, "\0", 2) != 0 && init_stacks(data) == 1)
 			return (1);
 		test = data->meta;
 		while (test && test->next != data->meta)
@@ -58,13 +59,12 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (test)
 			printf("%s\n", test->str);
-		rl_clear_history();
 		free(line);
 		free_stack(data->cmd);
 		free_stack(data->rand);
 		free_stack(data->meta);
 		free_tokens(data->token);
-		
 	}
+	rl_clear_history();
 	return (0);
 }
