@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 17:58:54 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:36:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,19 @@ int	main(int argc, char **argv, char **env)
 	char	*line;
 
 	data = malloc(sizeof(t_shell));
+	signal(SIGINT, handle_sigint);
 	while (1)
 	{
 		init_data(argc, argv, env, data);
 		line = readline("Minishell> ");
 		if (!line || ft_strcmp(line, "exit") == 0)
 			return (1);
-		if (is_builtin(line) == true)
+		if (ft_strncmp(line, "\0", 2) != 0 && is_builtin(line) == true)
 			exec_cmd(line);
 		add_history(line);
-		if (init_tokens(data, line) == 1)
+		if (ft_strncmp(line, "\0", 2) != 0 && init_tokens(data, line) == 1)
 			return (1);
-		if (init_stacks(data) == 1)
+		if (ft_strncmp(line, "\0", 2) != 0 && init_stacks(data) == 1)
 			return (1);
 		test = data->meta;
 		while (test && test->next != data->meta)
@@ -64,7 +65,6 @@ int	main(int argc, char **argv, char **env)
 		free_stack(data->rand);
 		free_stack(data->meta);
 		free_tokens(data->token);
-		
 	}
 	return (0);
 }
