@@ -6,11 +6,17 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 17:49:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:58:54 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
+
+void	handle_sigint(int sig)
+{
+	(void)sig;
+	printf("\nminishell> ");
+}
 
 static void	init_data(int argc, char **argv, char **env, t_shell *data)
 {
@@ -35,8 +41,11 @@ int	main(int argc, char **argv, char **env)
 	{
 		init_data(argc, argv, env, data);
 		line = readline("Minishell> ");
-		if (!line)
+		if (!line || ft_strcmp(line, "exit") == 0)
 			return (1);
+		if (is_builtin(line) == true)
+			exec_cmd(line);
+		add_history(line);
 		if (init_tokens(data, line) == 1)
 			return (1);
 		if (init_stacks(data) == 1)
@@ -49,6 +58,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (test)
 			printf("%s\n", test->str);
+		rl_clear_history();
 		free(line);
 		free_stack(data->cmd);
 		free_stack(data->rand);

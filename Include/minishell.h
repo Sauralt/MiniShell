@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 17:11:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:56:22 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 # include "../libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
+
+# define BUFFER_SIZE 1024
+# define PATH_SIZE 1024
 
 typedef struct s_stack
 {
@@ -58,5 +62,12 @@ void	delfirst_stack(t_stack **s);
 int		init_stacks(t_shell *data);
 void	free_tokens(t_token *t);
 void	free_stack(t_stack *t);
+void	handle_sigint(int sig);
+bool	is_builtin(char *cmd);
+void	exec_cmd(char *line);
+void	ft_cd(char *path);
+void	ft_pwd(void);
+void	ft_env(void);
+void	ft_echo(char **cmd);
 
 #endif
