@@ -1,24 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/06 13:12:14 by cfleuret         ###   ########.fr       */
+/*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/03/11 17:11:39 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Include/minishell.h"
+#include "minishell.h"
 
-int	main(int argc, char **argv)
+void	free_str(char **str)
 {
-	char *line;
-	while (1)
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		line = readline("Minishell> ");
+		free(str[i]);
+		i++;
 	}
-	argc = 1;
-	argv[0] = argv[1];
+	free(str);
+}
+
+void	free_tokens(t_token *t)
+{
+	while (t)
+	{
+		delfirst(&t);
+	}
+}
+
+void	free_stack(t_stack *t)
+{
+	while (t)
+	{
+		delfirst_stack(&t);
+	}
 }
