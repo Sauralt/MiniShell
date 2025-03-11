@@ -18,6 +18,7 @@
 # include <signal.h>
 
 # define BUFFER_SIZE 1024
+# define PATH_SIZE 1024
 
 typedef struct s_shell
 {
@@ -31,5 +32,6 @@ void	exec_cmd(char *line);
 void	ft_cd(char *path);
 void	ft_pwd(void);
 void	ft_env(void);
+void	ft_echo(char **cmd);
 
 #endif
