@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 17:28:49 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:49:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	main(int argc, char **argv, char **env)
 		free_stack(data->rand);
 		free_stack(data->meta);
 		free_tokens(data->token);
+		
 	}
 	return (0);
 }
