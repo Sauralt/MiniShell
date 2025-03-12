@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 17:56:22 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:02:40 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	delfirst(t_token **s);
 void	free_str(char **str);
 char	*find_path(char *cmd, char **envp, int i);
 t_stack	*ft_new_stack(t_token *t);
-void	ft_add_stack(t_stack **s, t_stack *new);
+void	ft_add_stack(t_stack **s, t_stack *new, int i);
 void	delfirst_stack(t_stack **s);
 int		init_stacks(t_shell *data);
 void	free_tokens(t_token *t);
@@ -69,5 +69,8 @@ void	ft_cd(char *path);
 void	ft_pwd(void);
 void	ft_env(void);
 void	ft_echo(char **cmd);
+void	free_all(t_shell *data, char *line);
+int		proc(t_shell *data);
+int		execute(t_shell *data);
 
 #endif

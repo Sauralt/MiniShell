@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:25:22 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 17:11:40 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/12 14:45:28 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_stack	*ft_new_stack(t_token *t)
 	return (c);
 }
 
-void	ft_add_stack(t_stack **s, t_stack *new)
+void	ft_add_stack(t_stack **s, t_stack *new, int i)
 {
 	t_stack	*p;
 
@@ -41,6 +41,7 @@ void	ft_add_stack(t_stack **s, t_stack *new)
 	p = (*s)->prev;
 	new->next = *s;
 	new->prev = p;
+	new->id = i;
 	p->next = new;
 	(*s)->prev = new;
 }

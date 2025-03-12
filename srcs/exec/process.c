@@ -1,52 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/12 15:21:34 by cfleuret         ###   ########.fr       */
+/*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/03/12 16:06:05 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_all(t_shell *data, char *line)
+int	execute(char *cmd, char **env)
 {
-	free(line);
-	free_stack(data->cmd);
-	free_stack(data->rand);
-	free_stack(data->meta);
-	free_tokens(data->token);
-}
+	char	*path;
+	int		i;
 
-void	free_str(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
+	path = find_path(cmd, env, i);
+	if (!path)
 	{
-		free(str[i]);
-		i++;
+		ft_printf(2, "%s: command not found\n", cmd[0]);
+		free_str(cmd);
+		return (1);
 	}
-	free(str);
-}
-
-void	free_tokens(t_token *t)
-{
-	while (t)
+	if (execve(path, cmd, env) == -1)
 	{
-		delfirst(&t);
+		free(path);
+		ft_printf(2, "%s: command not found\n", cmd[0]);
+		free_str(cmd);
+		return (1);
 	}
+	return (0);
 }
 
-void	free_stack(t_stack *t)
+int	proc(t_shell *data)
 {
-	while (t)
-	{
-		delfirst_stack(&t);
-	}
+	execute(data->cmd->str, data->env);
+	return (0);
 }
-

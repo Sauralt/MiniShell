@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 18:36:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:55:39 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	printf("\nminishell> ");
+	printf("\nMinishell> ");
 }
 
 static void	init_data(int argc, char **argv, char **env, t_shell *data)
@@ -51,6 +51,7 @@ int	main(int argc, char **argv, char **env)
 			return (1);
 		if (ft_strncmp(line, "\0", 2) != 0 && init_stacks(data) == 1)
 			return (1);
+		proc(data);
 		test = data->meta;
 		while (test && test->next != data->meta)
 		{
@@ -59,12 +60,8 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (test)
 			printf("%s\n", test->str);
-		rl_clear_history();
-		free(line);
-		free_stack(data->cmd);
-		free_stack(data->rand);
-		free_stack(data->meta);
-		free_tokens(data->token);
+		free_all(data, line);
 	}
+	rl_clear_history();
 	return (0);
 }

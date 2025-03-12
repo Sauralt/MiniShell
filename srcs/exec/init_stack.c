@@ -6,11 +6,23 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:23:53 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 17:20:26 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:17:16 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_stack	*make_stack(t_stack *s, t_token *t, int i)
+{
+	if (s == NULL)
+	{
+		s = ft_new_stack(t);
+		s->id = i;
+	}
+	else
+		ft_add_stack(&s, ft_new_stack(t), i);
+	return (s);
+}
 
 static int	init_cmd(t_shell *data)
 {
@@ -24,28 +36,12 @@ static int	init_cmd(t_shell *data)
 	while (t->next != data->token)
 	{
 		if (t->type == 1)
-		{
-			if (s == NULL)
-			{
-				s = ft_new_stack(t);
-				s->id = i;
-			}
-			else
-				ft_add_stack(&s, ft_new_stack(t));
-		}
+			s = make_stack(s, t, i);
 		t = t->next;
 		i++;
 	}
 	if (t->type == 1)
-	{
-		if (s == NULL)
-		{
-			s = ft_new_stack(t);
-			s->id = i;
-		}
-		else
-			ft_add_stack(&s, ft_new_stack(t));
-	}
+		s = make_stack(s, t, i);
 	data->cmd = s;
 	return (0);
 }
@@ -62,28 +58,12 @@ static int	init_meta(t_shell *data)
 	while (t->next != data->token)
 	{
 		if (t->type == 2)
-		{
-			if (s == NULL)
-			{
-				s = ft_new_stack(t);
-				s->id = i;
-			}
-			else
-				ft_add_stack(&s, ft_new_stack(t));
-		}
+			s = make_stack(s, t, i);
 		t = t->next;
 		i++;
 	}
 	if (t->type == 2)
-	{
-		if (s == NULL)
-		{
-			s = ft_new_stack(t);
-			s->id = i;
-		}
-		else
-			ft_add_stack(&s, ft_new_stack(t));
-	}
+		s = make_stack(s, t, i);
 	data->meta = s;
 	return (0);
 }
@@ -100,28 +80,12 @@ static int	init_rand(t_shell *data)
 	while (t->next != data->token)
 	{
 		if (t->type == 0)
-		{
-			if (s == NULL)
-			{
-				s = ft_new_stack(t);
-				s->id = i;
-			}
-			else
-				ft_add_stack(&s, ft_new_stack(t));
-		}
+			s = make_stack(s, t, i);
 		t = t->next;
 		i++;
 	}
 	if (t->type == 0)
-	{
-		if (s == NULL)
-		{
-			s = ft_new_stack(t);
-			s->id = i;
-		}
-		else
-			ft_add_stack(&s, ft_new_stack(t));
-	}
+		s = make_stack(s, t, i);
 	data->rand = s;
 	return (0);
 }
