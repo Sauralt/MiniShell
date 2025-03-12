@@ -24,7 +24,7 @@ int	get_current_directory(char *buffer, size_t size)
 
 const char	*handle_cd_dash(const char *path, char *prev_dir)
 {
-	if (strcmp(path, "..") == 0)
+	if (ft_strcmp(path, "..") == 0)
 	{
 		if (prev_dir[0] == '\0')
 		{

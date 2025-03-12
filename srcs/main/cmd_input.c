@@ -40,10 +40,10 @@ void	exec_cmd(char *line)
 		ft_env();
 	else if (ft_strcmp(cmd[0], "echo") == 0)
 		ft_echo(cmd);
-	// else if (ft_strcmp(cmd[0], "export") == 0)
-	// 	ft_export(cmd);
-	// else if (ft_strcmp(cmd[0], "unset") == 0)
-	// 	ft_unset(cmd);
+	else if (ft_strcmp(cmd[0], "export") == 0 && cmd[1])
+		ft_export(cmd[1]);
+	else if (ft_strcmp(cmd[0], "unset") == 0)
+		ft_unset(cmd);
 	// else if (ft_strcmp(cmd[0], "exit") == 0)
 	// 	ft_exit(cmd);
 	// free_str(cmd);

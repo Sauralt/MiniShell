@@ -69,5 +69,7 @@ void	ft_cd(char *path);
 void	ft_pwd(void);
 void	ft_env(void);
 void	ft_echo(char **cmd);
+int		ft_export(char *cmd);
+void	ft_unset(char **cmd);
 
 #endif
