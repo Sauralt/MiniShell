@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/12 15:55:39 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:39:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	handle_sigint(int sig)
 
 static void	init_data(int argc, char **argv, char **env, t_shell *data)
 {
+	char	*path[PATH_MAX];
+
 	(void)argc;
 	(void)argv;
 	data->cmd = NULL;
@@ -28,6 +30,8 @@ static void	init_data(int argc, char **argv, char **env, t_shell *data)
 	data->token = NULL;
 	data->exit_code = 0;
 	data->env = env;
+	path = getcwd(path, sizeof(path));
+	data->cwd = ft_strdup(path);
 }
 
 int	main(int argc, char **argv, char **env)
