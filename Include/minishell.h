@@ -63,13 +63,14 @@ int		init_stacks(t_shell *data);
 void	free_tokens(t_token *t);
 void	free_stack(t_stack *t);
 void	handle_sigint(int sig);
-bool	is_builtin(char *cmd);
-void	exec_cmd(char *line);
+bool	is_builtin(t_shell *data);
+void	exec_cmd(t_shell *data);
 void	ft_cd(char *path);
-void	ft_pwd(void);
+void	ft_pwd(t_shell	*data);
 void	ft_env(void);
 void	ft_echo(char **cmd);
 int		ft_export(char *cmd);
 void	ft_unset(char **cmd);
+bool	execution(t_shell *data);
 
 #endif

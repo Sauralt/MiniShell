@@ -18,6 +18,17 @@ void	handle_sigint(int sig)
 	printf("\nMinishell> ");
 }
 
+int	is_empty_line(char *line)
+{
+	while (*line)
+	{
+		if (*line != ' ' && *line != '\t')
+			return (0);
+		line++;
+	}
+	return (1);
+}
+
 static void	init_data(int argc, char **argv, char **env, t_shell *data)
 {
 	(void)argc;
@@ -43,14 +54,16 @@ int	main(int argc, char **argv, char **env)
 		line = readline("Minishell> ");
 		if (!line || ft_strcmp(line, "exit") == 0)
 			return (1);
-		if (ft_strncmp(line, "\0", 2) != 0 && is_builtin(line) == true)
-			exec_cmd(line);
+		if (is_empty_line(line))
+			continue ;
 		add_history(line);
 		init_data(argc, argv, env, data);
-		if (ft_strncmp(line, "\0", 2) != 0 && init_tokens(data, line) == 1)
+		if (init_tokens(data, line) == 1)
 			return (1);
-		if (ft_strncmp(line, "\0", 2) != 0 && init_stacks(data) == 1)
+		if (init_stacks(data) == 1)
 			return (1);
+		if (execution(data) == true)
+			continue ;
 		test = data->meta;
 		while (test && test->next != data->meta)
 		{
