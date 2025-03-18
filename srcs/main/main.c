@@ -44,7 +44,7 @@ static void	init_data(int argc, char **argv, char **env, t_shell *data)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*data;
-	t_stack	*test;
+//	t_stack	*test;
 	char	*line;
 
 	data = malloc(sizeof(t_shell));
@@ -64,14 +64,14 @@ int	main(int argc, char **argv, char **env)
 			return (1);
 		if (execution(data) == true)
 			continue ;
-		test = data->meta;
-		while (test && test->next != data->meta)
-		{
-			printf("%s\n", test->str);
-			test = test->next;
-		}
-		if (test)
-			printf("%s\n", test->str);
+		// test = data->cmd;
+		// while (test && test->next != data->cmd)
+		// {
+		// 	printf("%s\n", test->str);
+		// 	test = test->next;
+		// }
+		// if (test)
+		// 	printf("%s\n", test->str);
 		free(line);
 		free_stack(data->cmd);
 		free_stack(data->rand);

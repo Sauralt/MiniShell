@@ -12,80 +12,51 @@
 
 #include "../Include/minishell.h"
 
-bool	is_builtin(t_shell *data)
+bool	is_builtin(char *cmd)
 {
-	char	**cmd;
-
-	if (!data || !data->cmd || !data->cmd->str)
+	if (!cmd)
 		return (false);
-	cmd = ft_split(data->cmd->str, ' ');
-	if (!cmd || !cmd[0])
-	{
-//		free_str(cmd);
-		return (false);
-	}
-	if (ft_strcmp(cmd[0], "echo") == 0 || ft_strcmp(cmd[0], "cd") == 0
-		|| ft_strcmp(cmd[0], "pwd") == 0 || ft_strcmp(cmd[0], "export") == 0
-		|| ft_strcmp(cmd[0], "unset") == 0 || ft_strcmp(cmd[0], "env") == 0
-		|| ft_strcmp(cmd[0], "exit") == 0)
-	{
-//		free_str(cmd);
+	if (!ft_strncmp("echo", cmd, INT_MAX) || !ft_strncmp("cd", cmd, INT_MAX) \
+	|| !ft_strncmp("pwd", cmd, INT_MAX) || !ft_strncmp("export", cmd, INT_MAX) \
+	|| !ft_strncmp("unset", cmd, INT_MAX) || !ft_strncmp("env", cmd, INT_MAX) \
+	|| !ft_strncmp("exit", cmd, INT_MAX))
 		return (true);
-	}
-///	free_str(cmd);
 	return (false);
 }
 
-void	exec_cmd(t_shell *data)
+void	exec_builtin(t_shell *data, t_token *cmd)
 {
-	char	**cmd;
+	if (!cmd || !cmd->str)
+		return ;
 
-//	if (!data || !data->cmd || !data->cmd->str)
-//		return ;
-
-	cmd = ft_split(data->cmd->str, ' ');
-//	if (!cmd || !cmd[0])
-//	{
-//		free_str(cmd);
-//		return ;
-	//}
-
-	if (ft_strcmp(cmd[0], "cd") == 0 && !cmd[2])
-		ft_cd(cmd[1], data);
-	if (ft_strcmp(cmd[0], "pwd") == 0)
-		ft_pwd(data);
-	else if (ft_strcmp(cmd[0], "env") == 0)
+	if (ft_strncmp(cmd->str, "pwd", 4) == 0)
+		ft_pwd();
+	else if (ft_strncmp(cmd->str, "env", 4) == 0)
 		ft_env();
-	else if (ft_strcmp(cmd[0], "echo") == 0)
-		ft_echo(cmd);
-	else if (ft_strcmp(cmd[0], "export") == 0 && cmd[1])
-		ft_export(cmd[1]);
-	else if (ft_strcmp(cmd[0], "unset") == 0 && cmd[1])
-	{
-		char *args[2] = {cmd[1], NULL};
-		ft_unset(args);
-	}
-//	else if (ft_strcmp(cmd[0], "exit") == 0)
-//		ft_exit(cmd);
-
-//	free_str(cmd);
+	else if (ft_strncmp(cmd->str, "cd", 3) == 0)
+		ft_cd(data, cmd->next->str);
+	else if (ft_strncmp(cmd->str, "echo", 5) == 0)
+		ft_echo(cmd->next->str);
+//	else if (ft_strncmp(cmd->str, "export", 7) == 0)
+//		ft_export(cmd->str);
+//	else if (ft_strncmp(cmd->str, "unset", 6) == 0)
+//		ft_unset(cmd->next->str);
 }
 
 bool	execution(t_shell *data)
 {
-	char	**cmd;
+	t_token	*tmp;
 
-	if (!data || !data->cmd || !data->cmd->str)
+	tmp = data->token;
+	if (!tmp)
 		return (false);
-	cmd = ft_split(data->cmd->str, ' ');
-	if (!cmd)
-		return (false);
-	if (is_builtin(data))
+	if (is_builtin(tmp->str))
 	{
-		exec_cmd(data);
-//		free_str(cmd);
+		exec_builtin(data, tmp);
+		printf("Builtin exécuté : %s\n", tmp->str);
 		return (false);
+
 	}
-//	free_str(cmd);
-	return (true);
+//	free_str(tmp->str);
+	return (false);
 }

@@ -12,7 +12,7 @@
 
 #include "../Include/minishell.h"
 
-int	get_current_directory(char *buffer, size_t size)
+int get_current_directory(char *buffer, size_t size)
 {
 	if (getcwd(buffer, size) == NULL)
 	{
@@ -22,12 +22,37 @@ int	get_current_directory(char *buffer, size_t size)
 	return (1);
 }
 
-void	change_directory(const char *path, char *prev_dir)
+const char	*handle_cd_dash(const char *path, char *prev_dir)
 {
-	char	current_dir[PATH_SIZE];
+	if (strcmp(path, "..") == 0)
+	{
+		if (prev_dir[0] == '\0')
+		{
+			fprintf(stderr, "cd: OLDPWD not set\n");
+			return (NULL);
+		}
+
+		// Vérifiez si prev_dir est valide
+		if (access(prev_dir, F_OK) == -1)
+		{
+			perror("cd");
+			return (NULL);
+		}
+
+		return (prev_dir);
+	}
+	return (path);
+}
+
+void change_directory(const char *path, char *prev_dir)
+{
+	char current_dir[PATH_SIZE];
+
+	printf("Tentative de changement vers : %s\n", path);  // Debug
 
 	if (!get_current_directory(current_dir, sizeof(current_dir)))
-		return ;
+		return;
+
 	if (chdir(path) != 0)
 	{
 		perror("cd");
@@ -37,34 +62,27 @@ void	change_directory(const char *path, char *prev_dir)
 		strncpy(prev_dir, current_dir, sizeof(current_dir) - 1);
 		prev_dir[sizeof(current_dir) - 1] = '\0';
 		if (get_current_directory(current_dir, sizeof(current_dir)))
-		{
-			setenv("PWD", current_dir, 1);
-			setenv("OLDPWD", prev_dir, 1);
-		}
+			setenv("PWD", current_dir, 1);  // Met à jour l'environnement PWD
 	}
 }
 
-void	ft_cd(char *path)
+void ft_cd(t_shell *data, char *path)
 {
-	static char	prev_dir[PATH_SIZE] = "";
-	char		new_path[PATH_SIZE];
+	char new_path[PATH_SIZE];
+	const char *resolved_path;
 
-	if (!path || ft_strcmp(path, "~") == 0)
-		path = getenv("HOME");
-	else if (ft_strcmp(path, "-") == 0)
-	{
-		path = getenv("OLDPWD");
-		if (!path)
-		{
-			fprintf(stderr, "cd: OLDPWD not set\n");
-			return ;
-		}
-		printf("%s\n", path);
-	}
-	if (path)
-	{
-		strncpy(new_path, path, PATH_SIZE - 1);
-		new_path[PATH_SIZE - 1] = '\0';
-		change_directory(new_path, prev_dir);
-	}
+	if (!path)
+		return;
+
+	// Gère le cas où le chemin est "-" (revenir au répertoire précédent)
+	resolved_path = handle_cd_dash(path, data->prev_dir);
+	if (!resolved_path)
+		return;
+
+	// Copie le chemin résolu dans new_path
+	strncpy(new_path, resolved_path, PATH_SIZE - 1);
+	new_path[PATH_SIZE - 1] = '\0';
+
+	// Change de répertoire et met à jour prev_dir
+	change_directory(new_path, data->prev_dir);
 }

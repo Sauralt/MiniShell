@@ -47,6 +47,7 @@ typedef struct s_shell
 	int		exit_code;
 	int		fd[2];
 	char	**env;
+	char	prev_dir[PATH_SIZE];
 }			t_shell;
 
 int		main(int argc, char **argv, char **env);
@@ -63,12 +64,12 @@ int		init_stacks(t_shell *data);
 void	free_tokens(t_token *t);
 void	free_stack(t_stack *t);
 void	handle_sigint(int sig);
-bool	is_builtin(t_shell *data);
-void	exec_cmd(t_shell *data);
-void	ft_cd(char *path);
-void	ft_pwd(t_shell	*data);
+bool	is_builtin(char *cmd);
+void	exec_builtin(t_shell *data, t_token *cmd);
+void	ft_cd(t_shell *data, char *path);
+void	ft_pwd(void);
 void	ft_env(void);
-void	ft_echo(char **cmd);
+void	ft_echo(char *path);
 int		ft_export(char *cmd);
 void	ft_unset(char **cmd);
 bool	execution(t_shell *data);

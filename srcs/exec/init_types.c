@@ -74,7 +74,9 @@ int	init_tokens(t_shell *data, char *line)
 	while (str[i])
 	{
 		path = find_path(str[i], data->env, j);
-		if (!path)
+		if (is_builtin(str[i]) == 1)
+			set_token_type(data, 1);
+		else if (!path)
 			set_token_type(data, 2);
 		else
 			set_token_type(data, 1);
