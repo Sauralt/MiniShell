@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          #+#  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-03-10 14:16:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025-03-10 14:16:49 by mgarsaul         ###   ########.fr       */
+/*   Created: 2025/03/10 14:16:49 by mgarsaul          #+#    #+#             */
+/*   Updated: 2025/03/18 16:20:42 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-void	ft_env(void)
+int	ft_env(void)
 {
 	extern char	**environ;
 	int			i;
@@ -23,4 +23,5 @@ void	ft_env(void)
 		printf("%s\n", environ[i]);
 		i++;
 	}
+	return (0);
 }

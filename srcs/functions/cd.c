@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          #+#  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-03-10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025-03-10 14:10:21 by mgarsaul         ###   ########.fr       */
+/*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
+/*   Updated: 2025/03/18 16:20:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,19 @@ void	change_directory(const char *path, char *prev_dir)
 	}
 }
 
-void	ft_cd(char *path)
+int	ft_cd(char *path)
 {
 	static char		prev_dir[PATH_SIZE] = "";
 	char			new_path[PATH_SIZE];
 	const char		*resolved_path;
 
 	if (!path)
-		return ;
+		return (1);
 	resolved_path = handle_cd_dash(path, prev_dir);
 	if (!resolved_path)
-		return ;
+		return (1);
 	strncpy(new_path, resolved_path, PATH_SIZE - 1);
 	new_path[PATH_SIZE - 1] = '\0';
 	change_directory(new_path, prev_dir);
+	return (0);
 }
