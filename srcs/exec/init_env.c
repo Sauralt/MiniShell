@@ -1,49 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/19 14:56:14 by cfleuret         ###   ########.fr       */
+/*   Created: 2025/03/19 14:37:54 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/03/19 16:07:30 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_all(t_shell *data, char *line)
-{
-	free(line);
-	free_tokens(data->token);
-	free_env(data->env);
-}
-
-void	free_str(char **str)
+void	init_env(t_shell *data, char **env)
 {
 	int	i;
 
 	i = 0;
-	while (str[i])
+	while (env[i])
 	{
-		free(str[i]);
+		if (i == 0)
+			data->env = ft_new_stack(env[i]);
+		else
+			ft_add_stack (&data->env, ft_new_stack(env[i]));
 		i++;
 	}
-	free(str);
-}
-
-void	free_tokens(t_token *t)
-{
-	while (t)
-	{
-		delfirst(&t);
-	}
-}
-
-void	free_env(t_env *env)
-{
-	while (env)
-	{
-		delfirst_stack(&env);
-	}
+	if (!env[0])
+		data->env = ft_new_stack(getcwd(NULL, 0));
 }
