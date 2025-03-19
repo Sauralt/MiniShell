@@ -23,42 +23,36 @@ int	find_env_index(const char *key)
 	while (environ[i])
 	{
 		if (ft_strncmp(environ[i], key, len) == 0 && environ[i][len] == '=')
-		{
 			return (i);
-		}
 		i++;
 	}
 	return (-1);
 }
 
-
-void	ft_unset(char **cmd)
+int	ft_unset(t_shell *data, char *cmd)
 {
-	int			i;
 	extern char	**environ;
 	int			index;
 
-	i = 1;
-	while (cmd[i])
+	(void)data;
+	if (!cmd || ft_strchr(cmd, '='))
 	{
-		if (ft_strchr(cmd[i], '='))
-		{
-			printf("unset: invalid identifier\n");
-			return ;
-		}
-
-		index = find_env_index(cmd[i]);
-		if (index != -1)
-		{
-			free(environ[index]);
-			while (environ[index])
-			{
-				environ[index] = environ[index + 1];
-				index++;
-			}
-		}
-		i++;
+		fprintf(stderr, "unset: `%s': not a valid identifier\n", cmd);
+		data->exit_code = 1;
+		return (1);
 	}
+	index = find_env_index(cmd);
+	if (index == -1)
+	{
+		data->exit_code = 0;
+		return (1);
+	}
+	free(environ[index]);
+	while (environ[index])
+	{
+		environ[index] = environ[index + 1];
+		index++;
+	}
+	data->exit_code = 0;
+	return (0);
 }
-
-

@@ -20,15 +20,15 @@
 # define BUFFER_SIZE 1024
 # define PATH_SIZE 1024
 
-typedef struct s_stack
-{
-	char				*str;
-	int					infile;
-	int					outfile;
-	int					id;
-	struct s_stack		*prev;
-	struct s_stack		*next;
-}						t_stack;
+// typedef struct s_stack
+// {
+// 	char				*str;
+// 	int					infile;
+// 	int					outfile;
+// 	int					id;
+// 	struct s_stack		*prev;
+// 	struct s_stack		*next;
+// }						t_stack;
 
 typedef struct s_token
 {
@@ -40,14 +40,11 @@ typedef struct s_token
 
 typedef struct s_shell
 {
-	t_stack	*cmd;
-	t_stack	*meta;
-	t_stack	*rand;
+	char	prev_dir[PATH_SIZE];
 	t_token	*token;
 	int		exit_code;
 	int		fd[2];
 	char	**env;
-	char	prev_dir[PATH_SIZE];
 }			t_shell;
 
 int		main(int argc, char **argv, char **env);
@@ -57,21 +54,19 @@ void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	free_str(char **str);
 char	*find_path(char *cmd, char **envp, int i);
-t_stack	*ft_new_stack(t_token *t);
-void	ft_add_stack(t_stack **s, t_stack *new);
-void	delfirst_stack(t_stack **s);
 int		init_stacks(t_shell *data);
 void	free_tokens(t_token *t);
-void	free_stack(t_stack *t);
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
-void	exec_builtin(t_shell *data, t_token *cmd);
-void	ft_cd(t_shell *data, char *path);
-void	ft_pwd(void);
-void	ft_env(void);
-void	ft_echo(char *path);
-int		ft_export(char *cmd);
-void	ft_unset(char **cmd);
-bool	execution(t_shell *data);
+void	exec_cmd(char *line);
+int		ft_cd(t_shell *data, char *path);
+int		ft_pwd(void);
+int		ft_env(void);
+int		ft_echo(char *path);
+void	free_all(t_shell *data, char *line);
+int		proc(t_shell *data);
+int		execute(t_shell *data);
+int		ft_unset(t_shell *data, char *cmd);
+int		ft_export(char *arg);
 
 #endif

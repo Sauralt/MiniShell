@@ -12,7 +12,7 @@
 
 #include "../Include/minishell.h"
 
-void	ft_env(void)
+int	ft_env(void)
 {
 	extern char	**environ;
 	int			i;
@@ -23,4 +23,5 @@ void	ft_env(void)
 		printf("%s\n", environ[i]);
 		i++;
 	}
+	return (0);
 }

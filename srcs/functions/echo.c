@@ -12,7 +12,8 @@
 
 #include "../Include/minishell.h"
 
-void	ft_echo(char *path)
+int	ft_echo(char *path)
 {
 	printf("%s\n", path);
+	return (0);
 }

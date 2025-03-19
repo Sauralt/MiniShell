@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+void	free_all(t_shell *data, char *line)
+{
+	free(line);
+	free_tokens(data->token);
+}
+
 void	free_str(char **str)
 {
 	int	i;
@@ -32,12 +38,3 @@ void	free_tokens(t_token *t)
 		delfirst(&t);
 	}
 }
-
-void	free_stack(t_stack *t)
-{
-	while (t)
-	{
-		delfirst_stack(&t);
-	}
-}
-

@@ -36,7 +36,7 @@ static int	meta_char(char *str)
 		&& ft_strncmp(str, ">>", len) != 0 && strcmp(str, "<<") != 0
 		&& strcmp(str, "|") != 0)
 		return (1);
-	//$ et $? ne sont pas pris en compte
+	//$ et $? ne sont pas pris en compte`
 	return (0);
 }
 
