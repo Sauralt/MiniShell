@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 17:11:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:34:35 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ int	init_tokens(t_shell *data, char *line)
 	while (str[i])
 	{
 		path = find_path(str[i], data->env, j);
-		if (!path)
+		if (is_builtin(str[i]) == true)
+			set_token_type(data, 1);
+		else if (!path)
 			set_token_type(data, 2);
 		else
 			set_token_type(data, 1);
