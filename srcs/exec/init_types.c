@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/18 16:34:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:13:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static void	set_token_type(t_shell *data, int type)
 	}
 	else
 		t->type = 1;
+	if (strncmp(t->str, "$", 1) == 0)
+		t->type = 3;
 }
 
 int	init_tokens(t_shell *data, char *line)
