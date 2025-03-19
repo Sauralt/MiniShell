@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/18 16:38:03 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:49:27 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,11 @@ int	main(int argc, char **argv, char **env)
 		line = readline("Minishell> ");
 		if (!line)
 			break ;
-		// if (ft_strncmp(line, "\0", 2) != 0 && is_builtin(line) == true)
-		// 	exec_cmd(line);
 		add_history(line);
 		if (ft_strncmp(line, "\0", 2) != 0 && init_tokens(data, line) == 1)
 			break ;
-		// if (proc(data) == 1)
-		// 	break ;
+		if (proc(data) == 1)
+			break ;
 		test = data->token;
 		while (test && test->next != data->token)
 		{
