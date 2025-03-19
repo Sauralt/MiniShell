@@ -6,24 +6,65 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:37:50 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 14:34:28 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/19 16:10:11 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_path(char *cmd, char **envp, int i)
+char	**make_env_str(t_env *env)
+{
+	int		i;
+	int		j;
+	char	**envp;
+	t_env	*t;
+
+	i = 1;
+	j = -1;
+	t = env->next;
+	while (t != env)
+	{
+		i++;
+		t = t->next;
+	}
+	envp = malloc(sizeof(char *) * (i + 1));
+	if (!envp)
+		return (0);
+	while (j++ < i)
+	{
+		envp[j] = ft_strdup(t->str);
+		if (!envp[j])
+			return (0);
+		t = t->next;
+	}
+	envp[j] = NULL;
+	return (envp);
+}
+
+static char	**collect_path(t_env *env)
+{
+	t_env	*t;
+	char	**paths;
+
+	paths = NULL;
+	t = env;
+	while (t != env->prev && ft_strnstr(t->str, "PATH", 4) == 0)
+		t = t->next;
+	if (t->next != env)
+		paths = ft_split(t->str + 5, ':');
+	return (paths);
+}
+
+char	*find_path(char *cmd, t_env *env, int i)
 {
 	char	**paths;
 	char	*path;
 	char	*part_path;
 
-	while (envp[i] && ft_strnstr(envp[i], "PATH", 4) == 0)
-		i++;
-	if (!envp[i])
-		return (0);
-	paths = ft_split(envp[i] + 5, ':');
 	i = 0;
+	paths = collect_path(env);
+	if (!paths)
+		return (0);
 	while (paths[i])
 	{
 		part_path = ft_strjoin(paths[i], "/");

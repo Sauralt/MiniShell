@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:54 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/18 16:22:30 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:16:44 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ int	ft_pwd(t_shell *data)
 
 	if (!data)
 		return (1);
+	if (data->token != data->token->next)
+	{
+		printf("pwd: too many arguments\n");
+		return (0);
+	}
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
