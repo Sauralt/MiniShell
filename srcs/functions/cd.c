@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          #+#  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-03-10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025-03-10 14:10:21 by mgarsaul         ###   ########.fr       */
+/*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
+/*   Updated: 2025/03/18 17:29:55 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-int	get_current_directory(char *buffer, size_t size)
+int get_current_directory(char *buffer, size_t size)
 {
 	if (getcwd(buffer, size) == NULL)
 	{
@@ -22,41 +22,67 @@ int	get_current_directory(char *buffer, size_t size)
 	return (1);
 }
 
-void	change_directory(const char *path, t_shell *data)
+const char	*handle_cd_dash(const char *path, char *prev_dir)
 {
-	char	current_dir[PATH_SIZE];
+	if (strcmp(path, "..") == 0)
+	{
+		if (prev_dir[0] == '\0')
+		{
+			fprintf(stderr, "cd: OLDPWD not set\n");
+			return (NULL);
+		}
+
+		// Vérifiez si prev_dir est valide
+		if (access(prev_dir, F_OK) == -1)
+		{
+			perror("cd");
+			return (NULL);
+		}
+
+		return (prev_dir);
+	}
+	return (path);
+}
+
+void change_directory(const char *path, char *prev_dir)
+{
+	char current_dir[PATH_SIZE];
+
+	printf("Tentative de changement vers : %s\n", path);  // Debug
 
 	if (!get_current_directory(current_dir, sizeof(current_dir)))
-		return ;
+		return;
+
 	if (chdir(path) != 0)
 	{
 		perror("cd");
-		data->exit_code = 1;
 	}
 	else
 	{
-		strncpy(data->prev_dir, current_dir, PATH_SIZE - 1);
-		data->prev_dir[PATH_SIZE - 1] = '\0';
+		strncpy(prev_dir, current_dir, sizeof(current_dir) - 1);
+		prev_dir[sizeof(current_dir) - 1] = '\0';
 		if (get_current_directory(current_dir, sizeof(current_dir)))
-		{
-			setenv("PWD", current_dir, 1);
-			setenv("OLDPWD", data->prev_dir, 1);
-		}
-		data->exit_code = 0;
+			setenv("PWD", current_dir, 1);  // Met à jour l'environnement PWD
 	}
 }
 
-int	ft_cd(t_shell *data, char *path)
+void ft_cd(t_shell *data, char *path)
 {
-	char	new_path[PATH_SIZE];
+	char new_path[PATH_SIZE];
+	const char *resolved_path;
 
 	if (!path)
-	{
-		data->exit_code = 0;
-		return (1);
-	}
-	strncpy(new_path, path, PATH_SIZE - 1);
+		return ;
+
+	// Gère le cas où le chemin est "-" (revenir au répertoire précédent)
+	resolved_path = handle_cd_dash(path, data->prev_dir);
+	if (!resolved_path)
+		return ;
+
+	// Copie le chemin résolu dans new_path
+	strncpy(new_path, resolved_path, PATH_SIZE - 1);
 	new_path[PATH_SIZE - 1] = '\0';
-	change_directory(new_path, data);
-	return (0);
+
+	// Change de répertoire et met à jour prev_dir
+	change_directory(new_path, data->prev_dir);
 }

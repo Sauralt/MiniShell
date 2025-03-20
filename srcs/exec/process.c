@@ -35,7 +35,7 @@ static int	exec_abs(char *cmd, char **env)
 	return (0);
 }
 
-void	exec_built(t_shell *data, t_token *cmd)
+static void	exec_built(t_shell *data, t_token *cmd)
 {
 	if (!cmd || !cmd->str)
 		return ;
@@ -44,15 +44,14 @@ void	exec_built(t_shell *data, t_token *cmd)
 		ft_pwd();
 	else if (ft_strncmp(cmd->str, "env", 4) == 0)
 		ft_env();
-	else if (ft_strncmp(cmd->str, "cd", 3) == 0
-		&& (!ft_strncmp(cmd->next->str, "cd", 3)) == 0)
+	else if (ft_strncmp(cmd->str, "cd", 3) == 0 && cmd->next == cmd->prev)
 		ft_cd(data, cmd->next->str);
 	else if (ft_strncmp(cmd->str, "echo", 5) == 0)
 		ft_echo(cmd->next->str);
-	else if (ft_strncmp(cmd->str, "export", 7) == 0)
-		ft_export(cmd->next->str);
-	else if (ft_strncmp(cmd->str, "unset", 6) == 0)
-		ft_unset(data, cmd->next->str);
+//	else if (ft_strncmp(cmd->str, "export", 7) == 0)
+//		ft_export(cmd->str);
+//	else if (ft_strncmp(cmd->str, "unset", 6) == 0)
+//		ft_unset(cmd->next->str);
 }
 
 static int	builtin(t_shell *data, t_token *cmd)

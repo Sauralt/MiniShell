@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 17:58:54 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:49:27 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,6 @@ void	handle_sigint(int sig)
 {
 	(void)sig;
 	printf("\nMinishell> ");
-}
-
-int	is_empty_line(char *line)
-{
-	while (*line)
-	{
-		if (*line != ' ' && *line != '\t')
-			return (0);
-		line++;
-	}
-	return (1);
 }
 
 static void	init_data(int argc, char **argv, char **env, t_shell *data)

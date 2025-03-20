@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/11 17:56:22 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:48:08 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,12 @@ void	free_tokens(t_token *t);
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	exec_cmd(char *line);
-int		ft_cd(t_shell *data, char *path);
-int		ft_pwd(void);
+void 	ft_cd(t_shell *data, char *path);
+void	ft_pwd(void);
 int		ft_env(void);
-int		ft_echo(char *path);
+void	ft_echo(char *path);
 void	free_all(t_shell *data, char *line);
 int		proc(t_shell *data);
 int		execute(t_shell *data);
-int		ft_unset(t_shell *data, char *cmd);
-int		ft_export(char *arg);
 
 #endif
