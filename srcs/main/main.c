@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/19 15:35:47 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:23:39 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	init_data(int argc, char **argv, char **env, t_shell *data)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*data;
-	t_env	*test;
+	t_token	*test;
 	char	*line;
 
 	data = malloc(sizeof(t_shell));
@@ -45,16 +45,16 @@ int	main(int argc, char **argv, char **env)
 		add_history(line);
 		if (ft_strncmp(line, "\0", 2) != 0 && init_tokens(data, line) == 1)
 			break ;
-		if (proc(data) == 1)
-			break ;
-		test = data->env;
-		// while (test && test->next != data->env)
-		// {
-		// 	printf("%s\n", test->str);
-		// 	test = test->next;
-		// }
-		// if (test)
-		// 	printf("%s\n", test->str);
+		if (ft_strncmp(line, "\0", 2) != 0)
+			proc(data);
+		test = data->token;
+		while (test && test->next != data->token)
+		{
+			printf("%s\n", test->str[1]);
+			test = test->next;
+		}
+		if (test)
+			printf("%s\n", test->str[1]);
 		free_all(data, line);
 	}
 	free_all(data, line);

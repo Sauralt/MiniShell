@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/18 16:34:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/20 15:03:17 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ static void	init_list_tok(t_shell *data, char **str)
 	i = 1;
 	while (str[i])
 	{
-		ft_add_token(&data->token, ft_new_token(str[i]));
+		if (strncmp(str[i], "-", 1) == 0)
+			i = add_param(data, i, str);
+		else
+			ft_add_token(&data->token, ft_new_token(str[i]));
 		i++;
 	}
 }
@@ -36,7 +39,6 @@ static int	meta_char(char *str)
 		&& ft_strncmp(str, ">>", len) != 0 && strcmp(str, "<<") != 0
 		&& strcmp(str, "|") != 0)
 		return (1);
-	//$ et $? ne sont pas pris en compte
 	return (0);
 }
 
@@ -49,13 +51,15 @@ static void	set_token_type(t_shell *data, int type)
 		t = t->next;
 	if (type == 2)
 	{
-		if (meta_char(t->str) == 1)
+		if (meta_char(t->str[0]) == 1)
 			t->type = 0;
 		else
 			t->type = 2;
 	}
 	else
 		t->type = 1;
+	if (strncmp(t->str[0], "$", 1) == 0)
+		t->type = 3;
 }
 
 int	init_tokens(t_shell *data, char *line)

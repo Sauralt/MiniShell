@@ -6,13 +6,22 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:13:26 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/18 17:46:23 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:59:06 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-void	ft_echo(char *path)
+int	ft_echo(t_token *str)
 {
-	printf("%s\n", path);
+	t_token	*path;
+
+	path = str;
+	while (path->next != str)
+	{
+		printf("%s ", path->next->str);
+		path = path->next;
+	}
+	printf("\n");
+	return (0);
 }

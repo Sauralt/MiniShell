@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/19 16:06:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/20 14:18:22 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 typedef struct s_token
 {
 	int				type;
-	char			*str;
+	char			**str;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -80,5 +80,6 @@ void	ft_add_stack(t_env **s, t_env *new);
 t_env	*ft_new_stack(char *t);
 void	init_env(t_shell *data, char **env);
 char	**make_env_str(t_env *env);
+int		add_param(t_shell *data, int i, char **str);
 
 #endif
