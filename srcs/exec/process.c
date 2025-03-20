@@ -48,18 +48,20 @@ static void	exec_built(t_shell *data, t_token *cmd)
 	else if (ft_strncmp(cmd->str[0], "cd", 3) == 0 && cmd->next == cmd->prev)
 		ft_cd(data, cmd->next->str[0]);
 	else if (ft_strncmp(cmd->str[0], "echo", 5) == 0)
-		ft_echo(cmd->next->str[0]);
+		ft_echo(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "export", 7) == 0)
-		ft_export(cmd->str[0]);
-//	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
-//		ft_unset(cmd->next->str);
+		ft_export(data, cmd->next->str[0]);
+	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
+		ft_unset(data, cmd->next->str[0]);
 }
 
 static int	builtin(t_shell *data, t_token *cmd)
 {
 	if (ft_strcmp(cmd->str[0], "echo") == 0 || ft_strcmp(cmd->str[0], "cd") == 0
-		|| ft_strcmp(cmd->str[0], "pwd") == 0 || ft_strcmp(cmd->str[0], "export") == 0
-		|| ft_strcmp(cmd->str[0], "unset") == 0 || ft_strcmp(cmd->str[0], "env") == 0
+		|| ft_strcmp(cmd->str[0], "pwd") == 0
+		|| ft_strcmp(cmd->str[0], "export") == 0
+		|| ft_strcmp(cmd->str[0], "unset") == 0
+		|| ft_strcmp(cmd->str[0], "env") == 0
 		|| ft_strcmp(cmd->str[0], "exit") == 0)
 	{
 		exec_built(data, cmd);

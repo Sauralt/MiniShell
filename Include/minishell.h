@@ -20,16 +20,6 @@
 # define BUFFER_SIZE 1024
 # define PATH_SIZE 1024
 
-// typedef struct s_stack
-// {
-// 	char				*str;
-// 	int					infile;
-// 	int					outfile;
-// 	int					id;
-// 	struct s_stack		*prev;
-// 	struct s_stack		*next;
-// }						t_stack;
-
 typedef struct s_token
 {
 	int				type;
@@ -69,8 +59,9 @@ void	exec_cmd(char *line);
 void	ft_cd(t_shell *data, char *path);
 int		ft_pwd(t_shell *data);
 int		ft_env(t_shell *data);
-void	ft_echo(char *path);
-int		ft_export(char *cmd);
+int		ft_echo(t_shell *data, t_token *str);
+int		ft_export(t_shell *data, char *arg);
+int		ft_unset(t_shell *data, char *cmd);
 void	free_all(t_shell *data, char *line);
 void	free_env(t_env *env);
 int		proc(t_shell *data);

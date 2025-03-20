@@ -12,52 +12,55 @@
 
 #include "../Include/minishell.h"
 
-int	find_env_index(const char *key)
+void	remove_env_node(t_env **env, const char *key)
 {
-	extern char	**environ;
-	size_t		len;
-	int			i;
+	t_env	*curr;
+	t_env	*to_delete;
+	size_t	len;
 
-	i = 0;
+	if (!env || !*env || !key)
+		return ;
 	len = ft_strlen(key);
-	while (environ[i])
+	curr = *env;
+	while (curr)
 	{
-		if (ft_strncmp(environ[i], key, len) == 0 && environ[i][len] == '=')
+		if (ft_strncmp(curr->str, key, len) == 0 && curr->str[len] == '=')
 		{
-			return (i);
+			to_delete = curr;
+			if (curr->prev)
+				curr->prev->next = curr->next;
+			else
+				*env = curr->next;
+			if (curr->next)
+				curr->next->prev = curr->prev;
+			free(to_delete->str);
+			free(to_delete);
+			return ;
 		}
-		i++;
+		curr = curr->next;
 	}
-	return (-1);
 }
 
-
-int	ft_unset(char **cmd)
+int	ft_unset(t_shell *data, char *cmd)
 {
-	int			i;
-	extern char	**environ;
-	int			index;
+	int	i;
 
+	if (!data || !data->env || !cmd || !cmd[1])
+		return (1);
 	i = 1;
 	while (cmd[i])
 	{
-		if (ft_strchr(cmd[i], '='))
+		if (ft_strchr(&cmd[i], '='))
 		{
-			printf("unset: invalid identifier\n");
-			return (1);
+			fprintf(stderr, "unset: `%c': not a valid identifier\n", cmd[i]);
+			data->exit_code = 1;
 		}
-
-		index = find_env_index(cmd[i]);
-		if (index != -1)
+		else
 		{
-			free(environ[index]);
-			while (environ[index])
-			{
-				environ[index] = environ[index + 1];
-				index++;
-			}
+			remove_env_node(&data->env, &cmd[i]);
+			data->exit_code = 0;
 		}
 		i++;
 	}
-	return (0);
+	return (data->exit_code);
 }
