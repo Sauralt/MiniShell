@@ -12,7 +12,19 @@
 
 #include "../Include/minishell.h"
 
-void	ft_echo(char *path)
+int	ft_echo(t_shell *data, t_token *str)
 {
-	printf("%s\n", path);
+	t_token	*path;
+	t_env  *env;
+
+	path = str;
+	while (path->next != str)
+	{
+		if (path->next->type == 3)
+
+		printf("%s ", path->next->str);
+		path = path->next;
+	}
+	printf("\n");
+	return (0);
 }

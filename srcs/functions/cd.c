@@ -73,8 +73,6 @@ void ft_cd(t_shell *data, char *path)
 
 	if (!path)
 		return ;
-
-	// Gère le cas où le chemin est "-" (revenir au répertoire précédent)
 	resolved_path = handle_cd_dash(path, data->prev_dir);
 	if (!resolved_path)
 		return ;
