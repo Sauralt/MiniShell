@@ -1,43 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_functions.c                                  :+:      :+:    :+:   */
+/*   env_functions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/20 14:38:20 by cfleuret         ###   ########.fr       */
+/*   Created: 2025/03/11 15:25:22 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/03/19 15:02:33 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*ft_new_token(char *content)
+t_env	*ft_new_stack(char *t)
 {
-	t_token	*c;
+	t_env	*c;
 
 	c = malloc(sizeof(*c));
 	if (c == NULL)
 		return (NULL);
-	c->str = malloc(sizeof(char *) * 2);
-	if (!c->str)
-		return (NULL);
-	c->str[0] = ft_strdup(content);
-	if (!c->str[0])
-	{
-		free(c->str);
-		return (NULL);
-	}
-	c->str[1] = NULL;
+	c->str = ft_strdup(t);
 	c->next = c;
 	c->prev = c;
-	c->type = -1;
 	return (c);
 }
 
-void	ft_add_token(t_token **s, t_token *new)
+void	ft_add_stack(t_env **s, t_env *new)
 {
-	t_token	*p;
+	t_env	*p;
 
 	if (new == NULL || s == NULL)
 		return ;
@@ -55,10 +45,10 @@ void	ft_add_token(t_token **s, t_token *new)
 	(*s)->prev = new;
 }
 
-void	delfirst(t_token **s)
+void	delfirst_stack(t_env **s)
 {
-	t_token	*p;
-	t_token	*t;
+	t_env	*p;
+	t_env	*t;
 
 	if (!s || !*s)
 		return ;
@@ -76,31 +66,3 @@ void	delfirst(t_token **s)
 	free(t);
 }
 
-int	add_param(t_shell *data, int i, char **str)
-{
-	t_token	*t;
-	int		j;
-
-	j = -1;
-	t = data->token;
-	while (j++ < i - 1)
-		t = t->next;
-	if (t->type == 1)
-	{
-		while (strncmp(str[j], "-", 1) == 0)
-			j++;
-		free_str(t->str);
-		t->str = malloc(sizeof(char *) * (j + 1));
-		t->str[0] = ft_strdup(str[i - 1]);
-		j = 1;
-		while (strncmp(str[i], "-", 1) == 0)
-		{
-			t->str[j] = ft_strdup(str[i]);
-			j++;
-			i++;
-		}
-		printf("2\n");
-		t->str[j] = NULL;
-	}
-	return (i);
-}
