@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/21 09:57:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:23:01 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,8 @@ static void	init_list_tok(t_shell *data, char **str)
 	i = 1;
 	while (str[i])
 	{
-		if (strncmp(str[i], "-", 1) == 0 && i != 0)
-			i = add_param(data, i, str);
-		else
-		{
-			ft_add_token(&data->token, ft_new_token(str[i]));
-			i++;
-		}
+		ft_add_token(&data->token, ft_new_token(str[i]));
+		i++;
 	}
 }
 
@@ -64,6 +59,24 @@ static void	set_token_type(t_shell *data, int type)
 		t->type = 3;
 }
 
+static void	full_cmd(t_shell *data, char **str)
+{
+	int		i;
+	t_token	*t;
+
+	t = data->token;
+	i = 0;
+	while (str[i])
+	{
+		if (t->type == 1)
+			add_param(data, i, str);
+		else if (t->type != 2)
+			delfirst(t);
+		i++;
+		t = t->next;
+	}
+}
+
 int	init_tokens(t_shell *data, char *line)
 {
 	int		i;
@@ -77,17 +90,16 @@ int	init_tokens(t_shell *data, char *line)
 	init_list_tok(data, str);
 	while (str[i])
 	{
-		if (str[i][0] != '-')
-		{
-			path = find_path(str[i], data->env);
-			if (is_builtin(str[i]) == true)
-				set_token_type(data, 1);
-			else if (!path)
-				set_token_type(data, 2);
-			else
-				set_token_type(data, 1);
-		}
+		path = find_path(str[i], data->env);
+		if (is_builtin(str[i]) == true)
+			set_token_type(data, 1);
+		else if (!path)
+			set_token_type(data, 2);
+		else
+			set_token_type(data, 1);
 		i++;
 	}
+	full_cmd(data, str);
+	free_str(str);
 	return (0);
 }

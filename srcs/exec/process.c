@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/20 17:04:42 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/21 11:29:51 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ static int	exec_abs(char **cmd, t_env *env)
 	return (0);
 }
 
+// static void	parent_process(t_shell *data, t_token *cmd)
+// {
+// 	dup2(data->fd[0], STDIN_FILENO);
+// 	exec_abs(cmd->str, data->env);
+// 	exit(EXIT_FAILURE);
+// }
+
 static void	exec_built(t_shell *data, t_token *cmd)
 {
 	if (!cmd || !cmd->str)
@@ -50,8 +57,8 @@ static void	exec_built(t_shell *data, t_token *cmd)
 		ft_echo(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "export", 7) == 0)
 		ft_export(cmd->str[0]);
-//	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
-//		ft_unset(cmd->next->str);
+	// else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
+	// 	ft_unset(cmd->next->str);
 }
 
 static int	builtin(t_shell *data, t_token *cmd)
@@ -71,6 +78,8 @@ static int	builtin(t_shell *data, t_token *cmd)
 
 int	proc(t_shell *data)
 {
+	pid_t	pid;
+
 	if (data->token->type == 0)
 	{
 		printf("command not found : %s\n", data->token->str[0]);
@@ -83,8 +92,13 @@ int	proc(t_shell *data)
 	}
 	if (builtin(data, data->token) == 1)
 	{
-		exec_abs(data->token->str, data->env);
-		printf("temp\n");
+		pid = fork();
+		if (pid < 0)
+			return (dprintf(2, "fork: Resource unavailable"), 1);
+		if (pid == 0)
+			exec_abs(data->token->str, data->env);
+		else
+			waitpid(pid, NULL, 0);
 	}
 	return (0);
 }

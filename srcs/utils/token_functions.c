@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/20 16:14:15 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:23:14 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	delfirst(t_token **s)
 	free(t);
 }
 
-int	add_param(t_shell *data, int i, char **str)
+void	add_param(t_shell *data, int i, char **str)
 {
 	t_token	*t;
 	int		j;
@@ -85,18 +85,20 @@ int	add_param(t_shell *data, int i, char **str)
 	t = data->token;
 	while (j++ < i - 1)
 		t = t->next;
-	while (str[j] && str[j][0] == '-')
+	while (t->next->type == 0)
+	{
 		j++;
+		t = t->next;
+	}
 	free_str(t->str);
 	t->str = malloc(sizeof(char *) * (j + 1));
 	t->str[0] = ft_strdup(str[i - 1]);
 	j = 1;
-	while (str[j] && str[j][0] == '-')
+	while (str[j])
 	{
 		t->str[j] = ft_strdup(str[i]);
 		j++;
 		i++;
 	}
 	t->str[j] = NULL;
-	return (i);
 }
