@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:37:50 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/19 16:10:11 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:59:20 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,12 @@ static char	**collect_path(t_env *env)
 	return (paths);
 }
 
-char	*find_path(char *cmd, t_env *env, int i)
+char	*find_path(char *cmd, t_env *env)
 {
 	char	**paths;
 	char	*path;
 	char	*part_path;
+	int		i;
 
 	i = 0;
 	paths = collect_path(env);
