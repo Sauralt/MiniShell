@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/20 14:23:39 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/21 11:21:13 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strncmp(line, "\0", 2) != 0)
 			proc(data);
 		test = data->token;
-		while (test && test->next != data->token)
-		{
-			printf("%s\n", test->str[1]);
-			test = test->next;
-		}
-		if (test)
-			printf("%s\n", test->str[1]);
+		// while (test && test->next != data->token)
+		// {
+		// 	printf("%s\n", test->str[1]);
+		// 	test = test->next;
+		// }
+		// if (test)
+		// 	printf("%s\n", test->str[1]);
 		free_all(data, line);
 	}
 	free_all(data, line);

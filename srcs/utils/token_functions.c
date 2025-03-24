@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/20 14:38:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/24 15:25:56 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,31 +76,28 @@ void	delfirst(t_token **s)
 	free(t);
 }
 
-int	add_param(t_shell *data, int i, char **str)
+void	add_param(t_shell *data, int i, char **str)
 {
 	t_token	*t;
+	t_token	*u;
 	int		j;
+	int		count;
 
 	j = -1;
 	t = data->token;
 	while (j++ < i - 1)
 		t = t->next;
-	if (t->type == 1)
+	u = t;
+	count = 1;
+	while (u->next->type == 4)
 	{
-		while (strncmp(str[j], "-", 1) == 0)
-			j++;
-		free_str(t->str);
-		t->str = malloc(sizeof(char *) * (j + 1));
-		t->str[0] = ft_strdup(str[i - 1]);
-		j = 1;
-		while (strncmp(str[i], "-", 1) == 0)
-		{
-			t->str[j] = ft_strdup(str[i]);
-			j++;
-			i++;
-		}
-		printf("2\n");
-		t->str[j] = NULL;
+		count++;
+		u = u->next;
 	}
-	return (i);
+	free_str(t->str);
+	t->str = malloc(sizeof(char) * (count + 1));
+	j = 0;
+	while (j < count)
+		t->str[j++] = ft_strdup(str[i++]);
+	t->str[j] = NULL;
 }
