@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/21 11:29:51 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/24 13:57:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	proc(t_shell *data)
 {
 	pid_t	pid;
 
-	if (data->token->type == 0)
+	if (data->token->type == 0 || data->token->type == 4)
 	{
 		printf("command not found : %s\n", data->token->str[0]);
 		return (0);

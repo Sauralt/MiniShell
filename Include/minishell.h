@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/21 10:55:11 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/24 15:04:28 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	ft_add_stack(t_env **s, t_env *new);
 t_env	*ft_new_stack(char *t);
 void	init_env(t_shell *data, char **env);
 char	**make_env_str(t_env *env);
-int		add_param(t_shell *data, int i, char **str);
+void	add_param(t_shell *data, int i, char **str);
+void	delone(t_shell *data, t_token *t);
 
 #endif

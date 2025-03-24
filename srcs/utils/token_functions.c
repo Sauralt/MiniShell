@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/21 12:23:14 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:53:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,29 +76,55 @@ void	delfirst(t_token **s)
 	free(t);
 }
 
+void	delone(t_shell *data, t_token *t)
+{
+	if (!data || !data->token || !t)
+		return ;
+	if (t->next == t)
+	{
+		free(t);
+		data->token = NULL;
+		return ;
+	}
+	t->prev->next = t->next;
+	t->next->prev = t->prev;
+	if (data->token == t)
+		data->token = t->next;
+
+	free(t);
+}
+
 void	add_param(t_shell *data, int i, char **str)
 {
 	t_token	*t;
+	t_token	*u;
 	int		j;
+	int		count;
 
 	j = -1;
 	t = data->token;
-	while (j++ < i - 1)
+	while (j++ < i)
 		t = t->next;
-	while (t->next->type == 0)
+	u = t;
+	count = 1;
+	while (u != data->token && u->next->type != 2)
 	{
-		j++;
-		t = t->next;
+		count++;
+		u = u->next;
 	}
 	free_str(t->str);
-	t->str = malloc(sizeof(char *) * (j + 1));
-	t->str[0] = ft_strdup(str[i - 1]);
-	j = 1;
-	while (str[j])
+	t->str = malloc(sizeof(char *) * (count + 1));
+	j = -1;
+	while (j++ < count - 1)
 	{
 		t->str[j] = ft_strdup(str[i]);
-		j++;
 		i++;
 	}
 	t->str[j] = NULL;
+	i = 0;
+	while (t->str[i])
+	{
+		printf("%s\n", t->str[i]);
+		i++;
+	}
 }

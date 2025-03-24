@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:13:26 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/21 12:04:28 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/24 14:15:30 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	ft_echo(t_shell *data, t_token *str)
 		printf("%s ", path->next->str[0]);
 		path = path->next;
 	}
-	if (strcmp(str->str[1], "-n") != 0)
-		printf("\n");
+	// if (str->str[1] && strcmp(str->str[1], "-n") == 0)
+	// 	return (0);
+	printf("\n");
 	return (0);
 }

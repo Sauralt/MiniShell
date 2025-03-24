@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/21 12:23:01 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:02:15 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static void	set_token_type(t_shell *data, int type)
 	{
 		if (meta_char(t->str[0]) == 1)
 			t->type = 0;
+		if (ft_strncmp(t->str[0], "-", 1) == 0)
+			t->type = 4;
 		else
 			t->type = 2;
 	}
@@ -63,15 +65,23 @@ static void	full_cmd(t_shell *data, char **str)
 {
 	int		i;
 	t_token	*t;
+	//t_token	*u;
 
 	t = data->token;
 	i = 0;
 	while (str[i])
 	{
 		if (t->type == 1)
+		{
 			add_param(data, i, str);
-		else if (t->type != 2)
-			delfirst(t);
+			// while (data->token != t || t->type == 2)
+			// {
+			// 	i++;
+			// 	u = t->next;
+			// 	delone(data, t);
+			// 	t = u;
+			// }
+		}
 		i++;
 		t = t->next;
 	}
