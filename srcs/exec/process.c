@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/24 13:57:21 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:15:05 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,6 @@ static int	exec_abs(char **cmd, t_env *env)
 	free_str(envp);
 	return (0);
 }
-
-// static void	parent_process(t_shell *data, t_token *cmd)
-// {
-// 	dup2(data->fd[0], STDIN_FILENO);
-// 	exec_abs(cmd->str, data->env);
-// 	exit(EXIT_FAILURE);
-// }
 
 static void	exec_built(t_shell *data, t_token *cmd)
 {

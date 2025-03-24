@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/24 17:02:15 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/24 18:43:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,26 +64,34 @@ static void	set_token_type(t_shell *data, int type)
 static void	full_cmd(t_shell *data, char **str)
 {
 	int		i;
+	int		j;
 	t_token	*t;
-	//t_token	*u;
 
 	t = data->token;
 	i = 0;
 	while (str[i])
 	{
-		if (t->type == 1)
+		printf("%d\n", t->type);
+		j = 0;
+		if (t->next != t)
 		{
-			add_param(data, i, str);
-			// while (data->token != t || t->type == 2)
-			// {
-			// 	i++;
-			// 	u = t->next;
-			// 	delone(data, t);
-			// 	t = u;
-			// }
+			if (t->type == 1)
+			{
+				t = add_param(data, i, str);
+				i++;
+				j = 0;
+				while (t->str[j])
+				{
+					printf("%s\n", t->str[j]);
+					//printf("%s\n", str[i]);
+					if (strcmp(t->str[j], str[i]) == 0)
+						i++;
+					j++;
+				}
+			}
 		}
-		i++;
 		t = t->next;
+		i++;
 	}
 }
 

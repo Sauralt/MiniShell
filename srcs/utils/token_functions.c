@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/24 16:53:46 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/24 18:18:06 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	delone(t_shell *data, t_token *t)
 	free(t);
 }
 
-void	add_param(t_shell *data, int i, char **str)
+t_token	*add_param(t_shell *data, int i, char **str)
 {
 	t_token	*t;
 	t_token	*u;
@@ -121,10 +121,11 @@ void	add_param(t_shell *data, int i, char **str)
 		i++;
 	}
 	t->str[j] = NULL;
-	i = 0;
-	while (t->str[i])
-	{
-		printf("%s\n", t->str[i]);
-		i++;
-	}
+	// i = 0;
+	// while (t->str[i])
+	// {
+	// 	printf("%s\n", t->str[i]);
+	// 	i++;
+	// }
+	return (t);
 }
