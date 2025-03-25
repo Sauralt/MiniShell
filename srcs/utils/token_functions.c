@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/25 16:51:23 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/25 17:30:20 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ t_token	*add_param(t_shell *data, int i, char **str)
 		t = t->next;
 		j++;
 	}
+	if (str[i + 1] == NULL)
+		return (t);
 	u = t;
 	count = 1;
 	while (u != data->token->prev && u->next->type != 2)
@@ -121,7 +123,7 @@ t_token	*add_param(t_shell *data, int i, char **str)
 	free_str(t->str);
 	t->str = malloc(sizeof(char *) * (count + 1));
 	j = 0;
-	while (j < count)
+	while (j < count && str[i] != NULL)
 	{
 		t->str[j] = ft_strdup(str[i]);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/25 16:58:30 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/25 17:25:02 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,9 @@ static void	full_cmd(t_shell *data, char **str)
 		if (t->next != t)
 		{
 			if (t->type == 1)
-			{
 				t = add_param(data, i, str);
-				t = t->next;
-				i++;
-			}
-			else if (t->type != 2 && t != data->token)
-			{
-				printf("%s\n", str[i]);
+			else if (t->prev->type != 2 && t != data->token)
 				delone(data, str[i]);
-			}
 		}
 		t = t->next;
 		i++;
