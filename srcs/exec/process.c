@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/24 17:15:05 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:20:17 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	proc(t_shell *data)
 	{
 		pid = fork();
 		if (pid < 0)
-			return (dprintf(2, "fork: Resource unavailable"), 1);
+			return (printf("fork: Resource unavailable"), 1);
 		if (pid == 0)
 			exec_abs(data->token->str, data->env);
 		else

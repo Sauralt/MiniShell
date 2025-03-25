@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/24 18:43:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:58:30 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ static void	set_token_type(t_shell *data, int type)
 	{
 		if (meta_char(t->str[0]) == 1)
 			t->type = 0;
-		if (ft_strncmp(t->str[0], "-", 1) == 0)
-			t->type = 4;
 		else
 			t->type = 2;
 	}
@@ -71,28 +69,27 @@ static void	full_cmd(t_shell *data, char **str)
 	i = 0;
 	while (str[i])
 	{
-		printf("%d\n", t->type);
 		j = 0;
 		if (t->next != t)
 		{
 			if (t->type == 1)
 			{
 				t = add_param(data, i, str);
+				t = t->next;
 				i++;
-				j = 0;
-				while (t->str[j])
-				{
-					printf("%s\n", t->str[j]);
-					//printf("%s\n", str[i]);
-					if (strcmp(t->str[j], str[i]) == 0)
-						i++;
-					j++;
-				}
+			}
+			else if (t->type != 2 && t != data->token)
+			{
+				printf("%s\n", str[i]);
+				delone(data, str[i]);
 			}
 		}
 		t = t->next;
 		i++;
 	}
+	printf("%s\n", data->token->str[0]);
+	printf("%s\n", data->token->next->str[0]);
+	printf("%s\n", data->token->next->next->str[0]);
 }
 
 int	init_tokens(t_shell *data, char *line)

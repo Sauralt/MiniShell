@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/24 18:18:06 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:51:23 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	delfirst(t_token **s)
 		return ;
 	if ((*s)->next == *s)
 	{
+		free_str((*s)->str);
 		free(*s);
 		*s = NULL;
 		return ;
@@ -73,24 +74,26 @@ void	delfirst(t_token **s)
 	(*s)->next->prev = p;
 	t = *s;
 	*s = (*s)->next;
+	free_str(t->str);
 	free(t);
 }
 
-void	delone(t_shell *data, t_token *t)
+void	delone(t_shell *data, char *str)
 {
+	t_token	*t;
+
+	t = data->token;
 	if (!data || !data->token || !t)
 		return ;
-	if (t->next == t)
+	while (strcmp(t->str[0], str) != 0)
 	{
-		free(t);
-		data->token = NULL;
-		return ;
+		t = t->next;
+		if (t == data->token)
+			return ;
 	}
 	t->prev->next = t->next;
 	t->next->prev = t->prev;
-	if (data->token == t)
-		data->token = t->next;
-
+	free_str(t->str);
 	free(t);
 }
 
@@ -101,28 +104,32 @@ t_token	*add_param(t_shell *data, int i, char **str)
 	int		j;
 	int		count;
 
-	j = -1;
+	j = 0;
 	t = data->token;
-	while (j++ < i)
+	while (j < i)
+	{
 		t = t->next;
+		j++;
+	}
 	u = t;
 	count = 1;
-	while (u != data->token && u->next->type != 2)
+	while (u != data->token->prev && u->next->type != 2)
 	{
 		count++;
 		u = u->next;
 	}
 	free_str(t->str);
 	t->str = malloc(sizeof(char *) * (count + 1));
-	j = -1;
-	while (j++ < count - 1)
+	j = 0;
+	while (j < count)
 	{
 		t->str[j] = ft_strdup(str[i]);
 		i++;
+		j++;
 	}
 	t->str[j] = NULL;
 	// i = 0;
-	// while (t->str[i])
+	// while (str[i])
 	// {
 	// 	printf("%s\n", t->str[i]);
 	// 	i++;
