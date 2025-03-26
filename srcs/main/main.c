@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 14:28:50 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:10:59 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	main(int argc, char **argv, char **env)
 		// 	printf("%s\n", test->str[1]);
 		free_all(data, line);
 	}
+	free_env(data->env);
 	free_all(data, line);
 	free_env(data->env);
 	rl_clear_history();

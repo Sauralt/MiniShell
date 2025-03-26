@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:13:26 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/26 14:32:42 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:57:09 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ static int	echo_dollar(t_shell *data, char *str)
 
 int	ft_echo(t_shell *data, t_token *str)
 {
-	t_token		*path;
-	int			printed;
+	t_token	*path;
+	int		printed;
 
 	printed = 0;
 	path = str->next;
