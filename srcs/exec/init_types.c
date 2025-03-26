@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 11:26:08 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:16:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ static void	full_cmd(t_shell *data, char **str)
 				t = add_param(data, i, str);
 			// else if (t->type == 0 && t->next->type == 2)
 			// 	heredoc(data, str);
-			// else if (t->type == 2)
-			// 	check_meta_char(data, str);
-			if (t->prev->type != 1 && t != data->token)
+			else if (t->type == 2)
+				check_meta_char(data, i);
+			if (t->prev->type != 1 && t->prev->type != 2 && t != data->token)
 				delone(data, str[i]);
 		}
 		t = t->next;

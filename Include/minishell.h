@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/25 14:40:53 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:16:12 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ typedef struct s_token
 {
 	int				type;
 	char			**str;
+	int				infile;
+	int				outfile;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -73,5 +75,6 @@ void	init_env(t_shell *data, char **env);
 char	**make_env_str(t_env *env);
 t_token	*add_param(t_shell *data, int i, char **str);
 void	delone(t_shell *data, char *str);
+void	check_meta_char(t_shell *data, int i);
 
 #endif

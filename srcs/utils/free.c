@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/19 14:56:14 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:28:44 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ void	free_tokens(t_token *t)
 {
 	while (t)
 	{
+		if (t->infile)
+			close(t->infile);
+		if (t->outfile)
+			close(t->outfile);
 		delfirst(&t);
 	}
 }
