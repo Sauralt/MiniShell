@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/25 17:30:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 11:13:03 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,5 @@ t_token	*add_param(t_shell *data, int i, char **str)
 		j++;
 	}
 	t->str[j] = NULL;
-	// i = 0;
-	// while (str[i])
-	// {
-	// 	printf("%s\n", t->str[i]);
-	// 	i++;
-	// }
 	return (t);
 }
