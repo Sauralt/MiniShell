@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 14:23:24 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:16:01 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ static void	exec_built(t_shell *data, t_token *cmd)
 	else if (ft_strncmp(cmd->str[0], "echo", 5) == 0)
 		ft_echo(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "export", 7) == 0)
-		ft_export(data, cmd->next->str[0]);
+		ft_export(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
-		ft_unset(data, cmd->next->str[0]);
+		ft_unset(data, cmd);
 }
 
 static int	builtin(t_shell *data, t_token *cmd)
@@ -80,7 +80,6 @@ int	proc(t_shell *data)
 {
 	pid_t	pid;
 
-	printf("%s\n", data->token->str[0]);
 	if (data->token->type == 0)
 	{
 		printf("command not found : %s\n", data->token->str[0]);

@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:58 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/26 13:57:26 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:19:58 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,22 @@ void	remove_env_node(t_shell *data, const char *key)
 	}
 }
 
-int	ft_unset(t_shell *data, char *cmd)
+int	ft_unset(t_shell *data, t_token *str)
 {
-	if (!data || !data->env || !cmd)
-		return (1);
-	if (ft_strchr(cmd, '='))
+	int		i;
+
+	i = 0;
+	while (str->str[i])
 	{
-		fprintf(stderr, "unset: `%s': not a valid identifier\n", cmd);
-		return (data->exit_code = 1);
+		if (!data || !data->env || !str->str[i])
+			return (1);
+		if (ft_strchr(str->str[i], '='))
+		{
+			printf("unset: `%s': not a valid identifier\n", str->str[i]);
+			return (data->exit_code = 1);
+		}
+		remove_env_node(data, str->str[i]);
+		i++;
 	}
-	remove_env_node(data, cmd);
 	return (data->exit_code = 0);
 }

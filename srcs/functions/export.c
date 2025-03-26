@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/26 13:57:16 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:19:59 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,14 @@ t_env	*find_env(t_env *env, const char *key)
 		return (NULL);
 	len = ft_strlen(key);
 	start = env;
-	do {
+	while (env)
+	{
 		if (ft_strncmp(env->str, key, len) == 0 && env->str[len] == '=')
 			return (env);
 		env = env->next;
-	} while (env != start);
+		if (env == start)
+			break ;
+	}
 	return (NULL);
 }
 
@@ -53,10 +56,13 @@ void	print_env(t_env *env)
 	if (!env)
 		return ;
 	start = env;
-	do {
+	while (env)
+	{
 		printf("declare -x %s\n", env->str);
 		env = env->next;
-	} while (env != start);
+		if (env == start)
+			break ;
+	}
 }
 
 void	add_or_replace_env(t_shell *data, char *key, char *value)
@@ -79,25 +85,28 @@ void	add_or_replace_env(t_shell *data, char *key, char *value)
 	}
 }
 
-
-int	ft_export(t_shell *data, char *arg)
+int	ft_export(t_shell *data, t_token *str)
 {
 	char	*key;
 	char	*value;
 	char	*delim;
+	int		i;
 
-	if (ft_strncmp(arg, "export", 7) == 0)
-		return (print_env(data->env), 0);
-
-	delim = ft_strchr(arg, '=');
-	if (!delim || delim == arg)
-		return (fprintf(stderr, "export: invalid identifier\n"), 1);
-	key = strndup(arg, delim - arg);
-	value = ft_strdup(delim + 1);
-	if (!key || !value)
-		return (free(key), free(value), perror("malloc"), 1);
-	add_or_replace_env(data, key, value);
-
+	i = 1;
+	while (str->str[i])
+	{
+		if (ft_strncmp(str->str[i], "export", 7) == 0)
+			return (print_env(data->env), 0);
+		delim = ft_strchr(str->str[i], '=');
+		if (!delim || delim == str->str[i])
+			return (fprintf(stderr, "export: invalid identifier\n"), 1);
+		key = strndup(str->str[i], delim - str->str[i]);
+		value = ft_strdup(delim + 1);
+		if (!key || !value)
+			return (free(key), free(value), perror("malloc"), 1);
+		add_or_replace_env(data, key, value);
+		i++;
+	}
 	free(key);
 	free(value);
 	return (0);
