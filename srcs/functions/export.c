@@ -6,101 +6,95 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/19 14:20:52 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 11:38:04 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-void	print_env(void)
+char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
 {
-	extern char	**environ;
-	int			i;
+	char	*result;
+	size_t	len;
 
-	i = 0;
-	while (environ[i])
+	if (!s1 || !s2 || !s3)
+		return (NULL);
+	len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1;
+	result = malloc(len);
+	if (!result)
+		return (NULL);
+	ft_strlcpy(result, s1, len);
+	ft_strlcat(result, s2, len);
+	ft_strlcat(result, s3, len);
+	return (result);
+}
+
+void	print_env(t_env *env)
+{
+	while (env)
 	{
-		printf("declare -x %s\n", environ[i]);
-		i++;
+		printf("declare -x %s\n", env->str);
+		env = env->next;
 	}
 }
 
-
-int	ft_export(char *arg)
+t_env	*find_env(t_env *env, const char *key)
 {
-	char		*key;
-	char		*value;
-	char		*delim;
-	extern char	**environ;
-	int			env_count;
-	size_t 		len;
-	int			i;
-	char 		**new_env;
+	size_t	len;
 
 	len = ft_strlen(key);
-	env_count = 0;
-	delim = ft_strchr(arg, '=');
-	if (!delim || delim == arg)
+	while (env)
 	{
-		fprintf(stderr, "Erreur : Format attendu 'clé=valeur'\n");
-		return (1);
+		if (ft_strncmp(env->str, key, len) == 0 && env->str[len] == '=')
+			return (env);
+		env = env->next;
 	}
+	return (NULL);
+}
+
+void	add_or_replace_env(t_shell *data, char *key, char *value)
+{
+	char	*new_entry;
+	t_env	*existing;
+	t_env	*new;
+
+	new_entry = ft_strjoin3(key, "=", value);
+	if (!new_entry)
+		return ;
+	existing = find_env(data->env, key);
+	if (existing)
+	{
+		free(existing->str);
+		existing->str = new_entry;
+	}
+	else
+	{
+		new = malloc(sizeof(t_env));
+		if (!new)
+			return ;
+		new->str = new_entry;
+		new->next = data->env;
+		new->prev = NULL;
+		if (data->env)
+			data->env->prev = new;
+		data->env = new;
+	}
+}
+
+int	ft_export(t_shell *data, char *arg)
+{
+	char	*key;
+	char	*value;
+	char	*delim;
+
+	delim = ft_strchr(arg, '=');
+	if (!arg || !delim || delim == arg)
+		return (fprintf(stderr, "export: invalid identifier\n"), 1);
 	key = strndup(arg, delim - arg);
 	value = ft_strdup(delim + 1);
 	if (!key || !value)
-	{
-		perror("strdup");
-		return (1);
-	}
-	i = 0;
-	while (environ[i])
-	{
-		if (ft_strncmp(environ[i], key, len) == 0 && environ[i][len] == '=')
-		{
-			free(environ[i]);
-			environ[i] = malloc(ft_strlen(key) + ft_strlen(value) + 2);
-			if (!environ[i])
-			{
-				perror("malloc");
-				free(key);
-				free(value);
-				return (1);
-			}
-			sprintf(environ[i], "%s=%s", key, value);
-			free(key);
-			free(value);
-			return (0);
-		}
-		i++;
-	}
-	while (environ[env_count])
-		env_count++;
-	new_env = malloc((env_count + 2) * sizeof(char *));
-	if (!new_env)
-	{
-		perror("malloc");
-		free(key);
-		free(value);
-		return (1);
-	}
-	i = 0;
-	while (i < env_count)
-	{
-		new_env[i] = environ[i];
-		i++;
-	}
-	new_env[env_count] = malloc(ft_strlen(key) + ft_strlen(value) + 2);
-	if (!new_env[env_count])
-	{
-		perror("malloc");
-		free(key);
-		free(value);
-		free(new_env);
-		return (1);
-	}
-	sprintf(new_env[env_count], "%s=%s", key, value);
-	new_env[env_count + 1] = NULL;
-	environ = new_env;
+		return (free(key), free(value), perror("malloc"), 1);
+	add_or_replace_env(data, key, value);
 	free(key);
 	free(value);
 	return (0);
