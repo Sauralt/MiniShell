@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/20 14:18:22 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/25 14:40:53 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_token	*ft_new_token(char *content);
 void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	free_str(char **str);
-char	*find_path(char *cmd, t_env *envp, int i);
+char	*find_path(char *cmd, t_env *envp);
 int		init_stacks(t_shell *data);
 void	free_tokens(t_token *t);
 void	handle_sigint(int sig);
@@ -71,6 +71,7 @@ void	ft_add_stack(t_env **s, t_env *new);
 t_env	*ft_new_stack(char *t);
 void	init_env(t_shell *data, char **env);
 char	**make_env_str(t_env *env);
-int		add_param(t_shell *data, int i, char **str);
+t_token	*add_param(t_shell *data, int i, char **str);
+void	delone(t_shell *data, char *str);
 
 #endif

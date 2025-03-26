@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/20 14:20:48 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:20:17 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	exec_abs(char **cmd, t_env *env)
 
 	i = 0;
 	envp = make_env_str(env);
-	path = find_path(cmd[0], env, i);
+	path = find_path(cmd[0], env);
 	if (!path)
 	{
 		printf("%s: command not found\n", cmd[0]);
@@ -72,7 +72,9 @@ static int	builtin(t_shell *data, t_token *cmd)
 
 int	proc(t_shell *data)
 {
-	if (data->token->type == 0)
+	pid_t	pid;
+
+	if (data->token->type == 0 || data->token->type == 4)
 	{
 		printf("command not found : %s\n", data->token->str[0]);
 		return (0);
@@ -84,8 +86,13 @@ int	proc(t_shell *data)
 	}
 	if (builtin(data, data->token) == 1)
 	{
-		exec_abs(data->token->str, data->env);
-		printf("temp\n");
+		pid = fork();
+		if (pid < 0)
+			return (printf("fork: Resource unavailable"), 1);
+		if (pid == 0)
+			exec_abs(data->token->str, data->env);
+		else
+			waitpid(pid, NULL, 0);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/20 14:38:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 11:13:03 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	delfirst(t_token **s)
 		return ;
 	if ((*s)->next == *s)
 	{
+		free_str((*s)->str);
 		free(*s);
 		*s = NULL;
 		return ;
@@ -73,34 +74,61 @@ void	delfirst(t_token **s)
 	(*s)->next->prev = p;
 	t = *s;
 	*s = (*s)->next;
+	free_str(t->str);
 	free(t);
 }
 
-int	add_param(t_shell *data, int i, char **str)
+void	delone(t_shell *data, char *str)
 {
 	t_token	*t;
-	int		j;
 
-	j = -1;
 	t = data->token;
-	while (j++ < i - 1)
-		t = t->next;
-	if (t->type == 1)
+	if (!data || !data->token || !t)
+		return ;
+	while (strcmp(t->str[0], str) != 0)
 	{
-		while (strncmp(str[j], "-", 1) == 0)
-			j++;
-		free_str(t->str);
-		t->str = malloc(sizeof(char *) * (j + 1));
-		t->str[0] = ft_strdup(str[i - 1]);
-		j = 1;
-		while (strncmp(str[i], "-", 1) == 0)
-		{
-			t->str[j] = ft_strdup(str[i]);
-			j++;
-			i++;
-		}
-		printf("2\n");
-		t->str[j] = NULL;
+		t = t->next;
+		if (t == data->token)
+			return ;
 	}
-	return (i);
+	t->prev->next = t->next;
+	t->next->prev = t->prev;
+	free_str(t->str);
+	free(t);
+}
+
+t_token	*add_param(t_shell *data, int i, char **str)
+{
+	t_token	*t;
+	t_token	*u;
+	int		j;
+	int		count;
+
+	j = 0;
+	t = data->token;
+	while (j < i)
+	{
+		t = t->next;
+		j++;
+	}
+	if (str[i + 1] == NULL)
+		return (t);
+	u = t;
+	count = 1;
+	while (u != data->token->prev && u->next->type != 2)
+	{
+		count++;
+		u = u->next;
+	}
+	free_str(t->str);
+	t->str = malloc(sizeof(char *) * (count + 1));
+	j = 0;
+	while (j < count && str[i] != NULL)
+	{
+		t->str[j] = ft_strdup(str[i]);
+		i++;
+		j++;
+	}
+	t->str[j] = NULL;
+	return (t);
 }
