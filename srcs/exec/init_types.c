@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 15:06:25 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:58:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ static void	full_cmd(t_shell *data, char **str)
 		}
 		t = t->next;
 		i++;
-		t = t->next;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 14:10:50 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:33:13 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static void	exec_built(t_shell *data, t_token *cmd)
 {
 	if (!cmd || !cmd->str)
 		return ;
-
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
 		ft_pwd(data);
 	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)
