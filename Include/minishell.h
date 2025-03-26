@@ -6,13 +6,14 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 16:39:01 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:02:18 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "../libft/libft.h"
+# include "../ft_dprintf/ft_printf.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>

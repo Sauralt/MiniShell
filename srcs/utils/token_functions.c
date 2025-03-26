@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 16:38:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:47:16 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ t_token	*ft_new_token(char *content)
 		return (NULL);
 	}
 	c->str[1] = NULL;
-	c->infile = -1;
-	c->outfile = -1;
+	c->infile = 0;
+	c->outfile = 1;
 	c->type = -1;
 	c->next = c;
 	c->prev = c;

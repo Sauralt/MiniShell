@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 16:33:13 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:05:26 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static int	exec_abs(char **cmd, t_env *env)
 	path = find_path(cmd[0], env);
 	if (!path)
 	{
-		printf("%s: command not found\n", cmd[0]);
+		ft_dprintf(2, "%s: command not found\n", cmd[0]);
 		return (1);
 	}
 	if (execve(path, cmd, envp) == -1)
 	{
 		free(path);
-		printf("%s: command not found\n", cmd[0]);
+		ft_dprintf(2, "%s: command not found\n", cmd[0]);
 		return (1);
 	}
 	free(path);
@@ -93,7 +93,7 @@ int	proc(t_shell *data)
 	{
 		pid = fork();
 		if (pid < 0)
-			return (dprintf(2, "fork: Resource unavailable"), 1);
+			return (ft_dprintf(2, "fork: Resource unavailable"), 1);
 		if (pid == 0)
 			exec_abs(data->token->str, data->env);
 		else
