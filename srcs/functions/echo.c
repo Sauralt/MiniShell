@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:13:26 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/26 11:37:19 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:57:09 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,24 @@ static int	echo_dollar(t_shell *data, char *str)
 {
 	t_env	*env;
 	char	*tmp;
-	int		i;
+	t_env	*start;
 
-	i = 0;
 	env = data->env;
-	while (env->next != data->env)
+	if (!env)
+		return (0);
+	start = env;
+	while (env)
 	{
 		if (ft_strncmp(env->str, str + 1, ft_strlen(str + 1)) == 0)
 		{
 			tmp = ft_strchr(env->str, '=');
-			printf("%s ", tmp + 1);
-			return (0);
+			if (tmp && *(tmp + 1))
+				printf(" %s", tmp + 1);
+			return (1);
 		}
 		env = env->next;
+		if (env == start)
+			break ;
 	}
 	return (0);
 }
@@ -36,17 +41,21 @@ static int	echo_dollar(t_shell *data, char *str)
 int	ft_echo(t_shell *data, t_token *str)
 {
 	t_token	*path;
+	int		printed;
 
-	path = str;
-	while (path->next != str)
+	printed = 0;
+	path = str->next;
+	while (path != str)
 	{
-		if (path->next->type == 3 && path->next->str[0][1] != '\0')
+		if (path->type == 3 && path->str[0][1] != '\0')
+			printed += echo_dollar(data, path->str[0]);
+		else
 		{
-			echo_dollar(data, path->next->str[0]);
-			printf("\n");
-			return (0);
+			if (printed)
+				printf(" ");
+			printf("%s", path->str[0]);
+			printed = 1;
 		}
-		printf("%s ", path->next->str[0]);
 		path = path->next;
 	}
 	printf("\n");

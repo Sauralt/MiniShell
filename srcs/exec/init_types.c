@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 11:26:08 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:56:40 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static void	set_token_type(t_shell *data, int type)
 	{
 		if (meta_char(t->str[0]) == 1)
 			t->type = 0;
+		if (ft_strncmp(t->str[0], "-", 1) == 0)
+			t->type = 4;
 		else
 			t->type = 2;
 	}
@@ -62,27 +64,16 @@ static void	set_token_type(t_shell *data, int type)
 static void	full_cmd(t_shell *data, char **str)
 {
 	int		i;
-	int		j;
 	t_token	*t;
 
 	t = data->token;
 	i = 0;
 	while (str[i])
 	{
-		j = 0;
-		if (t->next != t)
-		{
-			if (t->type == 1)
-				t = add_param(data, i, str);
-			// else if (t->type == 0 && t->next->type == 2)
-			// 	heredoc(data, str);
-			// else if (t->type == 2)
-			// 	check_meta_char(data, str);
-			if (t->prev->type != 1 && t != data->token)
-				delone(data, str[i]);
-		}
-		t = t->next;
+		if (t->type == 1)
+			add_param(data, i, str);
 		i++;
+		t = t->next;
 	}
 }
 

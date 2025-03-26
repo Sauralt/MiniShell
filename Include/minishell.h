@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/25 14:40:53 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:56:09 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,16 @@
 
 # define BUFFER_SIZE 1024
 # define PATH_SIZE 1024
+
+// typedef struct s_stack
+// {
+// 	char				*str;
+// 	int					infile;
+// 	int					outfile;
+// 	int					id;
+// 	struct s_stack		*prev;
+// 	struct s_stack		*next;
+// }						t_stack;
 
 typedef struct s_token
 {
@@ -60,8 +70,8 @@ void	ft_cd(t_shell *data, char *path);
 int		ft_pwd(t_shell *data);
 int		ft_env(t_shell *data);
 int		ft_echo(t_shell *data, t_token *str);
-int		ft_export(t_shell *data, char *arg);
 int		ft_unset(t_shell *data, char *cmd);
+int		ft_export(t_shell *data, char *arg);
 void	free_all(t_shell *data, char *line);
 void	free_env(t_env *env);
 int		proc(t_shell *data);
@@ -71,7 +81,6 @@ void	ft_add_stack(t_env **s, t_env *new);
 t_env	*ft_new_stack(char *t);
 void	init_env(t_shell *data, char **env);
 char	**make_env_str(t_env *env);
-t_token	*add_param(t_shell *data, int i, char **str);
-void	delone(t_shell *data, char *str);
+void	add_param(t_shell *data, int i, char **str);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/25 16:20:17 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 13:56:59 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ static int	exec_abs(char **cmd, t_env *env)
 {
 	char	*path;
 	char	**envp;
-	int		i;
 
-	i = 0;
 	envp = make_env_str(env);
 	path = find_path(cmd[0], env);
 	if (!path)
@@ -37,10 +35,18 @@ static int	exec_abs(char **cmd, t_env *env)
 	return (0);
 }
 
+// static void	parent_process(t_shell *data, t_token *cmd)
+// {
+// 	dup2(data->fd[0], STDIN_FILENO);
+// 	exec_abs(cmd->str, data->env);
+// 	exit(EXIT_FAILURE);
+// }
+
 static void	exec_built(t_shell *data, t_token *cmd)
 {
 	if (!cmd || !cmd->str)
 		return ;
+
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
 		ft_pwd(data);
 	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)
@@ -88,7 +94,7 @@ int	proc(t_shell *data)
 	{
 		pid = fork();
 		if (pid < 0)
-			return (printf("fork: Resource unavailable"), 1);
+			return (dprintf(2, "fork: Resource unavailable"), 1);
 		if (pid == 0)
 			exec_abs(data->token->str, data->env);
 		else
