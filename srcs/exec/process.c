@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/24 16:27:10 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/25 15:41:58 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ static void	exec_built(t_shell *data, t_token *cmd)
 		ft_cd(data, cmd->next->str[0]);
 	else if (ft_strncmp(cmd->str[0], "echo", 5) == 0)
 		ft_echo(data, cmd);
-//	else if (ft_strncmp(cmd->str[0], "export", 7) == 0)
-//		ft_export(cmd->str[0]);
-	// else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
-	// 	ft_unset(cmd->next->str);
+	else if (ft_strncmp(cmd->str[0], "export", 7) == 0)
+		ft_export(data, cmd->next->str[0]);
+	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
+		ft_unset(data, cmd->next->str[0]);
 }
 
 static int	builtin(t_shell *data, t_token *cmd)

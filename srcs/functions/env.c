@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:16:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/19 16:08:04 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/25 14:51:11 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	ft_env(t_shell *data)
 	t_env	*t;
 
 	t = data->env->next;
-	printf("%s\n", data->env->str);
 	while (t != data->env)
 	{
 		printf("%s\n", t->str);

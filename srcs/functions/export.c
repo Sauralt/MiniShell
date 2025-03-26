@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/24 15:20:39 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/25 15:47:04 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,34 +29,40 @@ char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
 	return (result);
 }
 
-void	print_env(t_env *env)
-{
-	while (env)
-	{
-		printf("declare -x %s\n", env->str);
-		env = env->next;
-	}
-}
-
 t_env	*find_env(t_env *env, const char *key)
 {
 	size_t	len;
+	t_env	*start;
 
+	if (!env)
+		return (NULL);
 	len = ft_strlen(key);
-	while (env)
-	{
+	start = env;
+	do {
 		if (ft_strncmp(env->str, key, len) == 0 && env->str[len] == '=')
 			return (env);
 		env = env->next;
-	}
+	} while (env != start);
 	return (NULL);
+}
+
+void	print_env(t_env *env)
+{
+	t_env	*start;
+
+	if (!env)
+		return ;
+	start = env;
+	do {
+		printf("declare -x %s\n", env->str);
+		env = env->next;
+	} while (env != start);
 }
 
 void	add_or_replace_env(t_shell *data, char *key, char *value)
 {
 	char	*new_entry;
 	t_env	*existing;
-	t_env	*new;
 
 	new_entry = ft_strjoin3(key, "=", value);
 	if (!new_entry)
@@ -69,17 +75,10 @@ void	add_or_replace_env(t_shell *data, char *key, char *value)
 	}
 	else
 	{
-		new = malloc(sizeof(t_env));
-		if (!new)
-			return ;
-		new->str = new_entry;
-		new->next = data->env;
-		new->prev = NULL;
-		if (data->env)
-			data->env->prev = new;
-		data->env = new;
+		ft_add_stack(&data->env, ft_new_stack(new_entry));
 	}
 }
+
 
 int	ft_export(t_shell *data, char *arg)
 {
@@ -87,14 +86,18 @@ int	ft_export(t_shell *data, char *arg)
 	char	*value;
 	char	*delim;
 
+	if (ft_strncmp(arg, "export", 7) == 0)
+		return (print_env(data->env), 0);
+
 	delim = ft_strchr(arg, '=');
-	if (!arg || !delim || delim == arg)
+	if (!delim || delim == arg)
 		return (fprintf(stderr, "export: invalid identifier\n"), 1);
 	key = strndup(arg, delim - arg);
 	value = ft_strdup(delim + 1);
 	if (!key || !value)
 		return (free(key), free(value), perror("malloc"), 1);
 	add_or_replace_env(data, key, value);
+
 	free(key);
 	free(value);
 	return (0);
