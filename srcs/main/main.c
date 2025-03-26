@@ -58,6 +58,7 @@ int	main(int argc, char **argv, char **env)
 	}
 	free_env(data->env);
 	free_all(data, line);
+	free_env(data->env);
 	rl_clear_history();
 	return (0);
 }
