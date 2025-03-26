@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 14:14:10 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:07:41 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ static void	set_token_type(t_shell *data, int type)
 	{
 		if (meta_char(t->str[0]) == 1)
 			t->type = 0;
-		if (ft_strncmp(t->str[0], "-", 1) == 0)
-			t->type = 4;
 		else
 			t->type = 2;
 	}
