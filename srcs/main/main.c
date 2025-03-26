@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 12:15:06 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:28:50 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,12 @@ void	handle_sigint(int sig)
 	printf("\nMinishell> ");
 }
 
-static void	init_data(int argc, char **argv, char **env, t_shell *data)
+static void	init_data(int argc, char **argv, t_shell *data)
 {
 	(void)argc;
 	(void)argv;
 	data->token = NULL;
-	data->env = NULL;
 	data->exit_code = 0;
-	init_env(data, env);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -36,9 +34,10 @@ int	main(int argc, char **argv, char **env)
 
 	data = malloc(sizeof(t_shell));
 	signal(SIGINT, handle_sigint);
+	init_env(data, env);
 	while (1)
 	{
-		init_data(argc, argv, env, data);
+		init_data(argc, argv, data);
 		line = readline("Minishell> ");
 		if (!line)
 			break ;
@@ -58,6 +57,7 @@ int	main(int argc, char **argv, char **env)
 		free_all(data, line);
 	}
 	free_all(data, line);
+	free_env(data->env);
 	rl_clear_history();
 	return (0);
 }

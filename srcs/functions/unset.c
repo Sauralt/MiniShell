@@ -6,23 +6,23 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:58 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/26 11:38:48 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:30:26 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-void	remove_env_node(t_env **env, const char *key)
+void	remove_env_node(t_shell *data, const char *key)
 {
 	t_env	*curr;
 	t_env	*to_delete;
 	size_t	len;
 
-	if (!env || !*env || !key)
+	if (!data->env || !key)
 		return ;
 	len = ft_strlen(key);
-	curr = *env;
-	while (curr)
+	curr = data->env->next;
+	while (curr != data->env)
 	{
 		if (ft_strncmp(curr->str, key, len) == 0 && curr->str[len] == '=')
 		{
@@ -30,7 +30,7 @@ void	remove_env_node(t_env **env, const char *key)
 			if (curr->prev)
 				curr->prev->next = curr->next;
 			else
-				*env = curr->next;
+				data->env = curr->next;
 			if (curr->next)
 				curr->next->prev = curr->prev;
 			free(to_delete->str);
@@ -43,24 +43,13 @@ void	remove_env_node(t_env **env, const char *key)
 
 int	ft_unset(t_shell *data, char *cmd)
 {
-	int	i;
-
-	if (!data || !data->env || !cmd || !cmd[1])
+	if (!data || !data->env || !cmd)
 		return (1);
-	i = 1;
-	while (cmd[i])
+	if (ft_strchr(cmd, '='))
 	{
-		if (ft_strchr(&cmd[i], '='))
-		{
-			fprintf(stderr, "unset: `%c': not a valid identifier\n", cmd[i]);
-			data->exit_code = 1;
-		}
-		else
-		{
-			remove_env_node(&data->env, &cmd[i]);
-			data->exit_code = 0;
-		}
-		i++;
+		fprintf(stderr, "unset: `%s': not a valid identifier\n", cmd);
+		return (data->exit_code = 1);
 	}
-	return (data->exit_code);
+	remove_env_node(data, cmd);
+	return (data->exit_code = 0);
 }
