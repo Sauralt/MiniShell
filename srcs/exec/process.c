@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 14:10:50 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:23:24 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	proc(t_shell *data)
 {
 	pid_t	pid;
 
+	printf("%s\n", data->token->str[0]);
 	if (data->token->type == 0)
 	{
 		printf("command not found : %s\n", data->token->str[0]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 14:11:16 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:32:35 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,27 +84,57 @@ void	delfirst(t_token **s)
 	free(t);
 }
 
-void	add_param(t_shell *data, int i, char **str)
+void	delone(t_shell *data, char *str)
+{
+	t_token	*t;
+
+	t = data->token;
+	if (!data || !data->token || !t)
+		return ;
+	while (strcmp(t->str[0], str) != 0)
+	{
+		t = t->next;
+		if (t == data->token)
+			return ;
+	}
+	t->prev->next = t->next;
+	t->next->prev = t->prev;
+	free_str(t->str);
+	free(t);
+}
+
+t_token	*add_param(t_shell *data, int i, char **str)
 {
 	t_token	*t;
 	t_token	*u;
 	int		j;
 	int		count;
 
+	j = 0;
 	t = data->token;
-	while (j++ < i - 1)
+	while (j < i)
+	{
 		t = t->next;
+		j++;
+	}
+	if (str[i + 1] == NULL)
+		return (t);
 	u = t;
 	count = 1;
-	while (u->next->type == 4)
+	while (u != data->token->prev && u->next->type != 2)
 	{
 		count++;
 		u = u->next;
 	}
 	free_str(t->str);
-	t->str = malloc(sizeof(char) * (count + 1));
+	t->str = malloc(sizeof(char *) * (count + 1));
 	j = 0;
-	while (j < count)
-		t->str[j++] = ft_strdup(str[i++]);
+	while (j < count && str[i] != NULL)
+	{
+		t->str[j] = ft_strdup(str[i]);
+		i++;
+		j++;
+	}
 	t->str[j] = NULL;
+	return (t);
 }
