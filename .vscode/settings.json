@@ -58,8 +58,11 @@
 "C_Cpp_Runner.msvcSecureNoWarnings": false,
 "C_Cpp.default.compilerPath": "/usr/bin/gcc-12",
 "files.associations": {
-	"minishell.h": "c",
-	"libft.h": "c",
+
 	"sstream": "c"
+  "minishell.h": "c",
+  "libft.h": "c",
+  "bitset": "c",
+  "atomic": "c"
 }
 }

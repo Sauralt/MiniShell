@@ -16,7 +16,9 @@ static int	exec_abs(char **cmd, t_env *env)
 {
 	char	*path;
 	char	**envp;
+	int		i;
 
+	i = 0;
 	envp = make_env_str(env);
 	path = find_path(cmd[0], env);
 	if (!path)
@@ -39,7 +41,6 @@ static void	exec_built(t_shell *data, t_token *cmd)
 {
 	if (!cmd || !cmd->str)
 		return ;
-
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
 		ft_pwd(data);
 	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)
@@ -49,9 +50,9 @@ static void	exec_built(t_shell *data, t_token *cmd)
 	else if (ft_strncmp(cmd->str[0], "echo", 5) == 0)
 		ft_echo(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "export", 7) == 0)
-		ft_export(cmd->str[0]);
-	// else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
-	// 	ft_unset(cmd->next->str);
+		ft_export(data, cmd->next->str[0]);
+	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
+		ft_unset(data, cmd->next->str[0]);
 }
 
 static int	builtin(t_shell *data, t_token *cmd)

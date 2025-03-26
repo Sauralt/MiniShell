@@ -65,4 +65,3 @@ void	delfirst_stack(t_env **s)
 	*s = (*s)->next;
 	free(t);
 }
-
