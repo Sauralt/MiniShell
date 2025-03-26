@@ -16,7 +16,6 @@ void	free_all(t_shell *data, char *line)
 {
 	free(line);
 	free_tokens(data->token);
-	// free_env(data->env);
 }
 
 void	free_str(char **str)

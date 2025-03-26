@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 15:06:54 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/26 15:17:46 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,37 +104,37 @@ void	delone(t_shell *data, char *str)
 }
 
 t_token	*add_param(t_shell *data, int i, char **str)
- {
- 	t_token	*t;
- 	t_token	*u;
- 	int		j;
- 	int		count;
- 
- 	j = 0;
- 	t = data->token;
- 	while (j < i)
- 	{
- 		t = t->next;
- 		j++;
- 	}
- 	if (str[i + 1] == NULL)
- 		return (t);
- 	u = t;
- 	count = 1;
- 	while (u != data->token->prev && u->next->type != 2)
- 	{
- 		count++;
- 		u = u->next;
- 	}
- 	free_str(t->str);
- 	t->str = malloc(sizeof(char *) * (count + 1));
- 	j = 0;
- 	while (j < count && str[i] != NULL)
- 	{
- 		t->str[j] = ft_strdup(str[i]);
- 		i++;
- 		j++;
- 	}
- 	t->str[j] = NULL;
- 	return (t);
- }
+{
+	t_token	*t;
+	t_token	*u;
+	int		j;
+	int		count;
+
+	j = 0;
+	t = data->token;
+	while (j < i)
+	{
+		t = t->next;
+		j++;
+	}
+	if (str[i + 1] == NULL)
+		return (t);
+	u = t;
+	count = 1;
+	while (u != data->token->prev && u->next->type != 2)
+	{
+		count++;
+		u = u->next;
+	}
+	free_str(t->str);
+	t->str = malloc(sizeof(char *) * (count + 1));
+	j = 0;
+	while (j < count && str[i] != NULL)
+	{
+		t->str[j] = ft_strdup(str[i]);
+		i++;
+		j++;
+	}
+	t->str[j] = NULL;
+	return (t);
+}
