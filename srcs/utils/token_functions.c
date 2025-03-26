@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 13:58:16 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:11:16 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,23 @@ t_token	*ft_new_token(char *content)
 		return (NULL);
 	c->str = malloc(sizeof(char *) * 2);
 	if (!c->str)
+	{
+		free(c);
 		return (NULL);
+	}
 	c->str[0] = ft_strdup(content);
 	if (!c->str[0])
 	{
 		free(c->str);
+		free(c);
 		return (NULL);
 	}
 	c->str[1] = NULL;
+	c->infile = -1;
+	c->outfile = -1;
+	c->type = -1;
 	c->next = c;
 	c->prev = c;
-	c->type = -1;
 	return (c);
 }
 

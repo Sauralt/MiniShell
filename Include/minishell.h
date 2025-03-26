@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 13:56:09 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:08:02 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,12 @@
 # define BUFFER_SIZE 1024
 # define PATH_SIZE 1024
 
-// typedef struct s_stack
-// {
-// 	char				*str;
-// 	int					infile;
-// 	int					outfile;
-// 	int					id;
-// 	struct s_stack		*prev;
-// 	struct s_stack		*next;
-// }						t_stack;
-
 typedef struct s_token
 {
 	int				type;
 	char			**str;
+	int				infile;
+	int				outfile;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -81,6 +73,8 @@ void	ft_add_stack(t_env **s, t_env *new);
 t_env	*ft_new_stack(char *t);
 void	init_env(t_shell *data, char **env);
 char	**make_env_str(t_env *env);
-void	add_param(t_shell *data, int i, char **str);
+t_token	*add_param(t_shell *data, int i, char **str);
+void	delone(t_shell *data, char *str);
+void	check_meta_char(t_shell *data, int i);
 
 #endif

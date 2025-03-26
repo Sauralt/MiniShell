@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 13:56:59 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:10:50 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,14 @@ int	proc(t_shell *data)
 {
 	pid_t	pid;
 
-	if (data->token->type == 0 || data->token->type == 4)
+	if (data->token->type == 0)
 	{
 		printf("command not found : %s\n", data->token->str[0]);
 		return (0);
 	}
 	if (data->token->type == 2 && data->token->next == data->token)
 	{
-		printf("parse error near \n");
+		printf("syntax error\n");
 		return (0);
 	}
 	if (builtin(data, data->token) == 1)
