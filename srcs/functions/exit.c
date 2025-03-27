@@ -57,7 +57,6 @@ static long	ft_atol(const char *str)
 	return (result * sign);
 }
 
-
 int	ft_exit(t_shell *data, t_token *str)
 {
 	int		has_argument;

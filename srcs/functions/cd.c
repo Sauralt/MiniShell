@@ -60,7 +60,6 @@ void	change_directory(const char *path, t_shell *data)
 	{
 		strncpy(data->prev_dir, getenv("PWD") ? getenv("PWD") : current_dir, PATH_SIZE - 1);
 		data->prev_dir[PATH_SIZE - 1] = '\0';
-
 		if (get_current_directory(current_dir, sizeof(current_dir)))
 		{
 			setenv("PWD", current_dir, 1);
@@ -84,9 +83,7 @@ void	ft_cd(t_shell *data, t_token *str)
 	}
 	if (!resolved_path)
 		return ;
-
 	strncpy(new_path, resolved_path, PATH_SIZE - 1);
 	new_path[PATH_SIZE - 1] = '\0';
-
 	change_directory(new_path, data);
 }
