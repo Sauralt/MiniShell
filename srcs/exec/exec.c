@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/27 16:38:03 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/27 18:14:15 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,19 @@ static void	exec_built(t_shell *data, t_token *cmd)
 	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)
 		ft_env(data);
 	else if (ft_strncmp(cmd->str[0], "cd", 3) == 0 && cmd->next == cmd->prev)
-		ft_cd(data, cmd->next->str[0]);
+		ft_cd(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "echo", 5) == 0)
 		ft_echo(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "export", 7) == 0)
-		ft_export(data, cmd->next->str[0]);
+		ft_export(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
-		ft_unset(data, cmd->next->str[0]);
+		ft_unset(data, cmd);
 }
 
 static int	builtin(t_shell *data, t_token *cmd)
 {
-	if (ft_strcmp(cmd->str[0], "echo") == 0 || ft_strcmp(cmd->str[0], "cd") == 0
+	if (ft_strcmp(cmd->str[0], "echo") == 0
+		|| ft_strcmp(cmd->str[0], "cd") == 0
 		|| ft_strcmp(cmd->str[0], "pwd") == 0
 		|| ft_strcmp(cmd->str[0], "export") == 0
 		|| ft_strcmp(cmd->str[0], "unset") == 0
@@ -82,7 +83,6 @@ int	proc(t_shell *data)
 		printf("syntax error\n");
 		return (0);
 	}
-	printf("%d\n", data->token->outfile);
 	if (builtin(data, data->token) == 1)
 	{
 		pid = fork();
