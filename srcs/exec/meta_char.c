@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 17:03:31 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:29:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	infile_redirect(t_shell *data, int i)
 
 	t = data->token;
 	j = 0;
-	while (j < i)
+	while (j < i - data->del_num)
 	{
 		t = t->next;
 		j++;
@@ -31,9 +31,7 @@ static void	infile_redirect(t_shell *data, int i)
 		printf("%s, no file or directory or not permitted\n", t->prev->str[0]);
 		return ;
 	}
-	printf("%d\n", infile);
 	t->next->infile = infile;
-	printf("%d\n", t->next->infile);
 }
 
 static void	outfile_trunc(t_shell *data, int i)
@@ -44,7 +42,7 @@ static void	outfile_trunc(t_shell *data, int i)
 
 	t = data->token;
 	j = 0;
-	while (j < i)
+	while (j < i - data->del_num)
 	{
 		t = t->next;
 		j++;
@@ -55,9 +53,7 @@ static void	outfile_trunc(t_shell *data, int i)
 		printf("%s, no file or directory or not permitted\n", t->prev->str[0]);
 		return ;
 	}
-	printf("%d\n", outfile);
-	t->next->outfile = outfile;
-	printf("%d\n", t->next->outfile);
+	t->prev->outfile = outfile;
 }
 
 static void	outfile_append(t_shell *data, int i)
@@ -68,7 +64,7 @@ static void	outfile_append(t_shell *data, int i)
 
 	t = data->token;
 	j = 0;
-	while (j < i)
+	while (j < i - data->del_num)
 	{
 		t = t->next;
 		j++;
@@ -79,9 +75,7 @@ static void	outfile_append(t_shell *data, int i)
 		printf("%s, no file or directory or not permitted\n", t->prev->str[0]);
 		return ;
 	}
-	printf("%d\n", outfile);
-	t->next->outfile = outfile;
-	printf("%d\n", t->next->outfile);
+	t->prev->outfile = outfile;
 }
 
 void	check_meta_char(t_shell *data, int i)
@@ -91,7 +85,7 @@ void	check_meta_char(t_shell *data, int i)
 
 	j = 0;
 	t = data->token;
-	while (j < i)
+	while (j < i - data->del_num)
 	{
 		t = t->next;
 		j++;

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 16:47:16 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:28:57 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	delone(t_shell *data, char *str)
 	}
 	t->prev->next = t->next;
 	t->next->prev = t->prev;
+	data->del_num++;
 	free_str(t->str);
 	free(t);
 }
