@@ -6,13 +6,14 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 14:08:02 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:27:58 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "../libft/libft.h"
+# include "../ft_dprintf/ft_printf.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
@@ -43,6 +44,7 @@ typedef struct s_shell
 	t_token	*token;
 	int		exit_code;
 	int		fd[2];
+	int		del_num;
 	t_env	*env;
 }			t_shell;
 
@@ -76,5 +78,8 @@ char	**make_env_str(t_env *env);
 t_token	*add_param(t_shell *data, int i, char **str);
 void	delone(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, int i);
+void	strdup_param(t_token *t, int i, char **str, int count);
+int		exec_abs(char **cmd, t_env *env);
+void	parent_process(t_shell *data);
 
 #endif
