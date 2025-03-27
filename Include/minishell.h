@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 16:55:40 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:02:23 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ void	free_tokens(t_token *t);
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	exec_cmd(char *line);
-void	ft_cd(t_shell *data, char *path);
+void	ft_cd(t_shell *data, t_token *str);
 int		ft_pwd(t_shell *data);
 int		ft_env(t_shell *data);
 int		ft_echo(t_shell *data, t_token *str);
 int		ft_unset(t_shell *data, t_token *str);
 int		ft_export(t_shell *data, t_token *str);
-int		ft_exit();
+int		ft_exit(t_shell *data, t_token *str);
 void	free_all(t_shell *data, char *line);
 void	free_env(t_env *env);
 int		proc(t_shell *data);

@@ -12,8 +12,10 @@
 
 #include "../Include/minishell.h"
 
-int	ft_exit(void)
+int	ft_exit(t_shell *data, t_token *str)
 {
+	str->str++;
+	data->exit_code = 0;
 	exit(0);
 	return (0);
 }

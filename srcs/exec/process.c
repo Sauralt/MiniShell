@@ -52,15 +52,15 @@ static void	exec_built(t_shell *data, t_token *cmd)
 	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)
 		ft_env(data);
 	else if (ft_strncmp(cmd->str[0], "cd", 3) == 0 && cmd->next == cmd->prev)
-		ft_cd(data, cmd->next->str[0]);
+		ft_cd(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "echo", 5) == 0)
 		ft_echo(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "export", 7) == 0)
 		ft_export(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
 		ft_unset(data, cmd);
-	else if (ft_strncmp(cmd->str[0], "exit", 6) == 0)
-		ft_exit();
+	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0)
+		ft_exit(data, cmd);
 }
 
 static int	builtin(t_shell *data, t_token *cmd)
