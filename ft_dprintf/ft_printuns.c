@@ -1,20 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process.c                                          :+:      :+:    :+:   */
+/*   ft_printuns.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/27 16:11:35 by cfleuret         ###   ########.fr       */
+/*   Created: 2024/11/05 17:13:20 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/02/11 16:28:07 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "ft_printf.h"
 
-void	parent_process(t_shell *data)
+static int	ft_putchar(int fd, int l, char c)
 {
-	dup2(data->token->infile, 0);
-	dup2(data->token->outfile, 1);
-	exec_abs(data->token->str, data->env);
+	write (fd, &c, 1);
+	return (l + 1);
 }
+
+int	ft_printuns(int fd, int l, unsigned int a)
+{
+	if (a >= 10)
+		l = ft_printuns(fd, l, a / 10);
+	l = ft_putchar(fd, l, a % 10 + '0');
+	return (l);
+}
+/*int	main(void)
+{
+	int	l = 0;
+	l = ft_printuns(l, 4);
+	write(1, "\n", 1);
+	printf("%d", l);
+	return (0);
+}*/

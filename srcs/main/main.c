@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 15:09:11 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:28:12 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	init_data(int argc, char **argv, t_shell *data)
 	(void)argv;
 	data->token = NULL;
 	data->exit_code = 0;
+	data->del_num = 0;
 }
 
 int	main(int argc, char **argv, char **env)
@@ -47,18 +48,10 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strncmp(line, "\0", 2) != 0)
 			proc(data);
 		test = data->token;
-		// while (test && test->next != data->token)
-		// {
-		// 	printf("%s\n", test->str[1]);
-		// 	test = test->next;
-		// }
-		// if (test)
-		// 	printf("%s\n", test->str[1]);
 		free_all(data, line);
 	}
 	free_env(data->env);
 	free_all(data, line);
-	free_env(data->env);
 	rl_clear_history();
 	return (0);
 }

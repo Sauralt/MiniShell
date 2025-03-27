@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:25:22 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/19 15:02:33 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:33:28 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,3 @@ void	delfirst_stack(t_env **s)
 	*s = (*s)->next;
 	free(t);
 }
-

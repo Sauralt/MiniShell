@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process.c                                          :+:      :+:    :+:   */
+/*   random_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/27 16:11:35 by cfleuret         ###   ########.fr       */
+/*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/03/26 16:39:05 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parent_process(t_shell *data)
+void	strdup_param(t_token *t, int i, char **str, int count)
 {
-	dup2(data->token->infile, 0);
-	dup2(data->token->outfile, 1);
-	exec_abs(data->token->str, data->env);
+	int	j;
+
+	t->str = malloc(sizeof(char *) * (count + 1));
+	j = 0;
+	while (j < count && str[i] != NULL)
+	{
+		t->str[j] = ft_strdup(str[i]);
+		i++;
+		j++;
+	}
+	t->str[j] = NULL;
 }
