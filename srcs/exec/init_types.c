@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/28 12:45:53 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:02:04 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static void	full_cmd(t_shell *data, char **str)
 
 	t = data->token;
 	i = 0;
+	str = change_str(data, str);
 	while (str[i])
 	{
 		if (t->next != t)
