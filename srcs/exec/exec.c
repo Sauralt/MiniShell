@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/27 18:14:15 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/28 12:27:55 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ int	proc(t_shell *data)
 {
 	pid_t	pid;
 
-	if (data->token->type == 0 && strcmp(data->token->str[0], "<") == 0)
-	{
-		data->token = data->token->next;
-		data->token = data->token->next;
-	}
-	else if (data->token->type == 2 && data->token->next == data->token)
+	// if (data->token->type == 0 && strcmp(data->token->next->str[0], "<") == 0)
+	// {
+	// 	data->token = data->token->next;
+	// 	data->token = data->token->next;
+	// }
+	if (data->token->type == 2 && data->token->next == data->token)
 	{
 		printf("syntax error\n");
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/27 16:29:46 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/28 12:27:48 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static void	infile_redirect(t_shell *data, int i)
 		t = t->next;
 		j++;
 	}
-	infile = open(t->prev->str[0], O_RDONLY, 0644);
+	infile = open(t->next->str[0], O_RDONLY, 0644);
 	if (infile == -1)
 	{
 		printf("%s, no file or directory or not permitted\n", t->prev->str[0]);
 		return ;
 	}
-	t->next->infile = infile;
+	t->prev->infile = infile;
 }
 
 static void	outfile_trunc(t_shell *data, int i)
@@ -53,6 +53,7 @@ static void	outfile_trunc(t_shell *data, int i)
 		printf("%s, no file or directory or not permitted\n", t->prev->str[0]);
 		return ;
 	}
+	printf("%s\n", t->prev->str[0]);
 	t->prev->outfile = outfile;
 }
 
@@ -90,7 +91,6 @@ void	check_meta_char(t_shell *data, int i)
 		t = t->next;
 		j++;
 	}
-	printf("%s\n", t->str[0]);
 	if (strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, i);
 	if (strcmp(t->str[0], ">") == 0)
