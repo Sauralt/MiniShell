@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/26 16:44:14 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:06:01 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ const char	*handle_cd_dash(const char *path)
 void	change_directory(const char *path, t_shell *data)
 {
 	char	current_dir[PATH_SIZE];
+	char	*pwd;
 
 	if (!get_current_directory(current_dir, sizeof(current_dir)))
 		return ;
@@ -58,7 +59,10 @@ void	change_directory(const char *path, t_shell *data)
 	}
 	else
 	{
-		strncpy(data->prev_dir, getenv("PWD") ? getenv("PWD") : current_dir, PATH_SIZE - 1);
+		pwd = getenv("PWD");
+		if (pwd == NULL)
+			pwd = current_dir;
+		strncpy(data->prev_dir, pwd, PATH_SIZE - 1);
 		data->prev_dir[PATH_SIZE - 1] = '\0';
 		if (get_current_directory(current_dir, sizeof(current_dir)))
 		{

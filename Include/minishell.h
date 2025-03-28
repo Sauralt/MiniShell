@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/27 16:27:58 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:19:07 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ typedef struct s_shell
 
 int		main(int argc, char **argv, char **env);
 int		init_tokens(t_shell *data, char *line);
-t_token	*ft_new_token(char *content);
+t_token	*ft_new_token(t_shell *datam, char *content);
+char	*ft_dollar(t_shell *data, char *str);
 void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	free_str(char **str);
@@ -82,5 +83,6 @@ void	check_meta_char(t_shell *data, int i);
 void	strdup_param(t_token *t, int i, char **str, int count);
 int		exec_abs(char **cmd, t_env *env);
 void	parent_process(t_shell *data);
+char	**change_str(t_shell *data, char **str);
 
 #endif
