@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/27 17:16:22 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:21:03 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ typedef struct s_shell
 
 int		main(int argc, char **argv, char **env);
 int		init_tokens(t_shell *data, char *line);
-t_token	*ft_new_token(char *content);
+t_token	*ft_new_token(t_shell *datam, char *content);
+char	*ft_dollar(t_shell *data, char *str);
 void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	free_str(char **str);
@@ -60,12 +61,13 @@ void	free_tokens(t_token *t);
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	exec_cmd(char *line);
-void	ft_cd(t_shell *data, t_token *cmd);
+void	ft_cd(t_shell *data, t_token *str);
 int		ft_pwd(t_shell *data);
 int		ft_env(t_shell *data);
 int		ft_echo(t_shell *data, t_token *str);
-int		ft_unset(t_shell *data, t_token *cmd);
-int		ft_export(t_shell *data, t_token *cmd);
+int		ft_unset(t_shell *data, t_token *str);
+int		ft_export(t_shell *data, t_token *str);
+int		ft_exit(t_shell *data, t_token *str);
 void	free_all(t_shell *data, char *line);
 void	free_env(t_env *env);
 int		proc(t_shell *data);
@@ -81,5 +83,6 @@ void	check_meta_char(t_shell *data, int i);
 void	strdup_param(t_token *t, int i, char **str, int count);
 int		exec_abs(char **cmd, t_env *env);
 void	parent_process(t_shell *data);
+char	**change_str(t_shell *data, char **str);
 
 #endif
