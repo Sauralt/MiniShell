@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/28 15:02:04 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:53:49 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	init_list_tok(t_shell *data, char **str)
 		return ;
 	data->token = ft_new_token(str[0]);
 	i = 1;
-	while (str[i])
+	while (str[i] != NULL)
 	{
 		ft_add_token(&data->token, ft_new_token(str[i]));
 		i++;
@@ -63,25 +63,28 @@ static void	full_cmd(t_shell *data, char **str)
 {
 	int		i;
 	t_token	*t;
+	t_token	*temp;
 
 	t = data->token;
 	i = 0;
 	str = change_str(data, str);
-	while (str[i])
+	while (str[i] != NULL)
 	{
+		temp = t->next;
 		if (t->next != t)
 		{
 			if (t->type == 1)
 				t = add_param(data, i, str);
-			// else if (t->type == 0 && t->next->type == 2)
-			// 	heredoc(data, str);
 			else if (t->type == 2)
 				check_meta_char(data, i);
 			if (t->prev->type != 2
 				&& t != data->token)
+			{
+				temp = t->next;
 				delone(data, str[i]);
+			}
 		}
-		t = t->next;
+		t = temp;
 		i++;
 	}
 }
@@ -96,9 +99,9 @@ int	init_tokens(t_shell *data, char *line)
 	str = ft_split(line, ' ');
 	if (!str)
 		return (1);
-	str = re_split(str);
+	//str = re_split(str);
 	init_list_tok(data, str);
-	while (str[i])
+	while (str[i] != NULL)
 	{
 		path = find_path(str[i], data->env);
 		if (is_builtin(str[i]) == true)

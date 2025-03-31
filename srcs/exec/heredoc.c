@@ -1,48 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/31 16:30:13 by cfleuret         ###   ########.fr       */
+/*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/03/31 17:11:13 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_all(t_shell *data, char *line)
+void	heredoc(t_token *t)
 {
-	free(line);
-	free_tokens(data->token);
-}
+	int	infile;
 
-void	free_str(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
-
-void	free_tokens(t_token *t)
-{
-	while (t)
-	{
-		delfirst(&t);
-	}
-}
-
-void	free_env(t_env *env)
-{
-	while (env)
-	{
-		delfirst_stack(&env);
-	}
+	infile = open("heredoc.tmp", O_CREAT, O_WRONLY, O_TRUNC);
 }

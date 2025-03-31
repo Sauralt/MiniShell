@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:37:50 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/20 16:59:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/31 15:59:14 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**make_env_str(t_env *env)
 		i++;
 		t = t->next;
 	}
-	envp = malloc(sizeof(char *) * (i + 1));
+	envp = malloc(sizeof(char *) * (i + 2));
 	if (!envp)
 		return (0);
 	while (j++ < i)

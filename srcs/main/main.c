@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/28 12:29:18 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/03/31 15:35:42 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static void	init_data(int argc, char **argv, t_shell *data)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*data;
-	t_token	*test;
 	char	*line;
 
 	data = malloc(sizeof(t_shell));
@@ -47,7 +46,6 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		if (ft_strncmp(line, "\0", 2) != 0)
 			proc(data);
-		test = data->token;
 		free_all(data, line);
 	}
 	free_env(data->env);
