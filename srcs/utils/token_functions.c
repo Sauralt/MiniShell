@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/31 16:32:10 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:57:09 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ t_token	*add_param(t_shell *data, int i, char **str)
 		count++;
 		u = u->next;
 	}
-	free_str(t->str);
+//	free_str(t->str);
 	strdup_param(t, i, str, count);
 	return (t);
 }

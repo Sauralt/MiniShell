@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/31 16:57:50 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/01 15:40:33 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ int		exec_abs(char **cmd, t_env *env);
 void	parent_process(t_shell *data);
 char	**re_split(char **str);
 char	**change_str(t_shell *data, char **str);
-int		heredoc(t_shell *data);
+void	heredoc(t_token *t);
 
 #endif

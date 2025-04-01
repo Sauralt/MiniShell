@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/31 16:53:49 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:59:53 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ static void	full_cmd(t_shell *data, char **str)
 				t = add_param(data, i, str);
 			else if (t->type == 2)
 				check_meta_char(data, i);
-			if (t->prev->type != 2
-				&& t != data->token)
+
+			if (t->prev->type != 2 && t != data->token)
 			{
 				temp = t->next;
 				delone(data, str[i]);
@@ -99,10 +99,11 @@ int	init_tokens(t_shell *data, char *line)
 	str = ft_split(line, ' ');
 	if (!str)
 		return (1);
-	//str = re_split(str);
+	str = re_split(str);
 	init_list_tok(data, str);
 	while (str[i] != NULL)
 	{
+		printf("str[%d] = %s\n", i, str[i]);
 		path = find_path(str[i], data->env);
 		if (is_builtin(str[i]) == true)
 			set_token_type(data, 1);
@@ -113,6 +114,6 @@ int	init_tokens(t_shell *data, char *line)
 		i++;
 	}
 	full_cmd(data, str);
-	free_str(str);
+//	free_str(str);
 	return (0);
 }
