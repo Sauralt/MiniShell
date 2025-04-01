@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/31 16:11:45 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/01 14:11:35 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,48 @@ char	*ft_dollar(t_shell *data, char *str)
 	return (ft_strdup(""));
 }
 
+char	*ft_handle_single_quotes(char *str, int *i)
+{
+	int		j;
+	char	*tmp;
+
+	j = *i + 1;
+	while (str[j] && str[j] != '\'')
+		j++;
+	if (!str[j])
+	{
+		ft_dprintf(2, "open quote\n");
+		return (ft_strdup(""));
+	}
+	tmp = ft_substr(str, *i + 1, j - *i - 1);
+	*i = j + 1;
+	return (tmp);
+}
+
+char	*ft_handle_double_quotes(t_shell *data, char *str, int *i)
+{
+	int		j;
+	char	*tmp;
+
+	j = *i + 1;
+	while (str[j] && str[j] != '"')
+		j++;
+	if (!str[j])
+	{
+		ft_dprintf(2, "open dquote\n");
+		return (ft_strdup(""));
+	}
+	tmp = ft_substr(str, *i + 1, j - *i - 1);
+	tmp = ft_dollar(data, tmp);
+	*i = j + 1;
+	return (tmp);
+}
+
 char	*ft_quote(t_shell *data, char *str)
 {
 	int		i;
 	int		j;
 	char	*result;
-	char	quote;
 	char	*tmp;
 
 	if (!str)
@@ -56,39 +92,27 @@ char	*ft_quote(t_shell *data, char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			quote = str[i++];
-			j = i;
-			while (str[j] && str[j] != quote)
-				j++;
-			if (!str[j])
-			{
-				if (quote == '"')
-					ft_dprintf(2, "open quote\n");
-				else
-					ft_dprintf(2, "open dquote\n");
-				return (ft_strdup(""));
-			}
-			tmp = ft_substr(str, i, j - i);
-			if (quote == '\'')
-				tmp = ft_dollar(data, str);
-			result = ft_strjoin(result, tmp);
-			i = j + 1;
-		}
+		if (str[i] == '\'')
+			return (tmp = ft_handle_single_quotes(str, &i));
+		else if (str[i] == '"')
+			return (tmp = ft_handle_double_quotes(data, str, &i));
 		else
 		{
 			j = i;
 			while (str[j] && str[j] != '\'' && str[j] != '"')
 				j++;
 			tmp = ft_substr(str, i, j - i);
-			result = ft_strjoin(result, tmp);
 			i = j;
 		}
+		if (!tmp)
+		{
+			free(result);
+			return (NULL);
+		}
+		result = ft_strjoin(result, tmp);
 	}
 	return (result);
 }
-
 
 char	*ft_verif_str_type(t_shell *data, char *str)
 {
