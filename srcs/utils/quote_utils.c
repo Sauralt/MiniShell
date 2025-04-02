@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 18:43:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/01 19:37:28 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/02 17:48:53 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	quote_len(char **str, char c, int i, int j)
 		}
 		i++;
 		j = 0;
-		//n++;
 	}
 	return (-1);
 }
