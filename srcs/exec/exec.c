@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/31 15:35:23 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:39:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ static void	exec_built(t_shell *data, t_token *cmd)
 		ft_export(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
 		ft_unset(data, cmd);
+	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0)
+		ft_exit(data, cmd);
+
 }
 
 static int	builtin(t_shell *data, t_token *cmd)

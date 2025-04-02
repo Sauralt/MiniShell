@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/01 16:59:53 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:39:57 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static void	init_list_tok(t_shell *data, char **str)
 
 	if (!str)
 		return ;
-	data->token = ft_new_token(str[0]);
+	data->token = ft_new_token(data, str[0]);
 	i = 1;
 	while (str[i] != NULL)
 	{
-		ft_add_token(&data->token, ft_new_token(str[i]));
+		ft_add_token(&data->token, ft_new_token(data, str[i]));
 		i++;
 	}
 }
@@ -55,8 +55,6 @@ static void	set_token_type(t_shell *data, int type)
 	}
 	else
 		t->type = 1;
-	if (strncmp(t->str[0], "$", 1) == 0)
-		t->type = 3;
 }
 
 static void	full_cmd(t_shell *data, char **str)
@@ -100,6 +98,13 @@ int	init_tokens(t_shell *data, char *line)
 	if (!str)
 		return (1);
 	str = re_split(str);
+	str = ft_quote(str);
+	while (str[i])
+	{
+		printf("%s\n", str[i]);
+		i++;
+	}
+	i = 0;
 	init_list_tok(data, str);
 	while (str[i] != NULL)
 	{

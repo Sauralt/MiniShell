@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/01 15:40:33 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:38:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ typedef struct s_shell
 
 int		main(int argc, char **argv, char **env);
 int		init_tokens(t_shell *data, char *line);
-t_token	*ft_new_token(char *content);
+t_token	*ft_new_token(t_shell *datam, char *content);
+char	*ft_dollar(t_shell *data, char *str);
 void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	free_str(char **str);
@@ -60,12 +61,13 @@ void	free_tokens(t_token *t);
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	exec_cmd(char *line);
-void	ft_cd(t_shell *data, t_token *cmd);
+void	ft_cd(t_shell *data, t_token *str);
 int		ft_pwd(t_shell *data);
 int		ft_env(t_shell *data);
 int		ft_echo(t_shell *data, t_token *str);
-int		ft_unset(t_shell *data, t_token *cmd);
-int		ft_export(t_shell *data, t_token *cmd);
+int		ft_unset(t_shell *data, t_token *str);
+int		ft_export(t_shell *data, t_token *str);
+int		ft_exit(t_shell *data, t_token *str);
 void	free_all(t_shell *data, char *line);
 void	free_env(t_env *env);
 int		proc(t_shell *data);
@@ -84,5 +86,10 @@ void	parent_process(t_shell *data);
 char	**re_split(char **str);
 char	**change_str(t_shell *data, char **str);
 void	heredoc(t_token *t);
+char	*ft_verif_str_type(t_shell *data, char *content);
+char	**ft_quote(char **str);
+int		quote_len(char **str, char c, int i, int j);
+int		skip(char **str, char c, int i, int j);
+//int		change_j(char **str, char c, int i, int j);
 
 #endif

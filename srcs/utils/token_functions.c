@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   token_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/01 16:57:09 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:40:36 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*ft_new_token(char *content)
+t_token	*ft_new_token(t_shell *data, char *content)
 {
 	t_token	*c;
 
@@ -25,7 +25,7 @@ t_token	*ft_new_token(char *content)
 		free(c);
 		return (NULL);
 	}
-	c->str[0] = ft_strdup(content);
+	c->str[0] = ft_verif_str_type(data, content);
 	if (!c->str[0])
 	{
 		free(c->str);
