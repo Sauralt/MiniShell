@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   type_str_verif.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/01 16:20:01 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/02 17:08:56 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// char	*ft_dollar_poll(t_shell *data, char *str)
+// {
+// 	if (!str || str[0] != '$' || str[1] != '?')
+// 		return (ft_strdup(str));
+// 	return (ft_itoa(data->exit_code));
+// }
+
 
 char	*ft_dollar(t_shell *data, char *str)
 {
@@ -22,6 +30,8 @@ char	*ft_dollar(t_shell *data, char *str)
 	env = data->env;
 	if (!env || !str || str[0] != '$' || !str[1])
 		return (ft_strdup(str));
+	if (str[1] == '?')
+		return (ft_itoa(data->exit_code));
 	start = env;
 	var_len = ft_strlen(str + 1);
 	while (env)

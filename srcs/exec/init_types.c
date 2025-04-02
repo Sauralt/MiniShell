@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/01 19:42:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:48:24 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,7 @@ int	init_tokens(t_shell *data, char *line)
 		return (1);
 	str = ft_quote(str);
 	while (str[i])
-	{
-		printf("%s\n", str[i]);
 		i++;
-	}
 	i = 0;
 	init_list_tok(data, str);
 	while (str[i])
