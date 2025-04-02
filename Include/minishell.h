@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/28 15:21:03 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:35:00 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ void	check_meta_char(t_shell *data, int i);
 void	strdup_param(t_token *t, int i, char **str, int count);
 int		exec_abs(char **cmd, t_env *env);
 void	parent_process(t_shell *data);
+char	*ft_verif_str_type(t_shell *data, char *content);
+char	**ft_quote(char **str);
 char	**change_str(t_shell *data, char **str);
+int		quote_len(char **str, char c, int i, int j);
+int		skip(char **str, char c, int i, int j);
+//int		change_j(char **str, char c, int i, int j);
 
 #endif
