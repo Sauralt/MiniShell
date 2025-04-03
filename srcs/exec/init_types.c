@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/02 17:51:37 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/03 14:43:53 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	init_tokens(t_shell *data, char *line)
 	init_list_tok(data, str);
 	while (str[i] != NULL)
 	{
-		printf("str[%d] = %s\n", i, str[i]);
 		path = find_path(str[i], data->env);
 		if (is_builtin(str[i]) == true)
 			set_token_type(data, 1);
