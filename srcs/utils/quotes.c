@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/03 15:12:03 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/03 17:10:18 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,45 @@
 
 static char	*str_quote(char **str, char c, int i, int j)
 {
-	int		len;
 	char	*result;
 	int		k;
 
 	k = 0;
-	len = quote_len(str, c, i, j);
-	if (len == -1)
-		return (NULL);
-	result = malloc(sizeof(char) * (len + 1));
+	result = str_quote_init(str, c, i, &j);
 	if (!result)
 		return (NULL);
-	result[k++] = c;
-	j++;
-
 	while (str[i])
 	{
 		while (str[i][j])
 		{
 			if (str[i][j] == c)
 			{
-				result[k++] = c;
 				result[k] = '\0';
 				return (result);
 			}
-			result[k++] = str[i][j];
-			j++;
+			result[k++] = str[i][j++];
 		}
 		i++;
 		j = 0;
 		if (str[i])
 			result[k++] = ' ';
 	}
-
 	free(result);
 	return (NULL);
 }
 
-static char	**change_str_quote(char **result, char **str)
+static int	change_str_quote_loop(char **result, char **str, int *i, int k)
 {
-	int		i;
-	int		j;
+	while (str[*i] && (str[*i][0] != '\'' && str[*i][0] != '"'))
+	{
+		result[k++] = ft_strdup(str[*i]);
+		(*i)++;
+	}
+	return (k);
+}
+
+static char	**change_str_quote(char **result, char **str, int i, int j)
+{
 	int		k;
 	int		new_i;
 	char	*quote;
@@ -75,16 +73,35 @@ static char	**change_str_quote(char **result, char **str)
 				return (NULL);
 			i = new_i + 1;
 		}
-		while (str[i] && (str[i][0] != '\'' && str[i][0] != '"'))
-		{
-			result[k++] = ft_strdup(str[i]);
-			i++;
-		}
+		k = change_str_quote_loop(result, str, &i, k);
 	}
 	result[k] = NULL;
 	return (result);
 }
 
+static int	ft_quote_loop(char **str, int i, int j, int n)
+{
+	int	new_i;
+
+	new_i = 0;
+	while (str[i][j])
+	{
+		if (str[i][j] == '\'' || str[i][j] == '"')
+		{
+			if (new_i == 0)
+			{
+				new_i = skip(str, str[i][j], i, j);
+				i = new_i;
+				j = change_j(str, str[i][j], i, j);
+				n++;
+			}
+			if (new_i == -1)
+				return (-1);
+		}
+		j++;
+	}
+	return (i);
+}
 
 char	**ft_quote(char **str)
 {
@@ -100,27 +117,15 @@ char	**ft_quote(char **str)
 	while (str[i])
 	{
 		j = 0;
-		while (str[i][j])
-		{
-			if (str[i][j] == '\'' || str[i][j] == '"')
-			{
-				if (new_i == 0)
-				{
-					new_i = skip(str, str[i][j], i, j);
-					i = new_i;
-					j = change_j(str, str[i][j], i, j);
-					n++;
-				}
-				if (new_i == -1)
-					return (NULL);
-			}
-			j++;
-		}
+		if (i != ft_quote_loop(str, i, j, n))
+			i = ft_quote_loop(str, i, j, n);
+		if (i == -1)
+			return (NULL);
 		n++;
 		i++;
 	}
 	result = malloc(sizeof(char *) * (n + 1));
 	if (!result)
 		return (NULL);
-	return (change_str_quote(result, str));
+	return (change_str_quote(result, str, i, j));
 }
