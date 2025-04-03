@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/01 19:47:48 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:13:25 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ void	free_tokens(t_token *t);
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	exec_cmd(char *line);
-void	ft_cd(t_shell *data, t_token *str);
+int		ft_cd(t_shell *data, t_token *str);
 int		ft_pwd(t_shell *data);
 int		ft_env(t_shell *data);
-int		ft_echo(t_shell *data, t_token *str);
+int		ft_echo(t_token *str);
 int		ft_unset(t_shell *data, t_token *str);
 int		ft_export(t_shell *data, t_token *str);
 int		ft_exit(t_shell *data, t_token *str);
@@ -81,7 +81,7 @@ t_token	*add_param(t_shell *data, int i, char **str);
 void	delone(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, int i);
 void	strdup_param(t_token *t, int i, char **str, int count);
-int		exec_abs(char **cmd, t_env *env);
+int		exec_abs(char **cmd, t_env *env, t_shell *data);
 void	parent_process(t_shell *data);
 char	*ft_verif_str_type(t_shell *data, char *content);
 char	**ft_quote(char **str);

@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/27 16:28:12 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:24:28 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static void	init_data(int argc, char **argv, t_shell *data)
 	(void)argc;
 	(void)argv;
 	data->token = NULL;
-	data->exit_code = 0;
 	data->del_num = 0;
 }
 
@@ -33,6 +32,7 @@ int	main(int argc, char **argv, char **env)
 	char	*line;
 
 	data = malloc(sizeof(t_shell));
+	data->exit_code = 0;
 	signal(SIGINT, handle_sigint);
 	init_env(data, env);
 	while (1)
