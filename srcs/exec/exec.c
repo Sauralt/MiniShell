@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/03 15:23:35 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/07 14:18:13 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ static void	exec_built(t_shell *data, t_token *cmd)
 
 static int	builtin(t_shell *data, t_token *cmd)
 {
-	if (ft_strcmp(cmd->str[0], "echo") == 0 || ft_strcmp(cmd->str[0], "cd") == 0
+	if (ft_strcmp(cmd->str[0], "echo") == 0
+		|| ft_strcmp(cmd->str[0], "cd") == 0
 		|| ft_strcmp(cmd->str[0], "pwd") == 0
 		|| ft_strcmp(cmd->str[0], "export") == 0
 		|| ft_strcmp(cmd->str[0], "unset") == 0
@@ -127,7 +128,6 @@ int	proc(t_shell *data)
 		printf("syntax error\n");
 		return (0);
 	}
-	printf("%d\n", data->token->outfile);
 	if (builtin(data, data->token) == 1)
 	{
 		pid = fork();

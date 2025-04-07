@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:58 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/26 16:19:58 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:22:17 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	remove_env_node(t_shell *data, const char *key)
 
 int	ft_unset(t_shell *data, t_token *str)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (str->str[i])
