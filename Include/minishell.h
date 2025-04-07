@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/03 15:13:25 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/07 14:00:02 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ char	**ft_quote(char **str);
 char	**change_str(t_shell *data, char **str);
 int		quote_len(char **str, char c, int i, int j);
 int		skip(char **str, char c, int i, int j);
+void	heredoc(t_shell *data, t_token *cmd);
 //int		change_j(char **str, char c, int i, int j);
 
 #endif
