@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/26 17:08:05 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:30:50 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	free_str(char **str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return ;
 	while (str[i])
 	{
 		free(str[i]);

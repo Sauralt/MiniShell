@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/07 14:04:22 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/07 14:28:45 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	init_list_tok(t_shell *data, char **str)
 		return ;
 	data->token = ft_new_token(data, str[0]);
 	i = 1;
-	while (str[i])
+	while (str[i] != NULL)
 	{
 		ft_add_token(&data->token, ft_new_token(data, str[i]));
 		i++;
@@ -61,25 +61,28 @@ static void	full_cmd(t_shell *data, char **str)
 {
 	int		i;
 	t_token	*t;
+	t_token	*temp;
 
 	t = data->token;
 	i = 0;
 	str = change_str(data, str);
-	while (str[i])
+	while (str[i] != NULL)
 	{
+		temp = t->next;
 		if (t->next != t)
 		{
 			if (t->type == 1)
 				t = add_param(data, i, str);
-			// else if (t->type == 0 && t->next->type == 2)
-			// 	heredoc(data, t);
 			else if (t->type == 2)
 				check_meta_char(data, i);
-			if (t->prev->type != 2
-				&& t->type != 2 && t != data->token)
+
+			if (t->prev->type != 2 && t != data->token)
+			{
+				temp = t->next;
 				delone(data, str[i]);
+			}
 		}
-		t = t->next;
+		t = temp;
 		i++;
 	}
 }
@@ -94,12 +97,14 @@ int	init_tokens(t_shell *data, char *line)
 	str = ft_split(line, ' ');
 	if (!str)
 		return (1);
+	str = re_split(str);
+	if (!str)
+		return (1);
 	str = ft_quote(str);
-	while (str[i])
-		i++;
-	i = 0;
+	if (!str)
+		return (1);
 	init_list_tok(data, str);
-	while (str[i])
+	while (str[i] != NULL)
 	{
 		path = find_path(str[i], data->env);
 		if (is_builtin(str[i]) == true)

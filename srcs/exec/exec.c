@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/07 14:18:13 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/07 14:28:06 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,7 @@ int	proc(t_shell *data)
 {
 	pid_t	pid;
 
-	if (data->token->type == 0 && strcmp(data->token->str[0], "<") == 0)
-	{
-		data->token = data->token->next;
-		data->token = data->token->next;
-	}
-	else if (data->token->type == 2 && data->token->next == data->token)
+	if (data->token->type == 2 && data->token->next == data->token)
 	{
 		printf("syntax error\n");
 		return (0);
