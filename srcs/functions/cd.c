@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/03 15:00:09 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/07 13:22:05 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	change_directory(const char *path, t_shell *data)
 		pwd = current_dir;
 	strncpy(data->prev_dir, pwd, PATH_SIZE - 1);
 	data->prev_dir[PATH_SIZE - 1] = '\0';
-
 	if (get_current_directory(current_dir, sizeof(current_dir)))
 	{
 		setenv("PWD", current_dir, 1);
@@ -71,7 +70,6 @@ int	change_directory(const char *path, t_shell *data)
 	}
 	return (0);
 }
-
 
 int	ft_cd(t_shell *data, t_token *str)
 {
