@@ -6,77 +6,77 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/07 14:28:06 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/07 14:45:46 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// int	exec_abs(char **cmd, t_env *env)
-// {
-// 	char	*path;
-// 	char	**envp;
-
-// 	envp = make_env_str(env);
-// 	path = find_path(cmd[0], env);
-// 	if (!path)
-// 	{
-// 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-// 		return (1);
-// 	}
-// 	if (execve(path, cmd, envp) == -1)
-// 	{
-// 		free(path);
-// 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-// 		return (1);
-// 	}
-// 	free(path);
-// 	free_str(envp);
-// 	return (0);
-// }
-
-int	exec_abs(char **cmd, t_env *env, t_shell *data)
+int	exec_abs(char **cmd, t_env *env)
 {
-	pid_t	pid;
-	int		status;
 	char	*path;
 	char	**envp;
 
+	envp = make_env_str(env);
 	path = find_path(cmd[0], env);
 	if (!path)
 	{
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-		data->exit_code = 127;
-		return (127);
-	}
-	envp = make_env_str(env);
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		data->exit_code = 1;
 		return (1);
 	}
-	else if (pid == 0)
+	if (execve(path, cmd, envp) == -1)
 	{
-		if (execve(path, cmd, envp) == -1)
-		{
-			perror(cmd[0]);
-			free(path);
-			free_str(envp);
-			exit(127);
-		}
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			data->exit_code = WEXITSTATUS(status);
+		free(path);
+		ft_dprintf(2, "%s: command not found\n", cmd[0]);
+		return (1);
 	}
 	free(path);
 	free_str(envp);
-	return (data->exit_code);
+	return (0);
 }
+
+// int	exec_abs(char **cmd, t_env *env, t_shell *data)
+// {
+// 	pid_t	pid;
+// 	int		status;
+// 	char	*path;
+// 	char	**envp;
+
+// 	path = find_path(cmd[0], env);
+// 	if (!path)
+// 	{
+// 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
+// 		data->exit_code = 127;
+// 		return (127);
+// 	}
+// 	envp = make_env_str(env);
+// 	pid = fork();
+// 	if (pid == -1)
+// 	{
+// 		perror("fork");
+// 		data->exit_code = 1;
+// 		return (1);
+// 	}
+// 	else if (pid == 0)
+// 	{
+// 		if (execve(path, cmd, envp) == -1)
+// 		{
+// 			perror(cmd[0]);
+// 			free(path);
+// 			free_str(envp);
+// 			exit(127);
+// 		}
+// 	}
+// 	else
+// 	{
+// 		waitpid(pid, &status, 0);
+// 		if (WIFEXITED(status))
+// 			data->exit_code = WEXITSTATUS(status);
+// 	}
+// 	free(path);
+// 	free_str(envp);
+// 	return (data->exit_code);
+// }
 
 static void	exec_built(t_shell *data, t_token *cmd)
 {

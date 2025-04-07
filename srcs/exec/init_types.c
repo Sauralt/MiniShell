@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/07 14:28:45 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/07 15:01:26 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ static void	full_cmd(t_shell *data, char **str)
 				t = add_param(data, i, str);
 			else if (t->type == 2)
 				check_meta_char(data, i);
-
+			else if (t->type == 0 && t->next->type == 2)
+				heredoc(t);
 			if (t->prev->type != 2 && t != data->token)
 			{
 				temp = t->next;

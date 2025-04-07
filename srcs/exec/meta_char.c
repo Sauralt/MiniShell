@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/01 15:41:24 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:02:26 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,6 @@ void	check_meta_char(t_shell *data, int i)
 		outfile_trunc(t);
 	if (strcmp(t->str[0], ">>") == 0)
 		outfile_append(t);
-//	if (strcmp(t->str[0], "<<") == 0)
-//		heredoc(data);
+	if (strcmp(t->str[0], "<<") == 0)
+		heredoc(t);
 }
