@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/03 17:56:19 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/08 13:25:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	**re_split(char **str);
 char	**change_str(t_shell *data, char **str);
 void	heredoc(t_token *t);
 char	*ft_verif_str_type(t_shell *data, char *content);
-char	**ft_quote(char **str);
+char	**ft_quote(char **str, t_shell *data);
 int		quote_len(char **str, char c, int i, int j);
 int		skip(char **str, char c, int i, int j);
 int		change_j(char **str, char c, int i, int j);

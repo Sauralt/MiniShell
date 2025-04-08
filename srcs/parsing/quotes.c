@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/03 17:10:18 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/08 14:52:34 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static int	ft_quote_loop(char **str, int i, int j, int n)
 	return (i);
 }
 
-char	**ft_quote(char **str)
+char	**ft_quote(char **str, t_shell *data)
 {
 	int		i;
 	int		j;
@@ -127,5 +127,7 @@ char	**ft_quote(char **str)
 	result = malloc(sizeof(char *) * (n + 1));
 	if (!result)
 		return (NULL);
-	return (change_str_quote(result, str, i, j));
+	result = change_str_quote(result, str, i, j);
+	result = change_env_var(data, str, result, n);
+	return (result);
 }
