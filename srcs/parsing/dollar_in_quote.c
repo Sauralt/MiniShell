@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 14:30:47 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/09 11:46:18 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/09 17:27:08 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	env_var_len(t_shell *data, int n, char **str)
 		if (str[i][j] == '$')
 			n += count_env_len(data, str, i);
 		j++;
-		if (str[i][j] == NULL)
+		if (str[i][j] == '\0')
 		{
 			i++;
 			j = 0;
@@ -78,16 +78,17 @@ static int	check_dollar(char **str, int *i, int *j, int *n)
 		if (str[(*i)][(*j)] == '$')
 			total++;
 		(*j)++;
-		if (str[(*i)][(*j)] == NULL)
+		if (str[(*i)][(*j)] == '\0')
 		{
 			(*i)++;
 			(*n)++;
+			(*j) = 0;
 		}
 	}
 	return (total);
 }
 
-char	change_env_var(t_shell *data, char **str, char **result, int len)
+char	**change_env_var(t_shell *data, char **str, char **result, int len)
 {
 	int		i;
 	int		j;
@@ -111,8 +112,10 @@ char	change_env_var(t_shell *data, char **str, char **result, int len)
 		i++;
 		n++;
 	}
-	if (n == len)
-		return (result);
+	len = 0;
 	new_result = malloc(sizeof(char *) * (n + 1));
+	if (!new_result)
+		return (result);
 	new_result = change_result(data, result, new_result);
+	return (new_result);
 }

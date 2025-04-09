@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/09 12:23:51 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:27:39 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,12 @@ void	heredoc(t_token *t);
 char	*ft_verif_str_type(t_shell *data, char *content);
 char	**ft_quote(char **str, t_shell *data);
 int		quote_len(char **str, char c, int i, int j);
+char	*ft_strncpy(char *dest, char *src, unsigned int n);
 int		skip(char **str, char c, int i, int j);
 int		change_j(char **str, char c, int i, int j);
 char	*str_quote_init(char **str, char c, int i, int *j);
 char	**change_result(t_shell *data, char **result, char **new_result);
+char	*dollar_utils_1(t_shell *data, char *str, int j);
+char	**change_env_var(t_shell *data, char **str, char **result, int len);
 
 #endif
