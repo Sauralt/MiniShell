@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/08 13:25:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/09 12:23:51 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,6 @@ int		quote_len(char **str, char c, int i, int j);
 int		skip(char **str, char c, int i, int j);
 int		change_j(char **str, char c, int i, int j);
 char	*str_quote_init(char **str, char c, int i, int *j);
+char	**change_result(t_shell *data, char **result, char **new_result);
 
 #endif

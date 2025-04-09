@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 14:30:47 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/08 15:50:48 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/09 11:46:18 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ static int	env_var_len(t_shell *data, int n, char **str)
 			j = 0;
 		}
 	}
+	return (n);
 }
 
 static int	check_dollar(char **str, int *i, int *j, int *n)
@@ -113,4 +114,5 @@ char	change_env_var(t_shell *data, char **str, char **result, int len)
 	if (n == len)
 		return (result);
 	new_result = malloc(sizeof(char *) * (n + 1));
+	new_result = change_result(data, result, new_result);
 }
