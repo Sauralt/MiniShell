@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:49:02 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/09 13:04:32 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/09 13:39:16 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,39 @@ static int	len_var(char *str, t_env *env)
 	t_env	*t;
 	int		len;
 	int		i;
+	int		j;
 
 	len = 0;
 	i = 0;
+	j = 0;
 	t = env;
 	while (t != env->prev)
 	{
-		if (strcmp(t->str, str) == 0)
+		if (strncmp(t->str, str, ft_strlen(str)) == 0)
 		{
-			while (t->str[i])
+			while (t->str[i] != '=')
 				i++;
-			return (i);
+			i++;
+			while (t->str[i])
+			{
+				i++;
+				j++;
+			}
+			return (j);
 		}
 		t = t->next;
 	}
 	if (strncmp(t->str, str, ft_strlen(str)) == 0)
 	{
-		while (t->str[i])
+		while (t->str[i] != '=')
 			i++;
-		return (i);
+		i++;
+		while (t->str[i])
+		{
+			i++;
+			j++;
+		}
+		return (j);
 	}
 	return (0);
 }
