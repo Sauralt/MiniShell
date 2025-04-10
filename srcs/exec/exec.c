@@ -6,13 +6,13 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/07 14:45:46 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:49:55 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_abs(char **cmd, t_env *env)
+int	exec_abs(char **cmd, t_env *env, t_shell *data)
 {
 	char	*path;
 	char	**envp;
@@ -22,12 +22,14 @@ int	exec_abs(char **cmd, t_env *env)
 	if (!path)
 	{
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
+		data->exit_code = 127;
 		return (1);
 	}
 	if (execve(path, cmd, envp) == -1)
 	{
 		free(path);
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
+		data->exit_code = 127;
 		return (1);
 	}
 	free(path);
@@ -121,6 +123,7 @@ int	proc(t_shell *data)
 	if (data->token->type == 2 && data->token->next == data->token)
 	{
 		printf("syntax error\n");
+		data->exit_code = 258;
 		return (0);
 	}
 	if (builtin(data, data->token) == 1)

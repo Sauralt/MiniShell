@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/07 13:22:49 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:09:17 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,60 @@ char	*ft_dollar_poll(t_shell *data, char **str)
 	return (*str);
 }
 
+// char	*ft_dollar(t_shell *data, char *str)
+// {
+// 	t_env	*env;
+// 	char	*tmp;
+// 	t_env	*start;
+// 	size_t	var_len;
+
+// 	if (ft_strncmp(str, "$?", 2) == 0)
+// 		return (ft_dollar_poll(data, &str));
+// 	env = data->env;
+// 	if (!env || !str || str[0] != '$' || !str[1])
+// 		return (ft_strdup(str));
+// 	start = env;
+// 	var_len = ft_strlen(str + 1);
+// 	while (env)
+// 	{
+// 		if (ft_strncmp(env->str, str + 1, var_len) == 0
+// 			&& env->str[var_len] == '=')
+// 		{
+// 			tmp = ft_strchr(env->str, '=');
+// 			if (tmp && *(tmp + 1))
+// 				return (ft_strdup(tmp + 1));
+// 		}
+// 		env = env->next;
+// 		if (env == start)
+// 			break ;
+// 	}
+// 	return (ft_strdup(""));
+// }
+
 char	*ft_dollar(t_shell *data, char *str)
 {
 	t_env	*env;
+	char	*var_name;
 	char	*tmp;
-	t_env	*start;
-	size_t	var_len;
+	size_t	len;
 
+	if (!str || str[0] != '$')
+		return (ft_strdup(str));
 	if (ft_strncmp(str, "$?", 2) == 0)
 		return (ft_dollar_poll(data, &str));
-	env = data->env;
-	if (!env || !str || str[0] != '$' || !str[1])
-		return (ft_strdup(str));
-	start = env;
-	var_len = ft_strlen(str + 1);
-	while (env)
+	len = 0;
+	while (str[len + 1] && (ft_isalnum(str[len + 1]) || str[len + 1] == '_'))
+		len++;
+	var_name = ft_substr(str, 1, len);
+	if (!var_name)
+		return (ft_strdup(""));
+	env = find_env(data->env, var_name);
+	free(var_name);
+	if (env)
 	{
-		if (ft_strncmp(env->str, str + 1, var_len) == 0
-			&& env->str[var_len] == '=')
-		{
-			tmp = ft_strchr(env->str, '=');
-			if (tmp && *(tmp + 1))
-				return (ft_strdup(tmp + 1));
-		}
-		env = env->next;
-		if (env == start)
-			break ;
+		tmp = ft_strchr(env->str, '=');
+		if (tmp && *(tmp + 1))
+			return (ft_strdup(tmp + 1));
 	}
 	return (ft_strdup(""));
 }

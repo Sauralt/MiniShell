@@ -6,50 +6,49 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:13:26 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/07 13:18:32 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/08 15:12:37 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo_n(t_token *str)
+int	ft_str_is_only_n(const char *str)
 {
-	int	i;
+	int	i = 0;
 
-	i = 1;
-	while (str->str[i] && ft_strncmp(str->str[i], "-n", 3) == 0)
-		i++;
-	if (str->outfile == 1)
+	if (!str)
+		return (0);
+	while (str[i])
 	{
-		while (str->str[i])
-		{
-			printf("%s", str->str[i]);
-			if (str->str[i + 1])
-				printf(" ");
-			i++;
-		}
+		if (str[i] != 'n')
+			return (0);
+		i++;
 	}
-	return (0);
+	return (1);
 }
+
 
 int	ft_echo(t_token *str)
 {
 	int	i;
-	int	printed;
+	int	no_newline;
 
 	i = 1;
-	printed = 0;
-	while (str->str[i])
+	no_newline = 0;
+	while (str->str[i] && ft_strncmp(str->str[i], "-n", 2) == 0
+		&& ft_str_is_only_n(str->str[i] + 1))
 	{
-		if (ft_strncmp(str->str[i], "-n", 3) == 0)
-			return (ft_echo_n(str));
-		if (printed)
-			ft_dprintf(str->outfile, " ");
-		ft_dprintf(str->outfile, "%s", str->str[i]);
-		printed = 1;
+		no_newline = 1;
 		i++;
 	}
-	if (str->outfile == 1)
-		printf("\n");
+	while (str->str[i])
+	{
+		if (i > 1 && str->str[i - 1])
+			ft_dprintf(str->outfile, " ");
+		ft_dprintf(str->outfile, "%s", str->str[i]);
+		i++;
+	}
+	if (!no_newline)
+		ft_dprintf(str->outfile, "\n");
 	return (0);
 }
