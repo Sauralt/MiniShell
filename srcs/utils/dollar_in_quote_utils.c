@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:55:43 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 11:21:27 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:57:26 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,9 @@ int	check_str(char *str)
 static char	*dollar_utils_2(char *str, t_env *env)
 {
 	t_env	*t;
-	int		len;
 	int		i;
-	int		j;
 
-	len = 0;
 	i = 0;
-	j = 0;
 	t = env;
 	while (t != env->prev)
 	{
