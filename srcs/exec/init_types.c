@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/03 15:38:29 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:22:52 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,8 @@ static void	set_token_type(t_shell *data, int type)
 		t->type = 1;
 }
 
-static void	full_cmd(t_shell *data, char **str)
+static void	full_cmd(t_shell *data, char **str, int i)
 {
-	int		i;
 	t_token	*t;
 	t_token	*temp;
 
@@ -100,7 +99,7 @@ int	init_tokens(t_shell *data, char *line)
 	str = re_split(str);
 	if (!str)
 		return (1);
-	str = ft_quote(str);
+	str = ft_quote(str, data);
 	if (!str)
 		return (1);
 	init_list_tok(data, str);
@@ -115,7 +114,7 @@ int	init_tokens(t_shell *data, char *line)
 			set_token_type(data, 1);
 		i++;
 	}
-	full_cmd(data, str);
+	full_cmd(data, str, i);
 	free_str(str);
 	return (0);
 }

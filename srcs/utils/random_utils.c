@@ -6,16 +6,11 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/03 17:24:07 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/09 16:27:30 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// char	*parse_util(int i, int j, const char *str, char *s)
-// {
-	
-// }
 
 void	strdup_param(t_token *t, int i, char **str, int count)
 {
@@ -47,4 +42,22 @@ char	**change_str(t_shell *data, char **str)
 		t = t->next;
 	}
 	return (str);
+}
+
+char	*ft_strncpy(char *dest, char *src, unsigned int n)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (src[i] && (i < n))
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
 }

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/02 16:40:36 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/08 14:05:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_token	*ft_new_token(t_shell *data, char *content)
 		free(c);
 		return (NULL);
 	}
-	c->str[0] = ft_verif_str_type(data, content);
+	c->str[0] = ft_dollar(data, content);
 	if (!c->str[0])
 	{
 		free(c->str);
