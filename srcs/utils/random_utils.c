@@ -6,11 +6,27 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/09 16:27:30 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:53:08 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**init_str(t_shell *data, char *line)
+{
+	char	**str;
+
+	str = ft_split(line, ' ');
+	if (!str)
+		return (NULL);
+	str = re_split(str);
+	if (!str)
+		return (NULL);
+	str = ft_quote(str, data);
+	if (!str)
+		return (NULL);
+	return (str);
+}
 
 void	strdup_param(t_token *t, int i, char **str, int count)
 {

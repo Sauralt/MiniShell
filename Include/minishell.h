@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 11:31:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:05:16 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	delone(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, int i);
 void	strdup_param(t_token *t, int i, char **str, int count);
 int		exec_abs(char **cmd, t_env *env);
-void	parent_process(t_shell *data);
+void	parent_process(t_shell *t);
 char	**re_split(char **str);
 char	**change_str(t_shell *data, char **str);
 void	heredoc(t_token *t);
@@ -98,5 +98,7 @@ int		check_str(char *str);
 char	**change_result(t_shell *data, char **result, char **new_result);
 char	*dollar_utils_1(t_shell *data, char *str, int j);
 char	**change_env_var(t_shell *data, char **str, char **result);
+char	**init_str(t_shell *data, char *line);
+int		exec(t_shell *data, t_shell *t);
 
 #endif

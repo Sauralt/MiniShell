@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:55:43 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 11:57:26 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:59:28 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,14 @@ char	*dollar_utils_1(t_shell *data, char *str, int j)
 	start = j;
 	while (str[j] && is_valid_var_char(str[j]))
 		j++;
-
 	len = j - start;
 	if (len == 0)
 		return (NULL);
-
 	temp = malloc(sizeof(char) * (len + 1));
 	if (!temp)
 		return (NULL);
 	ft_strncpy(temp, &str[start], len);
 	temp[len] = '\0';
-
 	value = dollar_utils_2(temp, data->env);
 	free(temp);
 	if (!value)

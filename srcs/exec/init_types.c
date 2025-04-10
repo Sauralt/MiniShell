@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 11:22:52 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:01:51 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ static void	full_cmd(t_shell *data, char **str, int i)
 				t = add_param(data, i, str);
 			else if (t->type == 2)
 				check_meta_char(data, i);
-
-			if (t->prev->type != 2 && t != data->token)
+			else if (t->prev->type != 2 && t != data->token)
 			{
 				temp = t->next;
 				delone(data, str[i]);
@@ -93,13 +92,7 @@ int	init_tokens(t_shell *data, char *line)
 	char	*path;
 
 	i = 0;
-	str = ft_split(line, ' ');
-	if (!str)
-		return (1);
-	str = re_split(str);
-	if (!str)
-		return (1);
-	str = ft_quote(str, data);
+	str = init_str(data, line);
 	if (!str)
 		return (1);
 	init_list_tok(data, str);

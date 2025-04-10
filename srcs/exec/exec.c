@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/02 16:39:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:06:35 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ static int	builtin(t_shell *data, t_token *cmd)
 
 int	proc(t_shell *data)
 {
-	pid_t	pid;
+	t_shell	*t;
 
+	t = data;
 	if (data->token->type == 2 && data->token->next == data->token)
 	{
 		printf("syntax error\n");
@@ -83,13 +84,7 @@ int	proc(t_shell *data)
 	}
 	if (builtin(data, data->token) == 1)
 	{
-		pid = fork();
-		if (pid < 0)
-			return (ft_dprintf(2, "fork: Resource unavailable"), 1);
-		if (pid == 0)
-			parent_process(data);
-		else
-			waitpid(pid, NULL, 0);
+		return (exec(data, t));
 	}
 	return (0);
 }
