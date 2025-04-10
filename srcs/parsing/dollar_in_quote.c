@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 14:30:47 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/09 17:27:08 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:31:55 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,11 @@ static int	count_env_len(t_shell *data, char **str, int i)
 		}
 		temp->env = temp->env->next;
 	}
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[i++])
 	{
 		if (strncmp(str[i], temp->env->str, ft_strlen(str[i])) == 0)
 			len++;
-		i++;
 	}
 	return (len);
 }
@@ -88,14 +87,11 @@ static int	check_dollar(char **str, int *i, int *j, int *n)
 	return (total);
 }
 
-char	**change_env_var(t_shell *data, char **str, char **result, int len)
+static int	change_env_var_loop(t_shell *data, char **str, int i)
 {
-	int		i;
-	int		j;
-	int		n;
-	char	**new_result;
+	int	j;
+	int	n;
 
-	i = 0;
 	n = 0;
 	while (str[i])
 	{
@@ -112,10 +108,20 @@ char	**change_env_var(t_shell *data, char **str, char **result, int len)
 		i++;
 		n++;
 	}
-	len = 0;
+	return (n);
+}
+
+char	**change_env_var(t_shell *data, char **str, char **result)
+{
+	int		i;
+	int		n;
+	char	**new_result;
+
+	i = 0;
+	n = 0;
+	n = change_env_var_loop(data, str, i);
 	new_result = malloc(sizeof(char *) * (n + 1));
 	if (!new_result)
 		return (result);
-	new_result = change_result(data, result, new_result);
-	return (new_result);
+	return (change_result(data, result, new_result));
 }

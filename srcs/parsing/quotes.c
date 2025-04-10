@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/09 16:05:18 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:31:11 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,6 @@ char	**ft_quote(char **str, t_shell *data)
 	if (!result)
 		return (NULL);
 	result = change_str_quote(result, str, i, j);
-	result = change_env_var(data, str, result, n);
+	result = change_env_var(data, str, result);
 	return (result);
 }

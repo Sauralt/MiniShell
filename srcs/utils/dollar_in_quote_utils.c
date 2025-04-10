@@ -6,11 +6,27 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:55:43 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/09 17:00:53 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:21:27 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_str(char *str)
+{
+	int	i;
+	int	total;
+
+	i = 0;
+	total = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+			total++;
+		i++;
+	}
+	return (total);
+}
 
 static char	*dollar_utils_2(char *str, t_env *env)
 {
@@ -18,7 +34,6 @@ static char	*dollar_utils_2(char *str, t_env *env)
 	int		len;
 	int		i;
 	int		j;
-	char	*nstr;
 
 	len = 0;
 	i = 0;
@@ -28,38 +43,24 @@ static char	*dollar_utils_2(char *str, t_env *env)
 	{
 		if (ft_strncmp(t->str, str, ft_strlen(str)) == 0)
 		{
-			nstr = malloc(sizeof(char) * ft_strlen(t->str) - ft_strlen(str));
 			while (t->str[i] != '=')
 				i++;
 			i++;
-			while (t->str[i])
-			{
-				nstr[j] = t->str[i];
-				j++;
-				i++;
-			}
-			return (nstr);
+			return (ft_strdup(&t->str[i]));
 		}
 		t = t->next;
 	}
-	if (strncmp(t->str, str, ft_strlen(str)) == 0)
+	if (ft_strncmp(t->str, str, ft_strlen(str)) == 0)
 	{
-		nstr = malloc(sizeof(char) * ft_strlen(t->str) - ft_strlen(str));
 		while (t->str[i] != '=')
 			i++;
 		i++;
-		while (t->str[i])
-		{
-			nstr[j] = t->str[i];
-			j++;
-			i++;
-		}
-		return (nstr);
+		return (ft_strdup(&t->str[i]));
 	}
 	return (NULL);
 }
 
-static int	is_valid_var_char(char c)
+int	is_valid_var_char(char c)
 {
 	return ((c >= 'A' && c <= 'Z')
 		|| (c >= 'a' && c <= 'z')
