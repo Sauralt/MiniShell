@@ -20,8 +20,6 @@ void	handle_sigint(int sig)
 
 static void	init_data(int argc, char **argv, t_shell *data)
 {
-	char	*path[PATH_MAX];
-
 	(void)argc;
 	(void)argv;
 	data->token = NULL;
