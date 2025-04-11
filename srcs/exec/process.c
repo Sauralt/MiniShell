@@ -36,6 +36,7 @@ int	exec(t_shell *data, t_token *t)
 
 	if (pipe(fd) == -1)
 		return (perror("pipe"), 1);
+
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork"), 1);

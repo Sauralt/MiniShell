@@ -91,7 +91,7 @@ int	proc(t_shell *data)
 			t = t->next;
 		}
 		if (t->type == 1)
-			exec_abs(t->str, data->env);
+			exec(data, t);
 	}
 	return (0);
 }
