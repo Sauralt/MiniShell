@@ -74,9 +74,9 @@ static int	builtin(t_shell *data, t_token *cmd)
 
 int	proc(t_shell *data)
 {
-	t_shell	*t;
+	t_token	*t;
 
-	t = data;
+	t = data->token;
 	if (data->token->type == 2 && data->token->next == data->token)
 	{
 		printf("syntax error\n");
@@ -84,7 +84,14 @@ int	proc(t_shell *data)
 	}
 	if (builtin(data, data->token) == 1)
 	{
-		return (exec(data, t));
+		while (t->next != data->token)
+		{
+			if (t->type == 1)
+				exec(data, t);
+			t = t->next;
+		}
+		if (t->type == 1)
+			exec(data, t);
 	}
 	return (0);
 }

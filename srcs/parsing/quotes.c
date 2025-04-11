@@ -107,13 +107,11 @@ char	**ft_quote(char **str, t_shell *data)
 {
 	int		i;
 	int		j;
-	int		new_i;
 	int		n;
 	char	**result;
 
 	i = 0;
 	n = 0;
-	new_i = 0;
 	while (str[i])
 	{
 		j = 0;

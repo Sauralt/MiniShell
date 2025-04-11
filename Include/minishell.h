@@ -21,6 +21,8 @@
 # define BUFFER_SIZE 1024
 # define PATH_SIZE 1024
 
+extern pid_t	g_pid;
+
 typedef struct s_token
 {
 	int				type;
@@ -82,7 +84,7 @@ void	delone(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, int i);
 void	strdup_param(t_token *t, int i, char **str, int count);
 int		exec_abs(char **cmd, t_env *env);
-void	parent_process(t_shell *t);
+//void	parent_process(t_shell *t);
 char	**re_split(char **str);
 char	**change_str(t_shell *data, char **str);
 void	heredoc(t_token *t);
@@ -99,6 +101,6 @@ char	**change_result(t_shell *data, char **result, char **new_result);
 char	*dollar_utils_1(t_shell *data, char *str, int j);
 char	**change_env_var(t_shell *data, char **str, char **result);
 char	**init_str(t_shell *data, char *line);
-int		exec(t_shell *data, t_shell *t);
+int		exec(t_shell *data, t_token *t);
 
 #endif
