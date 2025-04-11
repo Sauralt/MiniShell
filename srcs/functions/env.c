@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          #+#  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-03-10 14:16:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025-03-10 14:16:49 by mgarsaul         ###   ########.fr       */
+/*   Created: 2025/03/10 14:16:49 by mgarsaul          #+#    #+#             */
+/*   Updated: 2025/03/25 14:51:11 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-void	ft_env(void)
+int	ft_env(t_shell *data)
 {
-	extern char	**environ;
-	int			i;
+	t_env	*t;
 
-	i = 0;
-	while (environ[i] != NULL)
+	t = data->env->next;
+	while (t != data->env)
 	{
-		printf("%s\n", environ[i]);
-		i++;
+		printf("%s\n", t->str);
+		t = t->next;
 	}
+	return (0);
 }

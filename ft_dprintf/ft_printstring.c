@@ -1,37 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_printstring.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 14:22:54 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/26 12:14:40 by cfleuret         ###   ########.fr       */
+/*   Created: 2024/11/05 10:58:18 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/02/11 16:27:44 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Include/minishell.h"
+#include "ft_printf.h"
 
-int	ft_pwd(t_shell *data)
+int	ft_printstring(int fd, int l, char *a)
 {
-	char	*pwd;
+	int	i;
 
-	if (!data)
-		return (1);
-	if (data->token != data->token->next)
+	if (a == NULL)
 	{
-		printf("pwd: too many arguments\n");
-		return (0);
+		write (fd, "(null)", 6);
+		return (l + 6);
 	}
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
+	i = 0;
+	while (a[i])
 	{
-		perror("getcwd");
-		data->exit_code = 1;
-		return (1);
+		write(fd, &a[i], 1);
+		i++;
 	}
-	printf("%s\n", pwd);
-	free(pwd);
-	data->exit_code = 0;
-	return (0);
+	l += i;
+	return (l);
 }
+/*int	main(void)
+{
+	int l = 0;
+	l = ft_printstring(l, "abc");
+	printf("%d", l);
+	return (0);
+}*/

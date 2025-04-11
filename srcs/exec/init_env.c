@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 14:13:26 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/28 15:17:01 by mgarsaul         ###   ########.fr       */
+/*   Created: 2025/03/19 14:37:54 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/03/19 16:07:30 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(t_shell *data, t_token *str)
+void	init_env(t_shell *data, char **env)
 {
 	int	i;
-	int	printed;
 
-	data->exit_code = 0;
-	i = 1;
-	printed = 0;
-	while (str->str[i])
+	i = 0;
+	while (env[i])
 	{
-		if (printed)
-			ft_dprintf(str->outfile, " ");
-		ft_dprintf(str->outfile, "%s", str->str[i]);
-		printed = 1;
+		if (i == 0)
+			data->env = ft_new_stack(env[i]);
+		else
+			ft_add_stack (&data->env, ft_new_stack(env[i]));
 		i++;
 	}
-	if (str->outfile == 1)
-		printf("\n");
-	return (0);
+	if (!env[0])
+		data->env = ft_new_stack(getcwd(NULL, 0));
 }

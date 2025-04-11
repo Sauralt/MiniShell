@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/03/12 15:21:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:30:50 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 void	free_all(t_shell *data, char *line)
 {
 	free(line);
-	free_stack(data->cmd);
-	free_stack(data->rand);
-	free_stack(data->meta);
 	free_tokens(data->token);
 }
 
@@ -26,6 +23,8 @@ void	free_str(char **str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return ;
 	while (str[i])
 	{
 		free(str[i]);
@@ -42,11 +41,10 @@ void	free_tokens(t_token *t)
 	}
 }
 
-void	free_stack(t_stack *t)
+void	free_env(t_env *env)
 {
-	while (t)
+	while (env)
 	{
-		delfirst_stack(&t);
+		delfirst_stack(&env);
 	}
 }
-
