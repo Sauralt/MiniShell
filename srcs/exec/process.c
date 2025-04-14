@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 18:07:29 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:06:51 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,11 @@ static void	child_process(t_token *t, t_shell *data, int *fd)
 
 int	exec(t_shell *data, t_token *t)
 {
-	int fd[2];
-	pid_t pid;
+	int		fd[2];
+	pid_t	pid;
 
 	if (pipe(fd) == -1)
 		return (perror("pipe"), 1);
-
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork"), 1);

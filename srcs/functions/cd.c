@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/28 15:21:35 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:30:26 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ const char	*cd_home(const char *path)
 		home = getenv("HOME");
 		if (!home)
 		{
-			fprintf(stderr, "cd: HOME not set\n");
+			ft_dprintf(2, "cd: HOME not set\n");
 			return (NULL);
 		}
 		return (home);

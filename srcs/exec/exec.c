@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 17:06:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:26:37 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,14 @@ static int	builtin(t_shell *data, t_token *cmd)
 int	proc(t_shell *data)
 {
 	t_token	*t;
+	int		original_stdin;
+	int		original_stdout;
 
+	original_stdin = dup(STDIN_FILENO);
+	original_stdout = dup(STDOUT_FILENO);
 	t = data->token;
 	if (data->token->type == 2 && data->token->next == data->token)
-	{
-		printf("syntax error\n");
-		return (0);
-	}
+		return (ft_dprintf(2, "syntax error\n"), 0);
 	if (builtin(data, data->token) == 1)
 	{
 		while (t->next != data->token)
@@ -93,5 +94,9 @@ int	proc(t_shell *data)
 		if (t->type == 1)
 			exec(data, t);
 	}
+	dup2(original_stdin, STDIN_FILENO);
+	dup2(original_stdout, STDOUT_FILENO);
+	close(original_stdin);
+	close(original_stdout);
 	return (0);
 }
