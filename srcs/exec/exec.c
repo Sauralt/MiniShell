@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/14 18:26:37 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:58:18 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static void	exec_built(t_shell *data, t_token *cmd)
 
 static int	builtin(t_shell *data, t_token *cmd)
 {
+	while (cmd->type != 1)
+		cmd = cmd->next;
 	if (ft_strcmp(cmd->str[0], "echo") == 0
 		|| ft_strcmp(cmd->str[0], "cd") == 0
 		|| ft_strcmp(cmd->str[0], "pwd") == 0
@@ -83,15 +85,18 @@ int	proc(t_shell *data)
 	t = data->token;
 	if (data->token->type == 2 && data->token->next == data->token)
 		return (ft_dprintf(2, "syntax error\n"), 0);
-	if (builtin(data, data->token) == 1)
+	while (t->next != data->token)
 	{
-		while (t->next != data->token)
-		{
-			if (t->type == 1)
-				exec(data, t);
-			t = t->next;
-		}
 		if (t->type == 1)
+		{
+			if (builtin(data, data->token) == 1)
+				exec(data, t);
+		}
+		t = t->next;
+	}
+	if (t->type == 1)
+	{
+		if (builtin(data, data->token) == 1)
 			exec(data, t);
 	}
 	dup2(original_stdin, STDIN_FILENO);

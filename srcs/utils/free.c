@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/01 16:30:50 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:07:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ void	free_tokens(t_token *t)
 {
 	while (t)
 	{
+		if (t->infile != 0)
+			close(t->infile);
+		if (t->outfile != 1)
+			close(t->outfile);
 		delfirst(&t);
 	}
 }
