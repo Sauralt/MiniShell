@@ -6,22 +6,20 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 17:05:16 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:48:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "../libft/libft.h"
-# include "../ft_dprintf/ft_printf.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
+# include <stdarg.h>
 
 # define BUFFER_SIZE 1024
 # define PATH_SIZE 1024
-
-extern pid_t	g_pid;
 
 typedef struct s_token
 {
@@ -84,7 +82,6 @@ void	delone(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, int i);
 void	strdup_param(t_token *t, int i, char **str, int count);
 int		exec_abs(char **cmd, t_env *env);
-//void	parent_process(t_shell *t);
 char	**re_split(char **str);
 char	**change_str(t_shell *data, char **str);
 void	heredoc(t_token *t);
@@ -102,5 +99,13 @@ char	*dollar_utils_1(t_shell *data, char *str, int j);
 char	**change_env_var(t_shell *data, char **str, char **result);
 char	**init_str(t_shell *data, char *line);
 int		exec(t_shell *data, t_token *t);
+void	ft_close(int *fd);
+int		ft_dprintf(int fd, const char *f, ...);
+int		ft_printhex(int fd, char c, int l, unsigned int a);
+int		ft_printint(int fd, int l, int a);
+int		ft_printptr(int fd, int t, int l, void *a);
+int		ft_printstring(int fd, int l, char *a);
+int		ft_printuns(int fd, int l, unsigned int a);
+
 
 #endif

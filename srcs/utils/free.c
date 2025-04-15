@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/14 19:07:46 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/15 12:47:24 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,10 @@ void	free_env(t_env *env)
 	{
 		delfirst_stack(&env);
 	}
+}
+
+void	ft_close(int *fd)
+{
+	close(fd[0]);
+	close(fd[1]);
 }

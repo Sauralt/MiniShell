@@ -1,48 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printptr.c                                      :+:      :+:    :+:   */
+/*   ft_printhex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/05 13:30:51 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/02/11 16:27:23 by cfleuret         ###   ########.fr       */
+/*   Created: 2024/11/05 11:54:38 by cfleuret          #+#    #+#             */
+/*   Updated: 2025/04/15 13:44:31 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "minishell.h"
 
-static void	ft_putchar(int fd, char c)
+static int	ft_putchar(int fd, int l, char c)
 {
 	write(fd, &c, 1);
+	return (l + 1);
 }
 
-int	ft_printptr(int fd, int t, int l, void *a)
+int	ft_printhex(int fd, char c, int l, unsigned int a)
 {
-	char	*hex;
+	char	*hexlow;
+	char	*hexup;
 
-	if (a == (void *)0)
+	hexlow = "0123456789abcdef";
+	hexup = "0123456789ABCDEF";
+	if (c == 'x')
 	{
-		write(fd, "(nil)", 5);
-		return (l + 5);
+		if (a >= 16)
+			l = ft_printhex(fd, c, l, a / 16);
+		ft_putchar(fd, l, hexlow[a % 16]);
 	}
-	if (t == 0)
+	else
 	{
-		write (fd, "0x", 2);
-		l += 2;
-		t++;
+		if (a >= 16)
+			l = ft_printhex(fd, c, l, a / 16);
+		ft_putchar(fd, l, hexup[a % 16]);
 	}
-	hex = "0123456789abcdef";
-	if (a >= (void *)16)
-		l = ft_printptr(fd, t, l, ((void *)((uintptr_t)a / 16)));
-	ft_putchar(fd, hex[(uintptr_t)a % 16]);
 	return (l + 1);
 }
 /*int	main(void)
 {
-	int	*i;
-	i = (void *)10;
 	int l = 0;
-	ft_printptr(l, i);
+	l = ft_printhex('X', l, 200);
+	write (1, "\n", 1);
+	printf("%X", 200);
 	return (0);
 }*/
