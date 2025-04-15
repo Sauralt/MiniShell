@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/15 12:47:24 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:13:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	free_str(char **str)
 {
 	int	i;
 
-	i = 0;
 	if (!str)
 		return ;
+	i = 0;
 	while (str[i])
 	{
 		free(str[i]);

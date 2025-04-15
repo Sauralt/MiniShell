@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 16:01:51 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:34:30 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	init_tokens(t_shell *data, char *line)
 		else
 			set_token_type(data, 1);
 		i++;
+		free(path);
 	}
 	full_cmd(data, str, i);
 	free_str(str);
