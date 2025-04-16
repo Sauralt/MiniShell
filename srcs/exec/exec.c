@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/15 13:08:52 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:26:07 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,14 @@ int	proc(t_shell *data)
 		{
 			if (builtin(data, data->token) == 1)
 				exec(data, t);
+		}
+		if (t->next->type != 2 && t->type == 1)
+		{
+			dup2(original_stdin, STDIN_FILENO);
+			dup2(original_stdout, STDOUT_FILENO);
+			close(original_stdin);
+			close(original_stdout);
+			return (0);
 		}
 		t = t->next;
 	}

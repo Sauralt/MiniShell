@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/15 16:35:17 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:14:33 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,19 +84,10 @@ void	delfirst(t_token **s)
 	free(t);
 }
 
-void	delone(t_shell *data, char *str)
+void	delone(t_shell *data, t_token *t)
 {
-	t_token	*t;
-
-	t = data->token;
-	if (!data || !data->token || !t)
+	if (!t)
 		return ;
-	while (strcmp(t->str[0], str) != 0)
-	{
-		t = t->next;
-		if (t == data->token)
-			return ;
-	}
 	t->prev->next = t->next;
 	t->next->prev = t->prev;
 	data->del_num++;

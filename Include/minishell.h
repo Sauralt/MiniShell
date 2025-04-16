@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/15 13:48:21 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:49:43 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_env	*ft_new_stack(char *t);
 void	init_env(t_shell *data, char **env);
 char	**make_env_str(t_env *env);
 t_token	*add_param(t_shell *data, int i, char **str);
-void	delone(t_shell *data, char *str);
+void	delone(t_shell *data, t_token *t);
 void	check_meta_char(t_shell *data, int i);
 void	strdup_param(t_token *t, int i, char **str, int count);
 int		exec_abs(char **cmd, t_env *env);

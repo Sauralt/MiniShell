@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/15 16:34:30 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:16:57 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	full_cmd(t_shell *data, char **str, int i)
 			else if (t->prev->type != 2 && t != data->token)
 			{
 				temp = t->next;
-				delone(data, str[i]);
+				delone(data, t);
 			}
 		}
 		t = temp;
