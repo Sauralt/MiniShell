@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 14:48:10 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:36:55 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 		buf = readline("> ");
 		if (!buf)
 		{
-			ft_dprintf(2, "warning: here-document delimited by end-of-file (wanted '%s')\n", delimiter);
+			ft_dprintf(2, "warning: here-document \
+				delimited by end-of-file (wanted '%s')\n", delimiter);
 			break ;
 		}
 		if (ft_strcmp(buf, delimiter) == 0)
@@ -131,12 +132,6 @@ void	heredoc(t_shell *data, char *delimiter)
 		return ;
 	}
 	unlink(".heredoc_tmp");
-	if (dup2(fd, STDIN_FILENO) == -1)
-	{
-		perror("heredoc: dup2");
-		close(fd);
-		data->exit_code = 1;
-		return ;
-	}
-	close(fd);
+	data->token->infile = fd;
+	data->token->next->next->type = 2;
 }
