@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meta_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/16 15:16:52 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:18:25 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	infile_redirect(t_shell *data, t_token *t)
 	infile = open(t->next->str[0], O_RDONLY, 0644);
 	if (infile == -1)
 	{
-		ft_dprintf(2, "%s, no file or directory or not permitted\n", 
+		ft_dprintf(2, "%s, no file or directory or not permitted\n",
 			t->prev->str[0]);
 		return ;
 	}
@@ -75,6 +75,6 @@ void	check_meta_char(t_shell *data, int i)
 		outfile_trunc(t);
 	if (strcmp(t->str[0], ">>") == 0)
 		outfile_append(t);
-//	if (strcmp(t->str[0], "<<") == 0)
-//		heredoc(data);
+	if (strcmp(t->str[0], "<<") == 0)
+		heredoc(data, t->next->str[0]);
 }

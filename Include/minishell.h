@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/16 14:49:43 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:13:23 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	free_str(char **str);
 char	*find_path(char *cmd, t_env *envp);
+t_env	*find_env(t_env *env, const char *key);
 int		init_stacks(t_shell *data);
 void	free_tokens(t_token *t);
 void	handle_sigint(int sig);
@@ -84,7 +85,7 @@ void	strdup_param(t_token *t, int i, char **str, int count);
 int		exec_abs(char **cmd, t_env *env);
 char	**re_split(char **str);
 char	**change_str(t_shell *data, char **str);
-void	heredoc(t_token *t);
+int		heredoc(t_shell *data, char *delimiter);
 char	*ft_verif_str_type(t_shell *data, char *content);
 char	**ft_quote(char **str, t_shell *data);
 int		quote_len(char **str, char c, int i, int j);
