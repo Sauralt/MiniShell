@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 16:49:50 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:34:42 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 			perror("malloc");
 			return (false);
 		}
-		ft_putendl_fd(expanded, STDOUT_FILENO);
 		write(fd, expanded, ft_strlen(expanded));
 		write(fd, "\n", 1);
 
@@ -106,7 +105,6 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 	close(fd);
 	return (true);
 }
-
 
 int	heredoc(t_shell *data, char *delimiter)
 {
