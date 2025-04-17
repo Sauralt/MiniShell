@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/28 15:21:48 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:33:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	ft_export(t_shell *data, t_token *str)
 			return (print_env(data->env), 0);
 		delim = ft_strchr(str->str[i], '=');
 		if (!delim || delim == str->str[i])
-			return (fprintf(stderr, "export: invalid identifier\n"), 1);
+			return (ft_dprintf(2, "export: invalid identifier\n"), 1);
 		key = strndup(str->str[i], delim - str->str[i]);
 		value = ft_strdup(delim + 1);
 		if (!key || !value)

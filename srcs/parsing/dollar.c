@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/08 14:06:11 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:25:30 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*ft_dollar(t_shell *data, char *str)
 		{
 			tmp = ft_strchr(env->str, '=');
 			if (tmp && *(tmp + 1))
-				return (str = ft_strdup(tmp + 1));
+				return (ft_strdup(tmp + 1));
 		}
 		env = env->next;
 		if (env == start)

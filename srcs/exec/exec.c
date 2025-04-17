@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/02 16:39:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:34:40 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int	exec_abs(char **cmd, t_env *env)
 	if (!path)
 	{
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-		return (1);
+		exit(EXIT_FAILURE);
 	}
 	if (execve(path, cmd, envp) == -1)
 	{
 		free(path);
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-		return (1);
+		exit(EXIT_FAILURE);
 	}
 	free(path);
 	free_str(envp);
@@ -58,6 +58,8 @@ static void	exec_built(t_shell *data, t_token *cmd)
 
 static int	builtin(t_shell *data, t_token *cmd)
 {
+	while (cmd->type != 1)
+		cmd = cmd->next;
 	if (ft_strcmp(cmd->str[0], "echo") == 0
 		|| ft_strcmp(cmd->str[0], "cd") == 0
 		|| ft_strcmp(cmd->str[0], "pwd") == 0
@@ -74,22 +76,40 @@ static int	builtin(t_shell *data, t_token *cmd)
 
 int	proc(t_shell *data)
 {
-	pid_t	pid;
+	t_token	*t;
+	int		original_stdin;
+	int		original_stdout;
 
+	original_stdin = dup(STDIN_FILENO);
+	original_stdout = dup(STDOUT_FILENO);
+	t = data->token;
 	if (data->token->type == 2 && data->token->next == data->token)
+		return (ft_dprintf(2, "syntax error\n"), 0);
+	while (t->next != data->token)
 	{
-		printf("syntax error\n");
-		return (0);
+		if (t->type == 1)
+		{
+			if (builtin(data, data->token) == 1)
+				exec(data, t);
+		}
+		if (t->next->type != 2 && t->type == 1)
+		{
+			dup2(original_stdin, STDIN_FILENO);
+			dup2(original_stdout, STDOUT_FILENO);
+			close(original_stdin);
+			close(original_stdout);
+			return (0);
+		}
+		t = t->next;
 	}
-	if (builtin(data, data->token) == 1)
+	if (t->type == 1)
 	{
-		pid = fork();
-		if (pid < 0)
-			return (ft_dprintf(2, "fork: Resource unavailable"), 1);
-		if (pid == 0)
-			parent_process(data);
-		else
-			waitpid(pid, NULL, 0);
+		if (builtin(data, data->token) == 1)
+			exec(data, t);
 	}
+	dup2(original_stdin, STDIN_FILENO);
+	dup2(original_stdout, STDOUT_FILENO);
+	close(original_stdin);
+	close(original_stdout);
 	return (0);
 }

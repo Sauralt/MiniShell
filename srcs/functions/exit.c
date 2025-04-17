@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/26 16:55:25 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:32:39 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	ft_exit(t_shell *data, t_token *str)
 	{
 		if (!is_numeric(str->str[1]))
 		{
-			fprintf(stderr, "%s: numeric argument required\n", str->str[0]);
+			ft_dprintf(2, "%s: numeric argument required\n", str->str[0]);
 			return (1);
 		}
 		else
@@ -75,7 +75,7 @@ int	ft_exit(t_shell *data, t_token *str)
 		}
 		if (str->str[2])
 		{
-			fprintf(stderr, "minishell: exit: too many arguments\n");
+			ft_dprintf(2, "minishell: exit: too many arguments\n");
 			return (1);
 		}
 	}
