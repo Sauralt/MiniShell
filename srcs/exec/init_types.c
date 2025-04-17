@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/16 15:49:55 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:22:59 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ static void	full_cmd(t_shell *data, char **str, int i)
 		temp = t->next;
 		if (t->next != t)
 		{
-			if (t->type == 1)
+			if ((t->type == 1 && t->prev->type != 1)
+				|| (t->type == 1 && t == data->token))
 				t = add_param(data, i, str);
 			else if (t->type == 2)
 				check_meta_char(data, i);

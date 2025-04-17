@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 14:20:38 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:00:23 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,10 @@ static void	exec_built(t_shell *data, t_token *cmd)
 		ft_unset(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0)
 		ft_exit(data, cmd);
-
 }
 
 static int	builtin(t_shell *data, t_token *cmd)
 {
-	while (cmd->type != 1)
-		cmd = cmd->next;
 	if (ft_strcmp(cmd->str[0], "echo") == 0
 		|| ft_strcmp(cmd->str[0], "cd") == 0
 		|| ft_strcmp(cmd->str[0], "pwd") == 0
@@ -74,6 +71,14 @@ static int	builtin(t_shell *data, t_token *cmd)
 	return (1);
 }
 
+static void	close_dup(int original_stdin, int original_stdout)
+{
+	dup2(original_stdin, STDIN_FILENO);
+	dup2(original_stdout, STDOUT_FILENO);
+	close(original_stdin);
+	close(original_stdout);
+}
+
 int	proc(t_shell *data)
 {
 	t_token	*t;
@@ -85,31 +90,18 @@ int	proc(t_shell *data)
 	t = data->token;
 	if (data->token->type == 2 && data->token->next == data->token)
 		return (ft_dprintf(2, "syntax error\n"), 0);
+	while (t->type != 1 && t->next != data->token)
+		t = t->next;
+	if (t->next == data->token)
+		t = t->next;
 	while (t->next != data->token)
 	{
-		if (t->type == 1)
-		{
-			if (builtin(data, data->token) == 1)
-				exec(data, t);
-		}
-		if (t->next->type != 2 && t->type == 1)
-		{
-			dup2(original_stdin, STDIN_FILENO);
-			dup2(original_stdout, STDOUT_FILENO);
-			close(original_stdin);
-			close(original_stdout);
-			return (0);
-		}
+		if (builtin(data, data->token) == 1 && t->type != 2)
+			exec(data, t);
 		t = t->next;
 	}
-	if (t->type == 1)
-	{
-		if (builtin(data, data->token) == 1)
-			exec(data, t);
-	}
-	dup2(original_stdin, STDIN_FILENO);
-	dup2(original_stdout, STDOUT_FILENO);
-	close(original_stdin);
-	close(original_stdout);
+	if (builtin(data, data->token) == 1 && t->type != 2)
+		exec(data, t);
+	close_dup(original_stdin, original_stdout);
 	return (0);
 }

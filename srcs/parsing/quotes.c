@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/15 15:37:17 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:30:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ static int	ft_quote_loop(char **str, int i, int j, int n)
 			{
 				new_i = skip(str, str[i][j], i, j);
 				i = new_i;
+				if (new_i == -1)
+					return (-1);
 				j = change_j(str, str[i][j], i, j);
 				n++;
 			}
-			if (new_i == -1)
-				return (-1);
 		}
 		j++;
 	}

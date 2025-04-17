@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 13:13:23 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 15:31:23 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	strdup_param(t_token *t, int i, char **str, int count);
 int		exec_abs(char **cmd, t_env *env);
 char	**re_split(char **str);
 char	**change_str(t_shell *data, char **str);
-int		heredoc(t_shell *data, char *delimiter);
+void	heredoc(t_shell *data, char *delimiter);
 char	*ft_verif_str_type(t_shell *data, char *content);
 char	**ft_quote(char **str, t_shell *data);
 int		quote_len(char **str, char c, int i, int j);
@@ -107,6 +107,5 @@ int		ft_printint(int fd, int l, int a);
 int		ft_printptr(int fd, int t, int l, void *a);
 int		ft_printstring(int fd, int l, char *a);
 int		ft_printuns(int fd, int l, unsigned int a);
-
 
 #endif

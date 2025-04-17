@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 18:43:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/03 17:14:08 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:30:28 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	change_j(char **str, char c, int i, int j)
 {
 	while (str[i])
 	{
-		j = 0;
+		j = 1;
 		while (str[i][j])
 		{
 			if (str[i][j] == c)
