@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:49:02 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 11:16:26 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/15 15:31:43 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ char	**change_result(t_shell *data, char **result, char **new_result)
 		i++;
 		j++;
 	}
+	free_str(result);
 	new_result[i] = NULL;
 	return (new_result);
 }

@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/17 13:25:44 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:15:25 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,16 @@ char	*ft_dollar(t_shell *data, char *str)
 	free(var_name);
 	if (env)
 	{
-		tmp = ft_strchr(env->str, '=');
-		if (tmp && *(tmp + 1))
-			return (ft_strdup(tmp + 1));
+		if (ft_strncmp(env->str, str + 1, var_len) == 0
+			&& env->str[var_len] == '=')
+		{
+			tmp = ft_strchr(env->str, '=');
+			if (tmp && *(tmp + 1))
+				return (ft_strdup(tmp + 1));
+		}
+		env = env->next;
+		if (env == start)
+			break ;
 	}
 	return (ft_strdup(""));
 }

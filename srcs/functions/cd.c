@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/07 14:18:39 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:15:44 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ const char	*cd_home(const char *path)
 		home = getenv("HOME");
 		if (!home)
 		{
-			fprintf(stderr, "cd: HOME not set\n");
+			ft_dprintf(2, "cd: HOME not set\n");
 			return (NULL);
 		}
 		return (home);

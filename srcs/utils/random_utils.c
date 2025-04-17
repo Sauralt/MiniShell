@@ -6,11 +6,29 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 13:25:49 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:15:04 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**init_str(t_shell *data, char *line)
+{
+	char	**str;
+	char	**temp;
+
+	str = ft_split(line, ' ');
+	if (!str)
+		return (NULL);
+	str = re_split(str);
+	if (!str)
+		return (NULL);
+	temp = str;
+	str = ft_quote(str, data);
+	if (!str)
+		return (ft_dprintf(2, "open quote\n"), temp);
+	return (str);
+}
 
 void	strdup_param(t_token *t, int i, char **str, int count)
 {

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 15:19:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/03 17:23:40 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/15 15:08:34 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ char	**re_split(char **str)
 	if (!new_tokens)
 		return (NULL);
 	new_tokens = loop_re_split(str, k, j, new_tokens);
+	free_str(str);
 	return (new_tokens);
 }
 

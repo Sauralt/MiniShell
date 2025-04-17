@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 17:49:55 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:16:37 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,30 @@ static int	builtin(t_shell *data, t_token *cmd)
 	return (1);
 }
 
+static void	close_dup(int original_stdin, int original_stdout)
+{
+	dup2(original_stdin, STDIN_FILENO);
+	dup2(original_stdout, STDOUT_FILENO);
+	close(original_stdin);
+	close(original_stdout);
+}
+
 int	proc(t_shell *data)
 {
-	pid_t	pid;
+	t_token	*t;
+	int		original_stdin;
+	int		original_stdout;
 
+	original_stdin = dup(STDIN_FILENO);
+	original_stdout = dup(STDOUT_FILENO);
+	t = data->token;
 	if (data->token->type == 2 && data->token->next == data->token)
+		return (ft_dprintf(2, "syntax error\n"), 0);
+	while (t->type != 1 && t->next != data->token)
+		t = t->next;
+	if (t->next == data->token)
+		t = t->next;
+	while (t->next != data->token)
 	{
 		printf("syntax error\n");
 		data->exit_code = 258;
@@ -136,5 +155,8 @@ int	proc(t_shell *data)
 		else
 			waitpid(pid, NULL, 0);
 	}
+	if (builtin(data, data->token) == 1 && t->type != 2)
+		exec(data, t);
+	close_dup(original_stdin, original_stdout);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 13:25:55 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:14:58 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_token	*ft_new_token(t_shell *data, char *content)
 	c->str[0] = ft_dollar(data, content);
 	if (!c->str[0])
 	{
-		free(c->str);
+		free_str(c->str);
 		free(c);
 		return (NULL);
 	}
@@ -84,19 +84,10 @@ void	delfirst(t_token **s)
 	free(t);
 }
 
-void	delone(t_shell *data, char *str)
+void	delone(t_shell *data, t_token *t)
 {
-	t_token	*t;
-
-	t = data->token;
-	if (!data || !data->token || !t)
+	if (!t)
 		return ;
-	while (strcmp(t->str[0], str) != 0)
-	{
-		t = t->next;
-		if (t == data->token)
-			return ;
-	}
 	t->prev->next = t->next;
 	t->next->prev = t->prev;
 	data->del_num++;
@@ -127,7 +118,6 @@ t_token	*add_param(t_shell *data, int i, char **str)
 		count++;
 		u = u->next;
 	}
-//	free_str(t->str);
 	strdup_param(t, i, str, count);
 	return (t);
 }

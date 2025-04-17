@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/08 13:12:28 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:17:43 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,7 @@ int	ft_export(t_shell *data, t_token *str)
 	{
 		delim = ft_strchr(str->str[i], '=');
 		if (!delim || delim == str->str[i])
-		{
-			i++;
-			continue ;
-		}
+			return (ft_dprintf(2, "export: invalid identifier\n"), 1);
 		key = strndup(str->str[i], delim - str->str[i]);
 		value = ft_strdup(delim + 1);
 		if (!key || !value)
