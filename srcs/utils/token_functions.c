@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/09 14:35:19 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:25:55 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_token	*ft_new_token(t_shell *data, char *content)
 		free(c);
 		return (NULL);
 	}
-	c->str[0] = ft_verif_str_type(data, content);
+	c->str[0] = ft_dollar(data, content);
 	if (!c->str[0])
 	{
 		free(c->str);

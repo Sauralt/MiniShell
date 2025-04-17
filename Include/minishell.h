@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/09 14:51:05 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:25:28 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,18 @@ char	**re_split(char **str);
 char	**change_str(t_shell *data, char **str);
 int		heredoc(t_shell *data, char *delimiter);
 char	*ft_verif_str_type(t_shell *data, char *content);
-char	**ft_quote(char **str);
+char	**ft_quote(char **str, t_shell *data);
 int		quote_len(char **str, char c, int i, int j);
+char	*ft_strncpy(char *dest, char *src, unsigned int n);
 int		skip(char **str, char c, int i, int j);
 //int		change_j(char **str, char c, int i, int j);
 int		change_j(char **str, char c, int i, int j);
 char	*str_quote_init(char **str, char c, int i, int *j);
 t_env	*find_env(t_env *env, const char *key);
+int		is_valid_var_char(char c);
+int		check_str(char *str);
+char	**change_result(t_shell *data, char **result, char **new_result);
+char	*dollar_utils_1(t_shell *data, char *str, int j);
+char	**change_env_var(t_shell *data, char **str, char **result);
 
 #endif

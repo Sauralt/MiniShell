@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   type_str_verif.c                                   :+:      :+:    :+:   */
+/*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/09 16:09:17 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:25:44 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,4 @@ char	*ft_dollar(t_shell *data, char *str)
 			return (ft_strdup(tmp + 1));
 	}
 	return (ft_strdup(""));
-}
-
-char	*ft_verif_str_type(t_shell *data, char *str)
-{
-	if (!str)
-		return (NULL);
-	str = ft_dollar(data, str);
-	return (str);
 }
