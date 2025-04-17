@@ -6,13 +6,13 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 17:16:37 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:22:01 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_abs(char **cmd, t_env *env, t_shell *data)
+int	exec_abs(char **cmd, t_env *env)
 {
 	char	*path;
 	char	**envp;
@@ -22,20 +22,43 @@ int	exec_abs(char **cmd, t_env *env, t_shell *data)
 	if (!path)
 	{
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-		data->exit_code = 127;
-		return (1);
+		exit(EXIT_FAILURE);
 	}
 	if (execve(path, cmd, envp) == -1)
 	{
 		free(path);
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-		data->exit_code = 127;
-		return (1);
+		exit(EXIT_FAILURE);
 	}
 	free(path);
 	free_str(envp);
 	return (0);
 }
+
+// int	exec_abs(char **cmd, t_env *env, t_shell *data)
+// {
+// 	char	*path;
+// 	char	**envp;
+
+// 	envp = make_env_str(env);
+// 	path = find_path(cmd[0], env);
+// 	if (!path)
+// 	{
+// 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
+// 		data->exit_code = 127;
+// 		return (1);
+// 	}
+// 	if (execve(path, cmd, envp) == -1)
+// 	{
+// 		free(path);
+// 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
+// 		data->exit_code = 127;
+// 		return (1);
+// 	}
+// 	free(path);
+// 	free_str(envp);
+// 	return (0);
+// }
 
 // int	exec_abs(char **cmd, t_env *env, t_shell *data)
 // {
@@ -126,9 +149,9 @@ static void	close_dup(int original_stdin, int original_stdout)
 
 int	proc(t_shell *data)
 {
-	t_token	*t;
-	int		original_stdin;
-	int		original_stdout;
+	t_token		*t;
+	int			original_stdin;
+	int			original_stdout;
 
 	original_stdin = dup(STDIN_FILENO);
 	original_stdout = dup(STDOUT_FILENO);
@@ -141,19 +164,9 @@ int	proc(t_shell *data)
 		t = t->next;
 	while (t->next != data->token)
 	{
-		printf("syntax error\n");
-		data->exit_code = 258;
-		return (0);
-	}
-	if (builtin(data, data->token) == 1)
-	{
-		pid = fork();
-		if (pid < 0)
-			return (ft_dprintf(2, "fork: Resource unavailable"), 1);
-		if (pid == 0)
-			parent_process(data);
-		else
-			waitpid(pid, NULL, 0);
+		if (builtin(data, data->token) == 1 && t->type != 2)
+			exec(data, t);
+		t = t->next;
 	}
 	if (builtin(data, data->token) == 1 && t->type != 2)
 		exec(data, t);
