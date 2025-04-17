@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 13:09:36 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:48:10 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 			perror("malloc");
 			return (false);
 		}
-		ft_putendl_fd(expanded, STDOUT_FILENO);
 		write(fd, expanded, ft_strlen(expanded));
 		write(fd, "\n", 1);
 
@@ -107,8 +106,7 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 	return (true);
 }
 
-
-int	heredoc(t_shell *data, char *delimiter)
+void	heredoc(t_shell *data, char *delimiter)
 {
 	int	fd;
 
@@ -116,20 +114,29 @@ int	heredoc(t_shell *data, char *delimiter)
 	if (fd < 0)
 	{
 		perror("heredoc: open");
-		return (-1);
+		data->exit_code = 1;
+		return ;
 	}
 	if (!read_in_stdin(data, fd, delimiter))
 	{
 		unlink(".heredoc_tmp");
-		return (-1);
+		data->exit_code = 1;
+		return ;
 	}
 	fd = open(".heredoc_tmp", O_RDONLY);
-	if (fd >= 0)
-		unlink(".heredoc_tmp");
-	if (fd != -1)
+	if (fd < 0)
 	{
-		dup2(fd, STDIN_FILENO);
-		close(fd);
+		perror("heredoc: reopen");
+		data->exit_code = 1;
+		return ;
 	}
-	return (fd);
+	unlink(".heredoc_tmp");
+	if (dup2(fd, STDIN_FILENO) == -1)
+	{
+		perror("heredoc: dup2");
+		close(fd);
+		data->exit_code = 1;
+		return ;
+	}
+	close(fd);
 }

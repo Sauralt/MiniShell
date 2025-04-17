@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 15:53:08 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:36:16 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char	**init_str(t_shell *data, char *line)
 {
 	char	**str;
+	char	**temp;
 
 	str = ft_split(line, ' ');
 	if (!str)
@@ -22,9 +23,10 @@ char	**init_str(t_shell *data, char *line)
 	str = re_split(str);
 	if (!str)
 		return (NULL);
+	temp = str;
 	str = ft_quote(str, data);
 	if (!str)
-		return (NULL);
+		return (ft_dprintf(2, "open quote\n"), temp);
 	return (str);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meta_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 13:18:25 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:04:40 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,15 @@ static void	infile_redirect(t_shell *data, t_token *t)
 		return ;
 	}
 	if (t != data->token)
+	{
 		t->prev->infile = infile;
+		t->next->type = 2;
+	}
 	else
+	{
 		t->next->next->infile = infile;
+		t->next->type = 2;
+	}
 }
 
 static void	outfile_trunc(t_token *t)
@@ -41,6 +47,7 @@ static void	outfile_trunc(t_token *t)
 		return ;
 	}
 	t->prev->outfile = outfile;
+	t->next->type = 2;
 }
 
 static void	outfile_append(t_token *t)
@@ -55,6 +62,7 @@ static void	outfile_append(t_token *t)
 		return ;
 	}
 	t->prev->outfile = outfile;
+	t->next->type = 2;
 }
 
 void	check_meta_char(t_shell *data, int i)
