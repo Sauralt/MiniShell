@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 13:25:28 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:09:35 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int		exec_abs(char **cmd, t_env *env, t_shell *data);
 void	parent_process(t_shell *data);
 char	**re_split(char **str);
 char	**change_str(t_shell *data, char **str);
-int		heredoc(t_shell *data, char *delimiter);
+void	heredoc(t_shell *data, char *delimiter);
 char	*ft_verif_str_type(t_shell *data, char *content);
 char	**ft_quote(char **str, t_shell *data);
 int		quote_len(char **str, char c, int i, int j);

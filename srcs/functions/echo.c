@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:13:26 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/08 15:12:37 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 16:09:34 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int	ft_str_is_only_n(const char *str)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	if (!str)
 		return (0);
 	while (str[i])

@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 13:34:42 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/17 15:43:36 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ char	*expand_dollar(t_shell *data, char *input)
 	return (result);
 }
 
-
 static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 {
 	char	*buf;
@@ -78,7 +77,7 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 
 	while (1)
 	{
-		buf = readline("> ");
+		buf = readline("heredoc> ");
 		if (!buf)
 		{
 			ft_dprintf(2, "warning: here-document delimited by end-of-file (wanted '%s')\n", delimiter);
@@ -98,7 +97,6 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 		}
 		write(fd, expanded, ft_strlen(expanded));
 		write(fd, "\n", 1);
-
 		free(buf);
 		free(expanded);
 	}
@@ -106,28 +104,30 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 	return (true);
 }
 
-int	heredoc(t_shell *data, char *delimiter)
+void	heredoc(t_shell *data, char *delimiter)
 {
-	int	fd;
+	int		fd;
 
 	fd = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 	{
 		perror("heredoc: open");
-		return (-1);
+		data->exit_code = 1;
+		return ;
 	}
 	if (!read_in_stdin(data, fd, delimiter))
 	{
 		unlink(".heredoc_tmp");
-		return (-1);
+		data->exit_code = 1;
+		return ;
 	}
 	fd = open(".heredoc_tmp", O_RDONLY);
-	if (fd >= 0)
-		unlink(".heredoc_tmp");
-	if (fd != -1)
+	if (fd < 0)
 	{
-		dup2(fd, STDIN_FILENO);
-		close(fd);
+		perror("heredoc: reopen");
+		data->exit_code = 1;
+		return ;
 	}
-	return (fd);
+	unlink(".heredoc_tmp");
+	data->token->infile = fd;
 }
