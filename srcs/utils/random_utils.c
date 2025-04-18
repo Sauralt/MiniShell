@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 16:36:16 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/18 11:25:37 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	strdup_param(t_token *t, int i, char **str, int count)
 {
 	int	j;
 
+	free_str(t->str);
 	t->str = malloc(sizeof(char *) * (count + 1));
 	j = 0;
 	while (j < count && str[i] != NULL)
