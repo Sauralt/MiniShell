@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 14:30:47 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/10 11:31:55 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/18 12:46:44 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	env_var_len(t_shell *data, int n, char **str)
 	{
 		if (str[i][j] == '"')
 			flag++;
-		if (str[i][j] == '$')
+		if (str[i][j] == '$' && flag != 0)
 			n += count_env_len(data, str, i);
 		j++;
 		if (str[i][j] == '\0')
@@ -71,7 +71,6 @@ static int	check_dollar(char **str, int *i, int *j, int *n)
 	int	total;
 
 	total = 0;
-	(*j)++;
 	while (str[(*i)][(*j)] != '"')
 	{
 		if (str[(*i)][(*j)] == '$')
@@ -87,7 +86,7 @@ static int	check_dollar(char **str, int *i, int *j, int *n)
 	return (total);
 }
 
-static int	change_env_var_loop(t_shell *data, char **str, int i)
+static int	change_env_var_loop(t_shell *data, char **str, int i, int *flag)
 {
 	int	j;
 	int	n;
@@ -102,6 +101,7 @@ static int	change_env_var_loop(t_shell *data, char **str, int i)
 			{
 				if (check_dollar(str, &i, &j, &n) != 0)
 					n = env_var_len(data, n, str);
+				(*flag) = 1;
 			}
 			j++;
 		}
@@ -116,10 +116,14 @@ char	**change_env_var(t_shell *data, char **str, char **result)
 	int		i;
 	int		n;
 	char	**new_result;
+	int		flag;
 
 	i = 0;
 	n = 0;
-	n = change_env_var_loop(data, str, i);
+	flag = 0;
+	n = change_env_var_loop(data, str, i, &flag);
+	if (flag == 0)
+		return (result);
 	new_result = malloc(sizeof(char *) * (n + 1));
 	if (!new_result)
 		return (result);

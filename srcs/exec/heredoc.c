@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 17:28:12 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:16:02 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 		buf = readline("heredoc> ");
 		if (!buf)
 		{
-			ft_dprintf(2, "warning: here-document delimited by end-of-file (wanted '%s')\n", delimiter);
+			ft_dprintf(2, "warning: here-document \
+				delimited by end-of-file (wanted '%s')\n", delimiter);
 			break ;
 		}
 		if (ft_strcmp(buf, delimiter) == 0)

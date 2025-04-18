@@ -6,13 +6,13 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 17:14:58 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:16:09 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*ft_new_token(t_shell *data, char *content)
+t_token	*ft_new_token(char *content)
 {
 	t_token	*c;
 
@@ -25,7 +25,7 @@ t_token	*ft_new_token(t_shell *data, char *content)
 		free(c);
 		return (NULL);
 	}
-	c->str[0] = ft_dollar(data, content);
+	c->str[0] = ft_strdup(content);
 	if (!c->str[0])
 	{
 		free_str(c->str);
@@ -88,12 +88,15 @@ void	delone(t_shell *data, t_token *t)
 {
 	if (!t)
 		return ;
-	t->prev->next = t->next;
-	t->next->prev = t->prev;
+	if (t->prev)
+		t->prev->next = t->next;
+	if (t->next)
+		t->next->prev = t->prev;
 	data->del_num++;
 	free_str(t->str);
 	free(t);
 }
+
 
 t_token	*add_param(t_shell *data, int i, char **str)
 {
