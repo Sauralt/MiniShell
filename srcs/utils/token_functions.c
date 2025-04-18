@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 11:22:17 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/18 12:42:01 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*ft_new_token(t_shell *data, char *content)
+t_token	*ft_new_token(char *content)
 {
 	t_token	*c;
 
@@ -25,7 +25,7 @@ t_token	*ft_new_token(t_shell *data, char *content)
 		free(c);
 		return (NULL);
 	}
-	c->str[0] = ft_dollar(data, content);
+	c->str[0] = ft_strdup(content);
 	if (!c->str[0])
 	{
 		free_str(c->str);

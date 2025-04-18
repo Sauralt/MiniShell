@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 17:36:55 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/18 11:32:55 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 
 	while (1)
 	{
-		buf = readline("> ");
+		buf = readline("heredoc> ");
 		if (!buf)
 		{
 			ft_dprintf(2, "warning: here-document \

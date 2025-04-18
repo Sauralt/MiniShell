@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 11:13:19 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/18 12:53:37 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	init_list_tok(t_shell *data, char **str)
 	i = 0;
 	while (str[i] != NULL)
 	{
-		temp = ft_new_token(data, str[i]);
+		temp = ft_new_token(str[i]);
 		if (!temp)
 		{
 			free_tokens(data->token);
@@ -70,7 +70,6 @@ static void	full_cmd(t_shell *data, char **str, int i)
 
 	t = data->token;
 	i = 0;
-	str = change_str(data, str);
 	while (str[i] != NULL)
 	{
 		temp = t->next;
@@ -114,8 +113,8 @@ int	init_tokens(t_shell *data, char *line)
 			set_token_type(data, 2);
 		else
 			set_token_type(data, 1);
-		i++;
 		free(path);
+		i++;
 	}
 	full_cmd(data, str, i);
 	free_str(str);
