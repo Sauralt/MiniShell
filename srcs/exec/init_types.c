@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 14:16:02 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:28:20 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,32 +91,46 @@ static void	full_cmd(t_shell *data, char **str, int i)
 	}
 }
 
-int	init_tokens(t_shell *data, char *line)
+static void	set_token_from_str(t_shell *data, char *arg)
 {
-	int		i;
-	char	**str;
 	char	*path;
 
+	path = find_path(arg, data->env);
+	if (is_builtin(arg))
+		set_token_type(data, 1);
+	else if (!path)
+		set_token_type(data, 2);
+	else
+		set_token_type(data, 1);
+	free(path);
+}
+
+static int	parse_and_classify_tokens(t_shell *data, char **str)
+{
+	int	i;
+
 	i = 0;
+	while (str[i])
+	{
+		set_token_from_str(data, str[i]);
+		i++;
+	}
+	return (i);
+}
+
+int	init_tokens(t_shell *data, char *line)
+{
+	char	**str;
+	int		count;
+
 	str = init_str(data, line);
 	if (!str)
 		return (1);
 	init_list_tok(data, str);
 	if (!data->token)
 		return (1);
-	while (str[i] != NULL)
-	{
-		path = find_path(str[i], data->env);
-		if (is_builtin(str[i]) == true)
-			set_token_type(data, 1);
-		else if (!path)
-			set_token_type(data, 2);
-		else
-			set_token_type(data, 1);
-		free(path);
-		i++;
-	}
-	full_cmd(data, str, i);
+	count = parse_and_classify_tokens(data, str);
+	full_cmd(data, str, count);
 	free_str(str);
 	return (0);
 }

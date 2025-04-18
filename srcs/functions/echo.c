@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:13:26 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/17 17:15:38 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:17:29 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	ft_str_is_only_n(const char *str)
 	}
 	return (1);
 }
-
 
 int	ft_echo(t_token *str)
 {

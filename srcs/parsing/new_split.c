@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   new_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 15:19:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 12:54:32 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:52:45 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	is_operator(char c)
-{
-	return (c == '<' || c == '>' || c == '|');
-}
 
 static int	count_new_tokens(const char *str)
 {
@@ -37,20 +32,13 @@ static int	count_new_tokens(const char *str)
 	return (count);
 }
 
-static char	*ft_parse(const char *str)
+static int	fill_parsed_str(const char *str, char *s)
 {
-	int		len;
-	char	*s;
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
-	len = 0;
 	i = 0;
 	j = 0;
-	len = strlen(str) + count_new_tokens(str) + 1;
-	s = malloc(sizeof(char) * len + 1);
-	if (!s)
-		return (NULL);
 	while (str[i])
 	{
 		if (is_operator(str[i]))
@@ -68,6 +56,19 @@ static char	*ft_parse(const char *str)
 		i++;
 	}
 	s[j] = '\0';
+	return (j);
+}
+
+static char	*ft_parse(const char *str)
+{
+	int		len;
+	char	*s;
+
+	len = ft_strlen(str) + count_new_tokens(str) + 1;
+	s = malloc(sizeof(char) * (len + 1));
+	if (!s)
+		return (NULL);
+	fill_parsed_str(str, s);
 	return (s);
 }
 
@@ -119,4 +120,3 @@ char	**re_split(t_shell *data, char **str)
 	free_str(str);
 	return (new_tokens);
 }
-

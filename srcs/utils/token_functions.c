@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 14:16:09 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:21:37 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void	delone(t_shell *data, t_token *t)
 	free_str(t->str);
 	free(t);
 }
-
 
 t_token	*add_param(t_shell *data, int i, char **str)
 {

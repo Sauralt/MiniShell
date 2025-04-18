@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 17:16:10 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:08:33 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ void	check_meta_char(t_shell *data, int i)
 		t = t->next;
 		j++;
 	}
-	if (strcmp(t->str[0], "<") == 0)
+	if (ft_strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, t);
-	if (strcmp(t->str[0], ">") == 0)
+	if (ft_strcmp(t->str[0], "<<") == 0)
+		heredoc(data, t);
+	if (ft_strcmp(t->str[0], ">") == 0)
 		outfile_trunc(t);
-	if (strcmp(t->str[0], ">>") == 0)
+	if (ft_strcmp(t->str[0], ">>") == 0)
 		outfile_append(t);
-	if (strcmp(t->str[0], "<<") == 0)
-		heredoc(data, t->next->str[0]);
 }

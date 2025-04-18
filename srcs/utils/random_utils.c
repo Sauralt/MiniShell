@@ -6,11 +6,37 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 14:16:07 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:48:40 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*res;
+
+	if (!s1 && s2)
+	{
+		res = ft_strdup(s2);
+		free(s2);
+		return (res);
+	}
+	if (!s2 && s1)
+	{
+		res = ft_strdup(s1);
+		free(s1);
+		return (res);
+	}
+	if (!s1)
+		return (s2);
+	if (!s2)
+		return (s1);
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (res);
+}
 
 char	**init_str(t_shell *data, char *line)
 {
@@ -45,47 +71,6 @@ void	strdup_param(t_token *t, int i, char **str, int count)
 	}
 	t->str[j] = NULL;
 }
-
-char	**change_str(t_shell *data, char **str)
-{
-	int		i;
-	int		j;
-	int		new_i;
-	char	*tmp;
-
-	i = 0;
-	while (str[i])
-	{
-		j = 0;
-		while (str[i][j])
-		{
-			if (str[i][j] == '\'' || str[i][j] == '"')
-			{
-				new_i = skip(str, str[i][j], i, j);
-				if (new_i < 0)
-					return (str);
-				i = new_i;
-				j = change_j(str, str[i][j], i, j);
-				if (!str[i] || !str[i][j])
-					break ;
-			}
-			else if (str[i][j] == '$')
-			{
-				tmp = ft_dollar(data, str[i]);
-				if (tmp)
-				{
-					free(str[i]);
-					str[i] = tmp;
-					j = -1;
-				}
-			}
-			j++;
-		}
-		i++;
-	}
-	return (str);
-}
-
 
 char	*ft_strncpy(char *dest, char *src, unsigned int n)
 {

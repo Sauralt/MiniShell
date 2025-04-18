@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 17:22:01 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:18:40 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ int	exec_abs(char **cmd, t_env *env)
 
 static void	exec_built(t_shell *data, t_token *cmd)
 {
+	int		i;
+
+	i = 1;
 	if (!cmd || !cmd->str)
 		return ;
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
@@ -116,7 +119,7 @@ static void	exec_built(t_shell *data, t_token *cmd)
 	else if (ft_strncmp(cmd->str[0], "echo", 5) == 0)
 		data->exit_code = ft_echo(cmd);
 	else if (ft_strncmp(cmd->str[0], "export", 7) == 0)
-		data->exit_code = ft_export(data, cmd);
+		data->exit_code = ft_export(data, cmd, i);
 	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
 		data->exit_code = ft_unset(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0)

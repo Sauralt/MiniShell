@@ -21,7 +21,8 @@ PARSING =	srcs/parsing/change_dollar_in_quote.c srcs/parsing/dollar.c \
 
 UTILS =		srcs/utils/dollar_in_quote_utils.c srcs/utils/env_functions.c \
 			srcs/utils/find.c srcs/utils/free.c srcs/utils/quote_utils.c \
-			srcs/utils/random_utils.c srcs/utils/token_functions.c
+			srcs/utils/random_utils.c srcs/utils/token_functions.c \
+			srcs/utils/random_utils2.c 
 
 FT_DPRINTF = srcs/ft_dprintf/ft_dprintf.c srcs/ft_dprintf/ft_printhex.c srcs/ft_dprintf/ft_printint.c \
 			srcs/ft_dprintf/ft_printptr.c srcs/ft_dprintf/ft_printstring.c srcs/ft_dprintf/ft_printuns.c

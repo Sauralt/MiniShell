@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_dollar_in_quote.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:49:02 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/15 15:31:43 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:55:39 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ static void	make_new_str(char **new_result, char *str, t_shell *data, int i)
 	}
 	new_result[i] = make_str(len, str, data);
 }
-
 
 char	**change_result(t_shell *data, char **result, char **new_result)
 {

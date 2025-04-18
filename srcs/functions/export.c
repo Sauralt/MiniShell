@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/17 17:17:43 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:18:37 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,12 @@ void	add_or_replace_env(t_shell *data, char *key, char *value)
 	}
 }
 
-int	ft_export(t_shell *data, t_token *str)
+int	ft_export(t_shell *data, t_token *str, int i)
 {
 	char	*key;
 	char	*value;
 	char	*delim;
-	int		i;
 
-	i = 1;
 	while (str->str[i])
 	{
 		delim = ft_strchr(str->str[i], '=');
