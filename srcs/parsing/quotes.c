@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 16:30:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/18 12:50:52 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static char	**change_str_quote(char **result, char **str, int i, int j)
 				return (NULL);
 			result[k++] = quote;
 			new_i = skip(str, str[i][j], i, j);
-			if (new_i == -1)
+			if (new_i < 0)
 				return (NULL);
 			i = new_i + 1;
 		}
@@ -92,9 +92,9 @@ static int	ft_quote_loop(char **str, int i, int j, int n)
 			{
 				new_i = skip(str, str[i][j], i, j);
 				i = new_i;
-				if (new_i == -1)
+				if (new_i < 0)
 					return (-1);
-				j = change_j(str, str[i][j], i, j);
+				j = change_j(str, str[i][j], i, j) - 1;
 				n++;
 			}
 		}

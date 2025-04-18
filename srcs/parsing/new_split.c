@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 15:19:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/15 15:08:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/18 12:54:32 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static char	**loop_re_split(char **str, int k, int j, char **new_tokens)
 	return (new_tokens);
 }
 
-char	**re_split(char **str)
+char	**re_split(t_shell *data, char **str)
 {
 	int		i;
 	int		j;
@@ -115,6 +115,7 @@ char	**re_split(char **str)
 	if (!new_tokens)
 		return (NULL);
 	new_tokens = loop_re_split(str, k, j, new_tokens);
+	new_tokens = change_str(data, new_tokens);
 	free_str(str);
 	return (new_tokens);
 }

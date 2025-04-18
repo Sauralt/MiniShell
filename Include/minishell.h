@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 15:31:23 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:15:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_shell
 
 int		main(int argc, char **argv, char **env);
 int		init_tokens(t_shell *data, char *line);
-t_token	*ft_new_token(t_shell *datam, char *content);
+t_token	*ft_new_token(char *content);
 char	*ft_dollar(t_shell *data, char *str);
 void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
@@ -83,7 +83,7 @@ void	delone(t_shell *data, t_token *t);
 void	check_meta_char(t_shell *data, int i);
 void	strdup_param(t_token *t, int i, char **str, int count);
 int		exec_abs(char **cmd, t_env *env);
-char	**re_split(char **str);
+char	**re_split(t_shell *data, char **str);
 char	**change_str(t_shell *data, char **str);
 void	heredoc(t_shell *data, char *delimiter);
 char	*ft_verif_str_type(t_shell *data, char *content);
