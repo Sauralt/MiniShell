@@ -12,25 +12,19 @@
 
 #include "minishell.h"
 
-static void	init_list_tok(t_shell *data, char **str)
+void	init_list_tok(t_shell *data, char *str, int flag)
 {
-	int		i;
 	t_token	*temp;
 
 	if (!str)
 		return ;
-	i = 0;
-	while (str[i] != NULL)
+	temp = ft_new_token(data, str, flag);
+	if (!temp)
 	{
-		temp = ft_new_token(str[i]);
-		if (!temp)
-		{
-			free_tokens(data->token);
-			return ;
-		}
-		ft_add_token(&data->token, temp);
-		i++;
+		free_tokens(data->token);
+		return ;
 	}
+	ft_add_token(&data->token, temp);
 }
 
 static int	meta_char(char *str)
@@ -45,78 +39,46 @@ static int	meta_char(char *str)
 	return (0);
 }
 
-static void	set_token_type(t_shell *data, int type)
+int	set_token_type(t_shell *data, char *str)
 {
-	t_token	*t;
+	char	*path;
 
-	t = data->token;
-	while (t->type != -1)
-		t = t->next;
-	if (type == 2)
+	if (is_builtin(str) == true)
+		return (1);
+	path = find_path(str, data->env);
+	if (path)
 	{
-		if (meta_char(t->str[0]) == 1)
-			t->type = 0;
-		else
-			t->type = 2;
+		free(path);
+		return (1);
 	}
-	else
-		t->type = 1;
+	if (meta_char(str) == 1)
+		return (2);
+	return (0);
 }
 
-static void	full_cmd(t_shell *data, char **str, int i)
+static void	full_cmd(t_shell *data)
 {
 	t_token	*t;
-	t_token	*temp;
 
 	t = data->token;
-	i = 0;
-	while (str[i] != NULL)
+	while (t->next != data->token)
 	{
-		temp = t->next;
-		if (t->next != t)
-		{
-			if ((t->type == 1 && t->prev->type != 1)
-				|| (t->type == 1 && t == data->token))
-				t = add_param(data, i, str);
-			else if (t->type == 2)
-				check_meta_char(data, i);
-			else if (t->prev->type != 2 && t != data->token)
-			{
-				temp = t->next;
-				delone(data, t);
-			}
-		}
-		t = temp;
-		i++;
+		if (t->type == 1)
+			t = add_param(data, t);
+		else if (t->type == 2)
+			check_meta_char(data, t);
+		t = t->next;
 	}
+	if (t->type == 1)
+		t = add_param(data, t);
+	else if (t->type == 2)
+		check_meta_char(data, t);
 }
 
 int	init_tokens(t_shell *data, char *line)
 {
-	int		i;
-	char	**str;
-	char	*path;
-
-	i = 0;
-	str = init_str(data, line);
-	if (!str)
+	if (parsing(data, line) == 1)
 		return (1);
-	init_list_tok(data, str);
-	if (!data->token)
-		return (1);
-	while (str[i] != NULL)
-	{
-		path = find_path(str[i], data->env);
-		if (is_builtin(str[i]) == true)
-			set_token_type(data, 1);
-		else if (!path)
-			set_token_type(data, 2);
-		else
-			set_token_type(data, 1);
-		free(path);
-		i++;
-	}
-	full_cmd(data, str, i);
-	free_str(str);
+	full_cmd(data);
 	return (0);
 }

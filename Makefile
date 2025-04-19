@@ -7,7 +7,7 @@ LIBFT_DIR = libft
 LIBS = -lreadline
 INCLUDE_DIR = Include
 
-EXEC = 		srcs/exec/exec.c srcs/exec/heredoc.c srcs/exec/init_env.c srcs/exec/init_types.c \
+EXEC = 		srcs/exec/exec.c srcs/exec/heredoc.c srcs/exec/init_env.c \
 			srcs/exec/meta_char.c srcs/exec/process.c
 
 FUNCTIONS =	srcs/functions/cd.c srcs/functions/echo.c srcs/functions/env.c \
@@ -16,11 +16,9 @@ FUNCTIONS =	srcs/functions/cd.c srcs/functions/echo.c srcs/functions/env.c \
 
 MAIN =		srcs/main/cmd_input.c srcs/main/main.c
 
-PARSING =	srcs/parsing/change_dollar_in_quote.c srcs/parsing/dollar.c \
-			srcs/parsing/dollar_in_quote.c srcs/parsing/new_split.c srcs/parsing/quotes.c
+PARSING =	srcs/parsing/dollar.c srcs/parsing/parsing.c srcs/parsing/init_types.c
 
-UTILS =		srcs/utils/dollar_in_quote_utils.c srcs/utils/env_functions.c \
-			srcs/utils/find.c srcs/utils/free.c srcs/utils/quote_utils.c \
+UTILS =		srcs/utils/env_functions.c srcs/utils/find.c srcs/utils/free.c \
 			srcs/utils/random_utils.c srcs/utils/token_functions.c
 
 FT_DPRINTF = srcs/ft_dprintf/ft_dprintf.c srcs/ft_dprintf/ft_printhex.c srcs/ft_dprintf/ft_printint.c \

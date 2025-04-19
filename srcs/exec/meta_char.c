@@ -65,18 +65,8 @@ static void	outfile_append(t_token *t)
 	t->next->type = 2;
 }
 
-void	check_meta_char(t_shell *data, int i)
+void	check_meta_char(t_shell *data, t_token *t)
 {
-	t_token	*t;
-	int		j;
-
-	j = 0;
-	t = data->token;
-	while (j < i - data->del_num)
-	{
-		t = t->next;
-		j++;
-	}
 	if (strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, t);
 	if (strcmp(t->str[0], ">") == 0)

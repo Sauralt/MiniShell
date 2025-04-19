@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-t_token	*ft_new_token(char *content)
+t_token	*ft_new_token(t_shell *data, char *content, int flag)
 {
 	t_token	*c;
 
@@ -32,12 +32,13 @@ t_token	*ft_new_token(char *content)
 		free(c);
 		return (NULL);
 	}
+	c->type = set_token_type(data, content);
 	c->str[1] = NULL;
 	c->infile = 0;
 	c->outfile = 1;
-	c->type = -1;
 	c->next = c;
 	c->prev = c;
+	printf("%d\n", flag);
 	return (c);
 }
 
@@ -98,29 +99,40 @@ void	delone(t_shell *data, t_token *t)
 }
 
 
-t_token	*add_param(t_shell *data, int i, char **str)
+t_token	*add_param(t_shell *data, t_token *t)
 {
-	t_token	*t;
-	t_token	*u;
-	int		j;
-	int		count;
+	t_token	*temp;
+	t_token	*temp2;
+	char	*str;
+	int		len;
+	int		i;
 
-	j = 0;
-	t = data->token;
-	while (j < i)
-	{
-		t = t->next;
-		j++;
-	}
-	if (str[i + 1] == NULL)
+	if (!t || !t->next || t->next == t)
 		return (t);
-	u = t;
-	count = 1;
-	while (u != data->token->prev && u->next->type != 2)
+	temp = t->next;
+	len = 1;
+	while (temp->type != 2 && temp != t)
 	{
-		count++;
-		u = u->next;
+		len++;
+		temp = temp->next;
 	}
-	strdup_param(t, i, str, count);
+	temp = t->next;
+	str = ft_strdup(t->str[0]);
+	free_str(t->str);
+	t->str = malloc(sizeof(char *) * (len + 2));
+	if (!t->str)
+		return (t);
+	t->str[0] = str;
+	i = 1;
+	while (len > 0)
+	{
+		temp2 = temp->next;
+		t->str[i] = ft_strdup(temp->str[0]);
+		delone(data, temp);
+		temp = temp2;
+		i++;
+		len--;
+	}
+	t->str[i] = NULL;
 	return (t);
 }
