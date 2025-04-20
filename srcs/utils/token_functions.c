@@ -25,7 +25,7 @@ t_token	*ft_new_token(t_shell *data, char *content, int flag)
 		free(c);
 		return (NULL);
 	}
-	c->str[0] = ft_strdup(content);
+	c->str[0] = ft_strdup(init_nstr(data, content, flag));
 	if (!c->str[0])
 	{
 		free_str(c->str);
@@ -38,7 +38,6 @@ t_token	*ft_new_token(t_shell *data, char *content, int flag)
 	c->outfile = 1;
 	c->next = c;
 	c->prev = c;
-	printf("%d\n", flag);
 	return (c);
 }
 
@@ -123,6 +122,7 @@ t_token	*add_param(t_shell *data, t_token *t)
 	if (!t->str)
 		return (t);
 	t->str[0] = str;
+	len--;
 	i = 1;
 	while (len > 0)
 	{

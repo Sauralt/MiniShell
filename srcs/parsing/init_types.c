@@ -51,7 +51,7 @@ int	set_token_type(t_shell *data, char *str)
 		free(path);
 		return (1);
 	}
-	if (meta_char(str) == 1)
+	if (meta_char(str) == 0)
 		return (2);
 	return (0);
 }

@@ -15,11 +15,13 @@
 int	parsing(t_shell *data, char *line)
 {
 	int		i;
+	int		flag;
 	int		start;
 	char	*word;
 	char	quote;
 
 	i = 0;
+	flag = 0;
 	while (line[i])
 	{
 		if (line[i] == '\'' || line[i] == '"')
@@ -37,15 +39,20 @@ int	parsing(t_shell *data, char *line)
 			else
 				init_list_tok(data, word, 0);
 			free(word);
+			i++;
 		}
-		if (line[i] != ' ')
+		else if (line[i] != ' ')
 		{
 			start = i;
 			while (line[i] && line[i] != ' ')
+			{
 				i++;
+				flag = 1;
+			}
 			word = ft_strndup(line, start, i - start);
-			init_list_tok(data, word, 0);
+			init_list_tok(data, word, flag);
 			free(word);
+			flag = 0;
 		}
 		else
 			i++;

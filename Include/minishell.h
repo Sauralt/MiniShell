@@ -52,6 +52,7 @@ int		main(int argc, char **argv, char **env);
 int		init_tokens(t_shell *data, char *line);
 int		parsing(t_shell *data, char *line);
 void	init_list_tok(t_shell *data, char *str, int flag);
+char	*init_nstr(t_shell *data, char *str, int flag);
 int		set_token_type(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, t_token *t);
 void	heredoc(t_shell *data, char *delimiter);
@@ -93,7 +94,6 @@ char	**make_env_str(t_env *env);
 
 int		exec_abs(char **cmd, t_env *env);
 char	**re_split(t_shell *data, char **str);
-char	**change_str(t_shell *data, char **str);
 char	*ft_verif_str_type(t_shell *data, char *content);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 int		is_valid_var_char(char c);
