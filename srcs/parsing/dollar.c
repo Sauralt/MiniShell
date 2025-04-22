@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/22 17:18:21 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:00:06 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static int	len_var(t_shell *data, char **var)
 
 	i = 0;
 	len = 0;
-	printf("%d\n", data->del_num);
 	while (var[i])
 	{
 		j = 0;

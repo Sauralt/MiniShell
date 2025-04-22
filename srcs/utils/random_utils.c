@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 17:51:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:04:38 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,12 @@ char	*ft_strndup_no_quote(char *s, int start, int len, t_shell *data)
 		{
 			if (temp[i] == quote)
 				i++;
-			str[j] = temp[i];
-			i++;
-			j++;
+			else
+			{
+				str[j] = temp[i];
+				i++;
+				j++;
+			}
 		}
 	}
 	else
@@ -84,11 +87,15 @@ char	*ft_strndup_no_quote(char *s, int start, int len, t_shell *data)
 		{
 			if (temp[i] == quote)
 				i++;
-			str[j] = temp[i];
-			i++;
-			j++;
+			else
+			{
+				str[j] = temp[i];
+				i++;
+				j++;
+			}
 		}
 	}
+	free(temp);
 	str[j] = '\0';
 	return (str);
 }
