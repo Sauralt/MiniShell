@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 14:48:40 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:19:04 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	*ft_strjoin_free(char *s1, char *s2)
 char	**init_str(t_shell *data, char *line)
 {
 	char	**str;
-	char	**temp;
 
 	str = ft_split(line, ' ');
 	if (!str)
@@ -49,10 +48,7 @@ char	**init_str(t_shell *data, char *line)
 	str = re_split(data, str);
 	if (!str)
 		return (NULL);
-	temp = str;
 	str = ft_quote(str, data);
-	if (!str)
-		return (ft_dprintf(2, "open quote\n"), temp);
 	return (str);
 }
 

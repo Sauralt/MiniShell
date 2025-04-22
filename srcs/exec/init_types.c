@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 14:28:20 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:33:57 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,24 @@ static void	set_token_type(t_shell *data, int type)
 		t->type = 1;
 }
 
+// void	close_all_fds(t_token *t)
+// {
+// 	while (t)
+// 	{
+// 		if (t->infile > 2)
+// 		{
+// 			close(t->infile);
+// 			t->infile = -1;
+// 		}
+// 		if (t->outfile > 2)
+// 		{
+// 			close(t->outfile);
+// 			t->outfile = -1;
+// 		}
+// 		t = t->next;
+// 	}
+// }
+
 static void	full_cmd(t_shell *data, char **str, int i)
 {
 	t_token	*t;
@@ -89,6 +107,7 @@ static void	full_cmd(t_shell *data, char **str, int i)
 		t = temp;
 		i++;
 	}
+	//close_all_fds(data->token);
 }
 
 static void	set_token_from_str(t_shell *data, char *arg)

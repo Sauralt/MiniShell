@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 15:18:35 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:47:26 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,6 @@ int		ft_printstring(int fd, int l, char *a);
 int		ft_printuns(int fd, int l, unsigned int a);
 char	*ft_strjoin_free(char *s1, char *s2);
 int		is_operator(char c);
+char	*expand_dollar(t_shell *data, char *input);
 
 #endif

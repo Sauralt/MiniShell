@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 15:19:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 14:52:45 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:12:23 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,20 @@ static int	count_new_tokens(const char *str)
 	return (count);
 }
 
-static int	fill_parsed_str(const char *str, char *s)
+static char	*ft_parse(const char *str)
 {
-	int	i;
-	int	j;
+	int		len;
+	char	*s;
+	int		i;
+	int		j;
 
+	len = 0;
 	i = 0;
 	j = 0;
+	len = strlen(str) + count_new_tokens(str) + 1;
+	s = malloc(sizeof(char) * len + 1);
+	if (!s)
+		return (NULL);
 	while (str[i])
 	{
 		if (is_operator(str[i]))
@@ -56,19 +63,6 @@ static int	fill_parsed_str(const char *str, char *s)
 		i++;
 	}
 	s[j] = '\0';
-	return (j);
-}
-
-static char	*ft_parse(const char *str)
-{
-	int		len;
-	char	*s;
-
-	len = ft_strlen(str) + count_new_tokens(str) + 1;
-	s = malloc(sizeof(char) * (len + 1));
-	if (!s)
-		return (NULL);
-	fill_parsed_str(str, s);
 	return (s);
 }
 
