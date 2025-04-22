@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 14:38:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/22 16:50:25 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	parsing(t_shell *data, char *line)
 						i++;
 					if (line[i] == '\0')
 						return (ft_dprintf(2, "open quote\n"), 2);
-					i++;
 				}
 				i++;
 			}

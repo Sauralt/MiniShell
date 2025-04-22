@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 16:39:45 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/22 17:51:35 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,40 +50,46 @@ char	find_quote(char *s, int start, int len)
 char	*ft_strndup_no_quote(char *s, int start, int len, t_shell *data)
 {
 	char	*str;
+	char	*temp;
+	char	quote;
 	int		i;
 	int		j;
-	int		flag;
-	char	quote;
 
-	flag = 0;
 	j = 0;
 	quote = find_quote(s, start, len);
-	s = ft_strdup(init_nstr(data, s, start, len));
-	str = malloc((real_len(s, start, len, quote) + 1) * sizeof(char));
-	//printf("%s\n", str);
-	if (!str)
-		return (NULL);
-	i = start;
-	while (i < start + len)
+	temp = ft_strdup(init_nstr(data, s, start, len));
+	if (strcmp(temp, s) == 0)
 	{
-		if (s[i] == quote)
+		str = malloc((real_len(s, start, len, quote) + 1) * sizeof(char));
+		if (!str)
+			return (s);
+		i = start;
+		while (i < start + len)
 		{
-			if (flag == 0)
-				flag = 1;
-			else
-				flag = 0;
+			if (temp[i] == quote)
+				i++;
+			str[j] = temp[i];
 			i++;
+			j++;
 		}
-		str[j] = s[i];
-		i++;
-		j++;
+	}
+	else
+	{
+		str = malloc((real_len(temp, 0, ft_strlen(temp), quote) + 1)
+				* sizeof(char));
+		if (!str)
+			return (s);
+		i = 0;
+		while (temp[i])
+		{
+			if (temp[i] == quote)
+				i++;
+			str[j] = temp[i];
+			i++;
+			j++;
+		}
 	}
 	str[j] = '\0';
-	if (flag == 1)
-	{
-		free(str);
-		return (NULL);
-	}
 	return (str);
 }
 

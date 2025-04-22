@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/22 16:33:15 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/22 17:18:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,9 +148,9 @@ static char	*change_dollar(t_shell *data, char *str, int len, int i)
 
 char	*init_nstr(t_shell *data, char *str, int start, int l)
 {
-	int	i;
-	int	len;
-	int	quote;
+	int		i;
+	int		len;
+	int		quote;
 
 	i = 0;
 	i += start;
