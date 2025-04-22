@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 15:28:04 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:17:35 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,21 @@ typedef struct s_shell
 	int		exit_code;
 	int		fd[2];
 	int		del_num;
+	int		start;
+	int		l;
 	t_env	*env;
 }			t_shell;
 
 int		main(int argc, char **argv, char **env);
 int		init_tokens(t_shell *data, char *line);
 int		parsing(t_shell *data, char *line);
-void	init_list_tok(t_shell *data, char *str, int flag);
-char	*init_nstr(t_shell *data, char *str, int flag);
+void	init_list_tok(t_shell *data, char *str);
+char	*init_nstr(t_shell *data, char *str, int start, int len);
 int		set_token_type(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, t_token *t);
 void	heredoc(t_shell *data, char *delimiter);
 t_token	*add_param(t_shell *data, t_token *t);
-t_token	*ft_new_token(t_shell *data, char *content, int flag);
+t_token	*ft_new_token(t_shell *data, char *content);
 char	*ft_dollar(t_shell *data, char *str);
 void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
@@ -109,5 +111,6 @@ int		ft_printint(int fd, int l, int a);
 int		ft_printptr(int fd, int t, int l, void *a);
 int		ft_printstring(int fd, int l, char *a);
 int		ft_printuns(int fd, int l, unsigned int a);
+char	*ft_strndup_no_quote(char *s, int start, int len, t_shell *data);
 
 #endif

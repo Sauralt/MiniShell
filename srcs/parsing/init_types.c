@@ -6,19 +6,19 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 12:53:37 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:33:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_list_tok(t_shell *data, char *str, int flag)
+void	init_list_tok(t_shell *data, char *str)
 {
 	t_token	*temp;
 
 	if (!str)
 		return ;
-	temp = ft_new_token(data, str, flag);
+	temp = ft_new_token(data, str);
 	if (!temp)
 	{
 		free_tokens(data->token);
@@ -77,8 +77,13 @@ static void	full_cmd(t_shell *data)
 
 int	init_tokens(t_shell *data, char *line)
 {
-	if (parsing(data, line) == 1)
+	int	flag;
+
+	flag = parsing(data, line);
+	if (flag == 1)
 		return (1);
+	if (flag == 2)
+		return (2);
 	full_cmd(data);
 	return (0);
 }

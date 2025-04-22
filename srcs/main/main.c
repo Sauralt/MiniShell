@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/17 17:52:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:12:50 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_shell	*data;
 	char	*line;
+	int		tok;
 
 	data = malloc(sizeof(t_shell));
 	signal(SIGINT, handle_sigint);
@@ -42,9 +43,10 @@ int	main(int argc, char **argv, char **env)
 		if (!line)
 			break ;
 		add_history(line);
-		if (ft_strncmp(line, "\0", 2) != 0 && init_tokens(data, line) == 1)
+		tok = init_tokens(data, line);
+		if (ft_strncmp(line, "\0", 2) != 0 && tok == 1)
 			break ;
-		if (ft_strncmp(line, "\0", 2) != 0)
+		if (ft_strncmp(line, "\0", 2) != 0 && tok != 2)
 			proc(data);
 		free_all(data, line);
 	}
