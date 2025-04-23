@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 16:43:15 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:57:18 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	exec_cmd(char *line);
 void	ft_cd(t_shell *data, t_token *str);
 int		ft_pwd(t_shell *data);
 int		ft_env(t_shell *data);
-int		ft_echo(t_shell *data, t_token *str);
+int		ft_echo(t_token *str);
 int		ft_unset(t_shell *data, t_token *str);
 int		ft_export(t_shell *data, t_token *str);
 int		ft_exit(t_shell *data, t_token *str);
