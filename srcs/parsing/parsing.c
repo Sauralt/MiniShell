@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 16:50:25 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:35:57 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	parsing(t_shell *data, char *line)
 	char	*word;
 	char	quote;
 
+	if (line[0] == '\0')
+		return (2);
 	i = 0;
 	while (line[i])
 	{
@@ -28,7 +30,8 @@ int	parsing(t_shell *data, char *line)
 			start = i;
 			while (line[i] && line[i] != ' ')
 			{
-				if (line[i] == '\'' || line[i] == '"')
+				if ((line[i] == '\'' || line[i] == '"')
+					&& line[i] != line[i + 1])
 				{
 					quote = line[i];
 					i++;
@@ -36,6 +39,12 @@ int	parsing(t_shell *data, char *line)
 						i++;
 					if (line[i] == '\0')
 						return (ft_dprintf(2, "open quote\n"), 2);
+				}
+				else if ((line[i] == '\'' || line[i] == '"')
+					&& line[i] == line[i + 1])
+				{
+					i++;
+					start = i + 1;
 				}
 				i++;
 			}

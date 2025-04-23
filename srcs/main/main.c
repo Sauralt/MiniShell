@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 14:12:50 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:06:38 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,9 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		if (ft_strncmp(line, "\0", 2) != 0 && tok != 2)
 			proc(data);
-		free_all(data, line);
+		free(line);
+		free_tokens(data->token);
 	}
-	free_env(data->env);
 	free_all(data, line);
-	free(data);
-	rl_clear_history();
 	return (0);
 }

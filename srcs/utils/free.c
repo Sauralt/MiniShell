@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 14:13:43 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:06:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ void	free_all(t_shell *data, char *line)
 {
 	free(line);
 	free_tokens(data->token);
+	free_env(data->env);
+	free(data);
+	rl_clear_history();
 }
 
 void	free_str(char **str)

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 14:33:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:43:36 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,12 @@ static int	meta_char(char *str)
 int	set_token_type(t_shell *data, char *str)
 {
 	char	*path;
+	int		i;
 
+	i = 0;
 	if (is_builtin(str) == true)
 		return (1);
-	path = find_path(str, data->env);
+	path = find_path(str, data->env, i);
 	if (path)
 	{
 		free(path);

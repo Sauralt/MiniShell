@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 15:17:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:43:15 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*ft_dollar(t_shell *data, char *str);
 void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	delone(t_shell *data, t_token *t);
-char	*find_path(char *cmd, t_env *envp);
+char	*find_path(char *cmd, t_env *envp, int i);
 t_env	*find_env(t_env *env, const char *key);
 int		init_stacks(t_shell *data);
 void	free_tokens(t_token *t);

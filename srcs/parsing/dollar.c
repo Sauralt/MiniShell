@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/23 14:56:27 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:23:16 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ static char	*change_str(char *str, char **var, t_shell *data, int j)
 	t = 0;
 	while (i < data->start + data->l)
 	{
-		printf("t : %d len : %d\n", t, data->start + data->l);
 		k = 0;
 		if (str[i] == '$')
 		{
+			i++;
 			while (i < data->start + data->l
 				&& ((str[i] >= 'A' && str[i] <= 'Z')
-					|| str[i] == '$' || ft_isdigit(str[i]) || str[i] == '_'))
+					|| ft_isdigit(str[i]) || str[i] == '_'))
 				i++;
 			while (var[j][k])
 			{
@@ -134,7 +134,7 @@ static char	*change_dollar(t_shell *data, char *str, int len, int i)
 			start = i;
 			i++;
 			while (i < data->start + data->l && ((str[i] >= 'A'
-						&& str[i] <= 'Z') || ft_isdigit(str[i]) 
+						&& str[i] <= 'Z') || ft_isdigit(str[i])
 					|| str[i] == '_'))
 				i++;
 			temp = ft_strndup(str, start, i - start);
@@ -143,7 +143,7 @@ static char	*change_dollar(t_shell *data, char *str, int len, int i)
 		}
 		else
 			i++;
-		}
+	}
 	var[j] = NULL;
 	str = change_str(str, var, data, j);
 	return (str);
@@ -155,8 +155,7 @@ char	*init_nstr(t_shell *data, char *str, int start, int l)
 	int		len;
 	int		quote;
 
-	i = 0;
-	i += start;
+	i = start;
 	len = 0;
 	quote = 1;
 	while (i < start + l)
@@ -167,9 +166,9 @@ char	*init_nstr(t_shell *data, char *str, int start, int l)
 			len++;
 		i++;
 	}
-	i = data->start;
 	data->start = start;
 	data->l = l;
+	i = data->start;
 	if (len > 0)
 		str = change_dollar(data, str, len, i);
 	return (str);

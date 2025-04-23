@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:37:50 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/15 15:15:07 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:43:01 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,21 @@ static char	**collect_path(t_env *env)
 
 	paths = NULL;
 	t = env;
-	while (t != env->prev && ft_strnstr(t->str, "PATH", 4) == 0)
+	while (t != env->prev && ft_strnstr(t->str, "PATH=", 5) == 0)
 		t = t->next;
 	if (t->next != env)
 		paths = ft_split(t->str + 5, ':');
 	return (paths);
 }
 
-char	*find_path(char *cmd, t_env *env)
+char	*find_path(char *cmd, t_env *env, int i)
 {
 	char	**paths;
 	char	*path;
 	char	*part_path;
-	int		i;
 
-	i = 0;
+	if (ft_strchr(cmd, '/'))
+		return (ft_strdup(cmd));
 	paths = collect_path(env);
 	if (!paths)
 		return (0);
@@ -71,7 +71,7 @@ char	*find_path(char *cmd, t_env *env)
 		part_path = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(part_path, cmd);
 		free(part_path);
-		if (access(path, F_OK) == 0)
+		if (access(path, X_OK) == 0)
 		{
 			free_str(paths);
 			return (path);
