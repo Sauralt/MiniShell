@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/22 18:00:06 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:42:33 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,13 @@ static char	*change_str(char *str, char **var, t_shell *data, int j)
 	t = 0;
 	while (i < data->start + data->l)
 	{
+		printf("i : %d len : %d\n", i, data->start + data->l);
 		k = 0;
 		if (str[i] == '$')
 		{
-			while (i < data->start + data->l && ((str[i] >= 'A' && str[i] <= 'Z')
-					|| str[i] == '$' || ft_isdigit(str[i]) || str[i] == '_'))
+			while (i < data->start + data->l
+				&& ((str[i] >= 'A' && str[i] <= 'Z')
+					|| ft_isdigit(str[i]) || str[i] == '_'))
 				i++;
 			while (var[j][k])
 			{
@@ -130,16 +132,18 @@ static char	*change_dollar(t_shell *data, char *str, int len, int i)
 		if (str[i] == '$' && quote != 1)
 		{
 			start = i;
-			while (i < data->start + data->l && ((str[i] >= 'A' && str[i] <= 'Z')
-					|| str[i] == '$' || ft_isdigit(str[i]) || str[i] == '_'))
+			i++;
+			while (i < data->start + data->l && ((str[i] >= 'A'
+						&& str[i] <= 'Z') || ft_isdigit(str[i]) 
+					|| str[i] == '_'))
 				i++;
 			temp = ft_strndup(str, start, i - start);
 			var[j] = ft_dollar(data, temp);
 			j++;
-			i--;
 		}
-		i++;
-	}
+		else
+			i++;
+		}
 	var[j] = NULL;
 	str = change_str(str, var, data, j);
 	return (str);
