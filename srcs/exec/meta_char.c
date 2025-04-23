@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 14:15:09 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:19:14 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	infile_redirect(t_shell *data, t_token *t)
 	if (infile == -1)
 	{
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
-			t->prev->str[0]);
+			t->next->str[0]);
 		return ;
 	}
 	if (t != data->token)
@@ -43,7 +43,7 @@ static void	outfile_trunc(t_token *t)
 	if (outfile == -1)
 	{
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
-			t->prev->str[0]);
+			t->next->str[0]);
 		return ;
 	}
 	t->prev->outfile = outfile;
@@ -58,7 +58,7 @@ static void	outfile_append(t_token *t)
 	if (outfile == -1)
 	{
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
-			t->prev->str[0]);
+			t->next->str[0]);
 		return ;
 	}
 	t->prev->outfile = outfile;

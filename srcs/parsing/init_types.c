@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 16:43:36 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:49:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_list_tok(t_shell *data, char *str)
+void	init_list_tok(t_shell *data, char *str, char quote)
 {
 	t_token	*temp;
 
@@ -25,6 +25,8 @@ void	init_list_tok(t_shell *data, char *str)
 		return ;
 	}
 	ft_add_token(&data->token, temp);
+	if (quote == '\0')
+		check_meta_in_word(data, temp);
 }
 
 static int	meta_char(char *str)

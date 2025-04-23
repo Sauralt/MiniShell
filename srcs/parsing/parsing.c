@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 15:35:57 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:09:40 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	parsing(t_shell *data, char *line)
 			word = ft_strndup_no_quote(line, start, i - start, data);
 			if (!word)
 				return (ft_dprintf(2, "open quote\n"), 2);
-			init_list_tok(data, word);
+			init_list_tok(data, word, quote);
 			free(word);
 		}
 		else

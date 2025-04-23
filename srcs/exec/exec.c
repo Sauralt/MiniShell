@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 16:57:25 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:31:32 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int	proc(t_shell *data)
 			exec(data, t);
 		t = t->next;
 	}
+	printf("%s\n", t->str[0]);
 	if (builtin(data, data->token) == 1 && t->type != 2)
 		exec(data, t);
 	close_dup(original_stdin, original_stdout);

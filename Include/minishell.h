@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 16:57:18 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:39:11 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,24 @@ typedef struct s_shell
 int		main(int argc, char **argv, char **env);
 int		init_tokens(t_shell *data, char *line);
 int		parsing(t_shell *data, char *line);
-void	init_list_tok(t_shell *data, char *str);
+void	init_list_tok(t_shell *data, char *str, char quote);
 char	*init_nstr(t_shell *data, char *str, int start, int len);
 int		set_token_type(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, t_token *t);
 void	heredoc(t_shell *data, char *delimiter);
+int		init_stacks(t_shell *data);
+void	check_meta_in_word(t_shell *data, t_token *t);
+
 t_token	*add_param(t_shell *data, t_token *t);
 t_token	*ft_new_token(t_shell *data, char *content);
 char	*ft_dollar(t_shell *data, char *str);
 void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	delone(t_shell *data, t_token *t);
+
 char	*find_path(char *cmd, t_env *envp, int i);
 t_env	*find_env(t_env *env, const char *key);
-int		init_stacks(t_shell *data);
-void	free_tokens(t_token *t);
+
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	exec_cmd(char *line);
@@ -83,6 +86,7 @@ int		ft_exit(t_shell *data, t_token *str);
 void	free_all(t_shell *data, char *line);
 void	free_env(t_env *env);
 void	free_str(char **str);
+void	free_tokens(t_token *t);
 void	ft_close(int *fd);
 
 int		proc(t_shell *data);
