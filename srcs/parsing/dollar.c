@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/24 11:31:01 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:44:12 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,7 @@ static char	*change_str(char *str, char **var, t_shell *data, int j)
 			while (i < data->start + data->l
 				&& ((str[i] >= 'A' && str[i] <= 'Z')
 					|| ft_isdigit(str[i]) || str[i] == '_'))
-			{
-				if (str[i] == '\'' && str[i + 1] == '$')
-					i += 2;
-				else
-					i++;
-			}
+				i++;
 			while (var[j][k])
 			{
 				nstr[t] = var[j][k];
