@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 18:49:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/24 09:35:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	init_list_tok(t_shell *data, char *str, char quote)
 		check_meta_in_word(data, temp);
 }
 
-static int	meta_char(char *str)
+int	meta_char(char *str)
 {
 	int	len;
 

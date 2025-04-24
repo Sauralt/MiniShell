@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:30:55 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 18:41:10 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/24 10:12:26 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,14 @@ static char	**n_token(int i, int start, t_token *t, char **temp)
 			i++;
 			if (t->str[0][i] == t->str[0][i - 1])
 				i++;
-			temp[j] = ft_strndup(t->str[0], start, i - start);
-			j++;
+			temp[j++] = ft_strndup(t->str[0], start, i - start);
 		}
 		else
 		{
 			while (t->str[0][i] != '\0' && t->str[0][i] != '<'
 				&& t->str[0][i] != '>' && t->str[0][i] != '|')
 				i++;
-			temp[j] = ft_strndup(t->str[0], start, i - start);
-			j++;
+			temp[j++] = ft_strndup(t->str[0], start, i - start);
 		}
 	}
 	temp[j] = NULL;
@@ -86,8 +84,6 @@ void	check_meta_in_word(t_shell *data, t_token *t)
 	int		start;
 	char	**temp;
 
-	if (ft_strlen(t->str[0]) == 1 || ft_strlen(t->str[0]) == 2)
-		return ;
 	i = 0;
 	len = 0;
 	len = count_len(t, len);
@@ -97,11 +93,9 @@ void	check_meta_in_word(t_shell *data, t_token *t)
 	i = 0;
 	start = 0;
 	temp = n_token(i, start, t, temp);
-	while (temp[i])
-	{
-		printf("%s\n", temp[i]);
-		i++;
-	}
+	if (!temp)
+		return ;
+	delone(data, t);
 	new_tokens(data, temp);
 	free_str(temp);
 }
