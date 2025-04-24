@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/23 16:23:16 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:31:01 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,36 @@ static char	*change_str(char *str, char **var, t_shell *data, int j)
 	int		i;
 	int		t;
 	int		k;
+	int		quote;
 
 	nstr = malloc(sizeof(char) * (len_var(data, var) + 1));
 	i = data->start;
 	j = 0;
 	t = 0;
+	quote = 0;
 	while (i < data->start + data->l)
 	{
 		k = 0;
-		if (str[i] == '$')
+		if (str[i] == '"' && quote == 0)
+			quote = 2;
+		else if (str[i] == '"' && quote == 2)
+			quote = 0;
+		if (str[i] == '\'' && quote == 0)
+			quote = 1;
+		else if (str[i] == '\'' && quote == 1)
+			quote = 0;
+		if (str[i] == '$' && quote != 1)
 		{
 			i++;
 			while (i < data->start + data->l
 				&& ((str[i] >= 'A' && str[i] <= 'Z')
 					|| ft_isdigit(str[i]) || str[i] == '_'))
-				i++;
+			{
+				if (str[i] == '\'' && str[i + 1] == '$')
+					i += 2;
+				else
+					i++;
+			}
 			while (var[j][k])
 			{
 				nstr[t] = var[j][k];
@@ -125,6 +140,10 @@ static char	*change_dollar(t_shell *data, char *str, int len, int i)
 	quote = 0;
 	while (i < data->start + data->l)
 	{
+		if (str[i] == '"' && quote == 0)
+			quote = 2;
+		else if (str[i] == '"' && quote == 2)
+			quote = 0;
 		if (str[i] == '\'' && quote == 0)
 			quote = 1;
 		else if (str[i] == '\'' && quote == 1)
@@ -157,12 +176,18 @@ char	*init_nstr(t_shell *data, char *str, int start, int l)
 
 	i = start;
 	len = 0;
-	quote = 1;
+	quote = 0;
 	while (i < start + l)
 	{
-		if (str[i] == '\'')
+		if (str[i] == '"' && quote == 0)
+			quote = 2;
+		else if (str[i] == '"' && quote == 2)
 			quote = 0;
-		if (str[i] == '$' && quote != 0)
+		if (str[i] == '\'' && quote == 0)
+			quote = 1;
+		else if (str[i] == '\'' && quote == 1)
+			quote = 0;
+		if (str[i] == '$' && quote != 1)
 			len++;
 		i++;
 	}
