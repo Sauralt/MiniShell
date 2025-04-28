@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 16:57:20 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:28:15 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ int	exec_abs(char **cmd, t_env *env)
 {
 	char	*path;
 	char	**envp;
+	int		i;
 
+	i = 0;
 	envp = make_env_str(env);
-	path = find_path(cmd[0], env);
+	path = find_path(cmd[0], env, i);
 	if (!path)
 	{
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);

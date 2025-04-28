@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 17:06:33 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:28:20 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	infile_redirect(t_shell *data, t_token *t)
 	if (infile == -1)
 	{
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
-			t->prev->str[0]);
+			t->next->str[0]);
 		return ;
 	}
 	if (t != data->token)

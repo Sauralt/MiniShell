@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 14:33:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:30:09 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_list_tok(t_shell *data, char *str)
+void	init_list_tok(t_shell *data, char *str, char quote)
 {
 	t_token	*temp;
 
@@ -25,9 +25,11 @@ void	init_list_tok(t_shell *data, char *str)
 		return ;
 	}
 	ft_add_token(&data->token, temp);
+	if (quote == '\0')
+		check_meta_in_word(data, temp);
 }
 
-static int	meta_char(char *str)
+int	meta_char(char *str)
 {
 	int	len;
 
@@ -42,10 +44,12 @@ static int	meta_char(char *str)
 int	set_token_type(t_shell *data, char *str)
 {
 	char	*path;
+	int		i;
 
+	i = 0;
 	if (is_builtin(str) == true)
 		return (1);
-	path = find_path(str, data->env);
+	path = find_path(str, data->env, i);
 	if (path)
 	{
 		free(path);

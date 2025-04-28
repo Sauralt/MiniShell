@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 15:04:03 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:30:39 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	parsing(t_shell *data, char *line)
 	char	*word;
 	char	quote;
 
-	i = 0;
 	if (line[0] == '\0')
 		return (2);
+	i = 0;
 	while (line[i])
 	{
 		quote = '\0';
@@ -30,7 +30,8 @@ int	parsing(t_shell *data, char *line)
 			start = i;
 			while (line[i] && line[i] != ' ')
 			{
-				if (line[i] == '\'' || line[i] == '"')
+				if ((line[i] == '\'' || line[i] == '"')
+					&& line[i] != line[i + 1])
 				{
 					quote = line[i];
 					i++;
@@ -39,12 +40,18 @@ int	parsing(t_shell *data, char *line)
 					if (line[i] == '\0')
 						return (ft_dprintf(2, "open quote\n"), 2);
 				}
+				else if ((line[i] == '\'' || line[i] == '"')
+					&& line[i] == line[i + 1])
+				{
+					i++;
+					start = i + 1;
+				}
 				i++;
 			}
 			word = ft_strndup_no_quote(line, start, i - start, data);
 			if (!word)
 				return (ft_dprintf(2, "open quote\n"), 2);
-			init_list_tok(data, word);
+			init_list_tok(data, word, quote);
 			free(word);
 		}
 		else

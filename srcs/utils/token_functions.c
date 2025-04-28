@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 17:58:21 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/28 14:27:23 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,10 @@ void	delone(t_shell *data, t_token *t)
 {
 	if (!t)
 		return ;
+	if (t->next == t && t->prev == t)
+		data->token = NULL;
+	else if (data->token == t)
+		data->token = t->next;
 	if (t->prev)
 		t->prev->next = t->next;
 	if (t->next)
@@ -95,6 +99,7 @@ void	delone(t_shell *data, t_token *t)
 	data->del_num++;
 	free_str(t->str);
 	free(t);
+	t = NULL;
 }
 
 
