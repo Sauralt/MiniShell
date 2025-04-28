@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 15:50:27 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/28 16:24:32 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_shell
 
 int		main(int argc, char **argv, char **env);
 int		init_tokens(t_shell *data, char *line);
+char	*remove_closed_quotes(char *line);
 int		parsing(t_shell *data, char *line);
 void	init_list_tok(t_shell *data, char *str, char quote);
 char	*init_nstr(t_shell *data, char *str, int start, int len);
