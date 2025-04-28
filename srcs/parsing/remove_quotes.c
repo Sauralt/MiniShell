@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:50:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 15:38:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:43:20 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,7 @@ static char	*loop(char *temp, char quote, int j, char *str)
 			i++;
 		}
 		else
-		{
 			str[j++] = temp[i++];
-		}
 	}
 	str[j] = '\0';
 	return (str);

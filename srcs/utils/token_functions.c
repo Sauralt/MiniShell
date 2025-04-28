@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/24 10:12:48 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:51:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,11 @@ void	delone(t_shell *data, t_token *t)
 	t = NULL;
 }
 
-
 t_token	*add_param(t_shell *data, t_token *t)
 {
 	t_token	*temp;
-	t_token	*temp2;
 	char	*str;
 	int		len;
-	int		i;
 
 	if (!t || !t->next || t->next == t)
 		return (t);
@@ -120,24 +117,11 @@ t_token	*add_param(t_shell *data, t_token *t)
 		len++;
 		temp = temp->next;
 	}
-	temp = t->next;
 	str = ft_strdup(t->str[0]);
 	free_str(t->str);
 	t->str = malloc(sizeof(char *) * (len + 2));
 	if (!t->str)
 		return (t);
-	t->str[0] = str;
-	len--;
-	i = 1;
-	while (len > 0)
-	{
-		temp2 = temp->next;
-		t->str[i] = ft_strdup(temp->str[0]);
-		delone(data, temp);
-		temp = temp2;
-		i++;
-		len--;
-	}
-	t->str[i] = NULL;
+	change_tok_str(t, str, len, data);
 	return (t);
 }
