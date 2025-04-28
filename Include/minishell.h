@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 16:24:32 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:12:58 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,7 @@ int		ft_printuns(int fd, int l, unsigned int a);
 char	*ft_strndup_no_quote(char *s, int start, int len, t_shell *data);
 char	*loop_no_dollar(char *temp, int start, int len, char *str);
 void	change_tok_str(t_token *t, char *str, int len, t_shell *data);
+int		quote_flag(int quote, char *str, int i);
+
 
 #endif

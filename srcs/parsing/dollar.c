@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/24 11:44:12 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:58:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,10 @@ static char	*change_str(char *str, char **var, t_shell *data, int j)
 	while (i < data->start + data->l)
 	{
 		k = 0;
-		if (str[i] == '"' && quote == 0)
-			quote = 2;
-		else if (str[i] == '"' && quote == 2)
-			quote = 0;
-		if (str[i] == '\'' && quote == 0)
-			quote = 1;
-		else if (str[i] == '\'' && quote == 1)
-			quote = 0;
-		if (str[i] == '$' && quote != 1)
+		quote = quote_flag(quote, str, i);
+		if (str[i] == '$' && quote != 1 && str[i + 1] != ' '
+			&& str[i + 1] == '"' && str[i + 1] != '='
+			&& str[i + 1] != '\'' && str[i + 1] == '\0')
 		{
 			i++;
 			while (i < data->start + data->l
@@ -135,15 +130,10 @@ static char	*change_dollar(t_shell *data, char *str, int len, int i)
 	quote = 0;
 	while (i < data->start + data->l)
 	{
-		if (str[i] == '"' && quote == 0)
-			quote = 2;
-		else if (str[i] == '"' && quote == 2)
-			quote = 0;
-		if (str[i] == '\'' && quote == 0)
-			quote = 1;
-		else if (str[i] == '\'' && quote == 1)
-			quote = 0;
-		if (str[i] == '$' && quote != 1)
+		quote = quote_flag(quote, str, i);
+		if (str[i] == '$' && quote != 1 && str[i + 1] != ' '
+			&& str[i + 1] == '"' && str[i + 1] == '\''
+			&& str[i + 1] != '=' && str[i + 1] != '\0')
 		{
 			start = i;
 			i++;
@@ -159,8 +149,7 @@ static char	*change_dollar(t_shell *data, char *str, int len, int i)
 			i++;
 	}
 	var[j] = NULL;
-	str = change_str(str, var, data, j);
-	return (str);
+	return (change_str(str, var, data, j));
 }
 
 char	*init_nstr(t_shell *data, char *str, int start, int l)
@@ -174,14 +163,7 @@ char	*init_nstr(t_shell *data, char *str, int start, int l)
 	quote = 0;
 	while (i < start + l)
 	{
-		if (str[i] == '"' && quote == 0)
-			quote = 2;
-		else if (str[i] == '"' && quote == 2)
-			quote = 0;
-		if (str[i] == '\'' && quote == 0)
-			quote = 1;
-		else if (str[i] == '\'' && quote == 1)
-			quote = 0;
+		quote = quote_flag(quote, str, i);
 		if (str[i] == '$' && quote != 1)
 			len++;
 		i++;
@@ -190,6 +172,6 @@ char	*init_nstr(t_shell *data, char *str, int start, int l)
 	data->l = l;
 	i = data->start;
 	if (len > 0)
-		str = change_dollar(data, str, len, i);
+		return (change_dollar(data, str, len, i));
 	return (str);
 }

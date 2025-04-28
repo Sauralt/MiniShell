@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:50:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 15:43:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:42:19 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static char	*is_dollar(char *s, char *temp)
 	if (!str)
 		return (s);
 	str = loop(temp, quote, j, str);
+	free(temp);
 	return (str);
 }
 
@@ -97,11 +98,10 @@ char	*ft_strndup_no_quote(char *s, int start, int len, t_shell *data)
 	char	*str;
 	char	*temp;
 
-	temp = ft_strdup(init_nstr(data, s, start, len));
+	temp = init_nstr(data, s, start, len);
 	if (strcmp(temp, s) == 0)
 		str = no_dollar(s, start, len, temp);
 	else
 		str = is_dollar(s, temp);
-	free(temp);
 	return (str);
 }
