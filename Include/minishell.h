@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/24 09:36:15 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/28 15:38:31 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ int		ft_printint(int fd, int l, int a);
 int		ft_printptr(int fd, int t, int l, void *a);
 int		ft_printstring(int fd, int l, char *a);
 int		ft_printuns(int fd, int l, unsigned int a);
+
 char	*ft_strndup_no_quote(char *s, int start, int len, t_shell *data);
+char	*loop_no_dollar(char *temp, int start, int len, char *str);
 
 #endif
