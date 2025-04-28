@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   new_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 15:19:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 17:12:23 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/18 12:54:32 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	is_operator(char c)
+{
+	return (c == '<' || c == '>' || c == '|');
+}
 
 static int	count_new_tokens(const char *str)
 {
@@ -114,3 +119,4 @@ char	**re_split(t_shell *data, char **str)
 	free_str(str);
 	return (new_tokens);
 }
+

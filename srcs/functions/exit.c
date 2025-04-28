@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/14 18:32:39 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:57:47 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
-
-static int	is_numeric(const char *str)
-{
-	if (!str || !*str)
-		return (0);
-	if (*str == '+' || *str == '-')
-		str++;
-	while (*str)
-	{
-		if (!isdigit(*str))
-			return (0);
-		str++;
-	}
-	return (1);
-}
 
 static long	ft_atol(const char *str)
 {
@@ -53,6 +38,21 @@ static long	ft_atol(const char *str)
 		str++;
 	}
 	return (result * sign);
+}
+
+static int	is_numeric(const char *str)
+{
+	if (!str || !*str)
+		return (0);
+	if (*str == '+' || *str == '-')
+		str++;
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (0);
+		str++;
+	}
+	return (1);
 }
 
 int	ft_exit(t_shell *data, t_token *str)

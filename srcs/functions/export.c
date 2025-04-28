@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/18 14:18:37 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:33:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,30 +85,29 @@ void	add_or_replace_env(t_shell *data, char *key, char *value)
 	}
 }
 
-int	ft_export(t_shell *data, t_token *str, int i)
+int	ft_export(t_shell *data, t_token *str)
 {
 	char	*key;
 	char	*value;
 	char	*delim;
+	int		i;
 
+	i = 1;
 	while (str->str[i])
 	{
+		if (ft_strncmp(str->str[i], "export", 7) == 0)
+			return (print_env(data->env), 0);
 		delim = ft_strchr(str->str[i], '=');
 		if (!delim || delim == str->str[i])
 			return (ft_dprintf(2, "export: invalid identifier\n"), 1);
 		key = strndup(str->str[i], delim - str->str[i]);
 		value = ft_strdup(delim + 1);
 		if (!key || !value)
-		{
-			free(key);
-			free(value);
-			perror("malloc");
-			return (1);
-		}
+			return (free(key), free(value), perror("malloc"), 1);
 		add_or_replace_env(data, key, value);
-		free(key);
-		free(value);
 		i++;
 	}
+	free(key);
+	free(value);
 	return (0);
 }

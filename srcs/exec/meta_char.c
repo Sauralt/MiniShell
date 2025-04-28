@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/22 13:58:52 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:06:33 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,54 +35,57 @@ static void	infile_redirect(t_shell *data, t_token *t)
 	}
 }
 
+t_token	*get_prev_cmd(t_token *t)
+{
+	while (t && t->prev && t->prev->type == 2)
+		t = t->prev;
+	return (t->prev);
+}
+
 static void	outfile_trunc(t_token *t)
 {
-	int	outfile;
+	int			outfile;
+	t_token		*cmd;
 
+	cmd = get_prev_cmd(t);
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
 	{
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
-			t->prev->str[0]);
+			t->next->str[0]);
 		return ;
 	}
-	t->prev->outfile = outfile;
+	cmd->outfile = outfile;
 	t->next->type = 2;
 }
 
 static void	outfile_append(t_token *t)
 {
-	int	outfile;
+	int		outfile;
+	t_token	*cmd;
 
+	cmd = get_prev_cmd(t);
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (outfile == -1)
 	{
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
-			t->prev->str[0]);
+			t->next->str[0]);
 		return ;
 	}
-	t->prev->outfile = outfile;
+	cmd->outfile = outfile;
 	t->next->type = 2;
 }
 
-void	check_meta_char(t_shell *data, int i)
+void	check_meta_char(t_shell *data, t_token *t)
 {
-	t_token	*t;
-	int		j;
-
-	j = 0;
-	t = data->token;
-	while (j < i - data->del_num)
-	{
-		t = t->next;
-		j++;
-	}
-	if (ft_strcmp(t->str[0], "<") == 0)
+	if (t->next == t)
+		return ;
+	if (strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, t);
-	if (ft_strcmp(t->str[0], "<<") == 0)
-		heredoc(data, t);
-	if (ft_strcmp(t->str[0], ">") == 0)
+	if (strcmp(t->str[0], ">") == 0)
 		outfile_trunc(t);
-	if (ft_strcmp(t->str[0], ">>") == 0)
+	if (strcmp(t->str[0], ">>") == 0)
 		outfile_append(t);
+	if (strcmp(t->str[0], "<<") == 0)
+		heredoc(data, t);
 }

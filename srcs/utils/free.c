@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 14:19:55 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:06:49 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ void	free_all(t_shell *data, char *line)
 {
 	free(line);
 	free_tokens(data->token);
+	free(data);
+	free_env(data->env);
+	rl_clear_history();
 }
 
 void	free_str(char **str)

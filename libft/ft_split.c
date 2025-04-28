@@ -48,24 +48,6 @@ void	ft_free(char **tab)
 	free(tab);
 }
 
-static char	*ft_strndup(const char *s, int start, int len)
-{
-	char	*str;
-	int		i;
-
-	str = (char *)malloc((len + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		str[i] = s[start + i];
-		i++;
-	}
-	str[len] = '\0';
-	return (str);
-}
-
 static char	**ft_separate(const char *s, char c, char **tab, int n)
 {
 	int	i;

@@ -3,69 +3,101 @@
 /*                                                        :::      ::::::::   */
 /*   random_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 17:19:04 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/23 14:30:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strjoin_free(char *s1, char *s2)
+static int	real_len(char *s, int start, int len, char quote)
 {
-	char	*res;
+	int	i;
+	int	c;
 
-	if (!s1 && s2)
+	c = 0;
+	i = start;
+	while (i < start + len)
 	{
-		res = ft_strdup(s2);
-		free(s2);
-		return (res);
-	}
-	if (!s2 && s1)
-	{
-		res = ft_strdup(s1);
-		free(s1);
-		return (res);
-	}
-	if (!s1)
-		return (s2);
-	if (!s2)
-		return (s1);
-	res = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (res);
-}
-
-char	**init_str(t_shell *data, char *line)
-{
-	char	**str;
-
-	str = ft_split(line, ' ');
-	if (!str)
-		return (NULL);
-	str = re_split(data, str);
-	if (!str)
-		return (NULL);
-	str = ft_quote(str, data);
-	return (str);
-}
-
-void	strdup_param(t_token *t, int i, char **str, int count)
-{
-	int	j;
-
-	free_str(t->str);
-	t->str = malloc(sizeof(char *) * (count + 1));
-	j = 0;
-	while (j < count && str[i] != NULL)
-	{
-		t->str[j] = ft_strdup(str[i]);
+		if (s[i] == quote)
+			c++;
 		i++;
-		j++;
 	}
-	t->str[j] = NULL;
+	return (len - c);
+}
+
+char	find_quote(char *s, int start, int len)
+{
+	int		i;
+	char	quote;
+
+	i = start;
+	quote = 0;
+	while (i < start + len)
+	{
+		if ((s[i] == '\'' || s[i] == '"'))
+		{
+			quote = s[i];
+			break ;
+		}
+		i++;
+	}
+	return (quote);
+}
+
+char	*ft_strndup_no_quote(char *s, int start, int len, t_shell *data)
+{
+	char	*str;
+	char	*temp;
+	char	quote;
+	int		i;
+	int		j;
+
+	j = 0;
+	quote = find_quote(s, start, len);
+	temp = ft_strdup(init_nstr(data, s, start, len));
+	if (strcmp(temp, s) == 0)
+	{
+		str = malloc((real_len(s, start, len, quote) + 1) * sizeof(char));
+		if (!str)
+			return (s);
+		i = start;
+		while (i < start + len)
+		{
+			if (temp[i] == quote)
+				i++;
+			else
+			{
+				str[j] = temp[i];
+				i++;
+				j++;
+			}
+		}
+	}
+	else
+	{
+		str = malloc((real_len(temp, 0, ft_strlen(temp), quote) + 1)
+				* sizeof(char));
+		if (!str)
+			return (s);
+		i = 0;
+		while (temp[i])
+		{
+			if (temp[i] == quote)
+				i++;
+			else
+			{
+				str[j] = temp[i];
+				i++;
+				j++;
+			}
+		}
+	}
+	free(temp);
+	str[j] = '\0';
+	return (str);
 }
 
 char	*ft_strncpy(char *dest, char *src, unsigned int n)
