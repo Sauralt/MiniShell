@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 15:18:28 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:17:17 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,55 +81,47 @@ static int	builtin(t_shell *data, t_token *cmd)
 	return (1);
 }
 
-static void	exec(t_shell *data, t_token *t)
+static void	handle_pipeline(t_shell *data, t_token *t)
 {
 	int		fd[2];
 	pid_t	pid;
 
-	if (ft_strcmp(t->next->str[0], "|") != 0)
-	{
-		if (builtin(data, t) == 1 && t->type != 2)
-		{
-			if (exec_simple(data, t) == 1)
-			{
-				perror("fork");
-				return ;
-			}
-		}
-		return ;
-	}
 	while (t->next != data->token)
 	{
 		if (t->type == 1)
 		{
 			if (pipe(fd) == -1)
-			{
-				perror("pipe");
-				return ;
-			}
+				return (perror("pipe"));
 			pid = fork();
 			if (pid < 0)
 			{
 				ft_close(fd);
-				perror("fork");
-				return ;
+				return (perror("fork"));
 			}
-			if (pid == 0)
-			{
-				if (builtin(data, t) == 1 && t->type != 2)
-					child_process(t, data, fd);
-			}
+			if (pid == 0 && builtin(data, t) == 1 && t->type != 2)
+				child_process(t, data, fd);
 			dup2(fd[0], STDIN_FILENO);
 			ft_close(fd);
 			waitpid(pid, NULL, 0);
 		}
 		t = t->next;
 	}
-	if (builtin(data, t) == 1 && t->type != 2)
+	if (builtin(data, t) == 1 && t->type != 2 && exec_simple(data, t) == 1)
+		perror("exec");
+}
+
+void	exec(t_shell *data, t_token *t)
+{
+	if (ft_strcmp(t->next->str[0], "|") != 0)
 	{
-		if (exec_simple(data, t) == 1)
-			perror("exec");
+		if (builtin(data, t) == 1 && t->type != 2)
+		{
+			if (exec_simple(data, t) == 1)
+				perror("fork");
+		}
+		return ;
 	}
+	handle_pipeline(data, t);
 }
 
 int	proc(t_shell *data)

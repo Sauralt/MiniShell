@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 15:30:39 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:30:50 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*expand_exit_code(t_shell *data, char *result, int *i)
 	char	*val;
 
 	val = ft_itoa(data->exit_code);
-	result = ft_strjoin_free(result, val); 
+	result = ft_strjoin_free(result, val);
 	*i += 2;
 	return (result);
 }
