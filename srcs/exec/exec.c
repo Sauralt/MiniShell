@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 13:17:47 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:18:28 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,55 @@ static int	builtin(t_shell *data, t_token *cmd)
 	return (1);
 }
 
-static void	close_dup(int original_stdin, int original_stdout)
+static void	exec(t_shell *data, t_token *t)
 {
-	dup2(original_stdin, STDIN_FILENO);
-	dup2(original_stdout, STDOUT_FILENO);
-	close(original_stdin);
-	close(original_stdout);
+	int		fd[2];
+	pid_t	pid;
+
+	if (ft_strcmp(t->next->str[0], "|") != 0)
+	{
+		if (builtin(data, t) == 1 && t->type != 2)
+		{
+			if (exec_simple(data, t) == 1)
+			{
+				perror("fork");
+				return ;
+			}
+		}
+		return ;
+	}
+	while (t->next != data->token)
+	{
+		if (t->type == 1)
+		{
+			if (pipe(fd) == -1)
+			{
+				perror("pipe");
+				return ;
+			}
+			pid = fork();
+			if (pid < 0)
+			{
+				ft_close(fd);
+				perror("fork");
+				return ;
+			}
+			if (pid == 0)
+			{
+				if (builtin(data, t) == 1 && t->type != 2)
+					child_process(t, data, fd);
+			}
+			dup2(fd[0], STDIN_FILENO);
+			ft_close(fd);
+			waitpid(pid, NULL, 0);
+		}
+		t = t->next;
+	}
+	if (builtin(data, t) == 1 && t->type != 2)
+	{
+		if (exec_simple(data, t) == 1)
+			perror("exec");
+	}
 }
 
 int	proc(t_shell *data)
@@ -104,14 +147,7 @@ int	proc(t_shell *data)
 		t = t->next;
 	if (t->next == data->token)
 		t = t->next;
-	while (t->next != data->token)
-	{
-		if (builtin(data, t) == 1 && t->type != 2)
-			exec(data, t);
-		t = t->next;
-	}
-	if (builtin(data, t) == 1 && t->type != 2)
-		exec(data, t);
+	exec(data, t);
 	close_dup(original_stdin, original_stdout);
 	return (0);
 }
