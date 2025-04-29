@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 17:03:21 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 11:21:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,19 @@ int	init_tokens(t_shell *data, char *line)
 	char	*temp;
 
 	temp = remove_closed_quotes(line);
+	if (!temp)
+		return (1);
 	flag = parsing(data, temp);
 	if (flag == 1)
+	{
+		free(temp);
 		return (1);
+	}
 	if (flag == 2)
+	{
+		free(temp);
 		return (2);
+	}
 	free(temp);
 	full_cmd(data);
 	return (0);

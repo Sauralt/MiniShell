@@ -6,11 +6,31 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 18:55:26 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 11:27:25 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	skip_len(char *line)
+{
+	int	i;
+	int	skip;
+
+	i = 0;
+	skip = 0;
+	while (line[i])
+	{
+		if ((line[i] == '\'' || line[i] == '"') && line[i + 1] == line[i])
+		{
+			skip += 2;
+			i += 2;
+		}
+		else
+			i++;
+	}
+	return (skip);
+}
 
 char	*remove_closed_quotes(char *line)
 {
@@ -18,49 +38,44 @@ char	*remove_closed_quotes(char *line)
 	int		i;
 	int		j;
 	int		len;
-	char	flag;
+	int		skip;
 
 	i = 0;
-	len = ft_strlen(line);
-	flag = '\0';
-	while (line[i])
-	{
-		if ((line[i] == '\'' || line[i] == '"')
-			&& line[i + 1] == line[i] && flag != line[i])
-		{
-			len -= 2;
-			flag = line[i];
-		}
-		else if ((line[i] == '\'' || line[i] == '"')
-			&& line[i + 1] == line[i] && flag == line[i])
-			flag = '\0';
-		i++;
-	}
-	newline = malloc(sizeof(char) * (len + 1));
-	i = 0;
 	j = 0;
+	len = ft_strlen(line);
+	skip = skip_len(line);
+	newline = malloc(sizeof(char) * (len - skip + 1));
+	if (!newline)
+		return (NULL);
+	i = 0;
 	while (line[i])
 	{
-		if ((line[i] == '\'' || line[i] == '"')
-			&& line[i + 1] == line[i] && flag != line[i])
-		{
+		if ((line[i] == '\'' || line[i] == '"') && line[i + 1] == line[i])
 			i += 2;
-			flag = line[i];
-		}
-		else if ((line[i] == '\'' || line[i] == '"')
-			&& line[i + 1] == line[i] && flag == line[i])
-		{
-			flag = '\0';
-			newline[j++] = line[i++];
-		}
 		else
 			newline[j++] = line[i++];
 	}
 	newline[j] = '\0';
-	printf("%s\n", newline);
 	return (newline);
 }
 
+char	parsing_loop(char*line, char quote, int *i)
+{
+	while (line[*i] && line[*i] != ' ')
+	{
+		if (line[*i] == '\'' || line[*i] == '"')
+		{
+			quote = line[*i];
+			(*i)++;
+			while (line[*i] && line[*i] != quote)
+				(*i)++;
+			if (line[*i] == '\0')
+				return (ft_dprintf(2, "open quote\n"), 2);
+		}
+		(*i)++;
+	}
+	return (quote);
+}
 
 int	parsing(t_shell *data, char *line)
 {
@@ -78,19 +93,7 @@ int	parsing(t_shell *data, char *line)
 		if (line[i] != ' ')
 		{
 			start = i;
-			while (line[i] && line[i] != ' ')
-			{
-				if (line[i] == '\'' || line[i] == '"')
-				{
-					quote = line[i];
-					i++;
-					while (line[i] && line[i] != quote)
-						i++;
-					if (line[i] == '\0')
-						return (ft_dprintf(2, "open quote\n"), 2);
-				}
-				i++;
-			}
+			quote = parsing_loop(line, quote, &i);
 			word = ft_strndup_no_quote(line, start, i - start, data);
 			if (!word)
 				return (ft_dprintf(2, "open quote\n"), 2);

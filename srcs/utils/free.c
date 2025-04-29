@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 15:06:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 11:06:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	free_tokens(t_token *t)
 		delfirst(&t);
 	}
 }
-
 
 void	free_env(t_env *env)
 {
