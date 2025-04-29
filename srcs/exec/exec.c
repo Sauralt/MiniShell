@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 15:18:28 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:14:15 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,18 +86,7 @@ static void	exec(t_shell *data, t_token *t)
 	int		fd[2];
 	pid_t	pid;
 
-	if (ft_strcmp(t->next->str[0], "|") != 0)
-	{
-		if (builtin(data, t) == 1 && t->type != 2)
-		{
-			if (exec_simple(data, t) == 1)
-			{
-				perror("fork");
-				return ;
-			}
-		}
-		return ;
-	}
+
 	while (t->next != data->token)
 	{
 		if (t->type == 1)
@@ -105,14 +94,14 @@ static void	exec(t_shell *data, t_token *t)
 			if (pipe(fd) == -1)
 			{
 				perror("pipe");
-				return ;
+				break ;
 			}
 			pid = fork();
 			if (pid < 0)
 			{
 				ft_close(fd);
 				perror("fork");
-				return ;
+				break ;
 			}
 			if (pid == 0)
 			{

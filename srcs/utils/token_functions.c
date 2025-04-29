@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 12:52:33 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:57:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_token	*add_param(t_shell *data, t_token *t)
 		return (t);
 	temp = t->next;
 	len = 1;
-	while (temp->type != 2 && temp != t)
+	while (temp->type != 2 && temp != t && temp != data->token)
 	{
 		len++;
 		temp = temp->next;
