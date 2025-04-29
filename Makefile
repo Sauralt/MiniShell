@@ -8,7 +8,7 @@ LIBS = -lreadline
 INCLUDE_DIR = Include
 
 EXEC = 		srcs/exec/exec.c srcs/exec/heredoc.c srcs/exec/init_env.c \
-			srcs/exec/meta_char.c srcs/exec/process.c
+			srcs/exec/meta_char.c srcs/exec/process.c srcs/exec/read_in_stdin.c \
 
 FUNCTIONS =	srcs/functions/cd.c srcs/functions/echo.c srcs/functions/env.c \
 			srcs/functions/exit.c srcs/functions/export.c srcs/functions/pwd.c \

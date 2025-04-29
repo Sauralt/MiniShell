@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   random_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 13:03:18 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:56:36 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,20 @@ int	quote_flag(int quote, char *str, int i)
 	else if (str[i] == '\'' && quote == 1)
 		quote = 0;
 	return (quote);
+}
+
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*res;
+
+	if (!s1 && !s2)
+		return (NULL);
+	if (!s1)
+		return (s2);
+	if (!s2)
+		return (s1);
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (res);
 }
