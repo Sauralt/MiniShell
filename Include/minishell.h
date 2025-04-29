@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 12:18:26 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:13:42 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ void	check_meta_in_word(t_shell *data, t_token *t);
 t_token	*add_param(t_shell *data, t_token *t);
 t_token	*ft_new_token(t_shell *data, char *content);
 char	*ft_dollar(t_shell *data, char *str);
+char	*change_dollar(t_shell *data, char *str, int len, int i);
+char	*change_str(char *str, char **var, t_shell *data, int j);
+int		len_var(t_shell *data, char **var);
 void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	delone(t_shell *data, t_token *t);
@@ -122,6 +125,5 @@ char	*ft_strndup_no_quote(char *s, int start, int len, t_shell *data);
 char	*loop_no_dollar(char *temp, int start, int len, char *str);
 void	change_tok_str(t_token *t, char *str, int len, t_shell *data);
 int		quote_flag(int quote, char *str, int i);
-
 
 #endif

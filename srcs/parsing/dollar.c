@@ -3,46 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/29 12:39:33 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:20:35 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_dollar(t_shell *data, char *str)
+static char	*get_env_value(t_env *env, const char *var_name, size_t var_len)
 {
-	t_env	*env;
 	char	*tmp;
 	t_env	*start;
-	size_t	var_len;
 
-	env = data->env;
 	start = env;
-	var_len = ft_strlen(str + 1);
 	while (env)
 	{
-		if (ft_strncmp(env->str, str + 1, var_len) == 0
+		if (ft_strncmp(env->str, var_name, var_len) == 0
 			&& env->str[var_len] == '=')
 		{
 			tmp = ft_strchr(env->str, '=');
 			if (tmp && *(tmp + 1))
-			{
-				free(str);
 				return (ft_strdup(tmp + 1));
-			}
+			return (ft_strdup(""));
 		}
 		env = env->next;
 		if (env == start)
 			break ;
 	}
-	free(str);
 	return (ft_strdup(""));
 }
 
-static int	len_var(t_shell *data, char **var)
+char	*ft_dollar(t_shell *data, char *str)
+{
+	char	*res;
+	size_t	var_len;
+
+	if (!str || !data)
+		return (NULL);
+	var_len = ft_strlen(str + 1);
+	res = get_env_value(data->env, str + 1, var_len);
+	free(str);
+	return (res);
+}
+
+int	len_var(t_shell *data, char **var)
 {
 	int	i;
 	int	j;
@@ -67,89 +73,6 @@ static int	len_var(t_shell *data, char **var)
 		i++;
 	}
 	return (len);
-}
-
-static char	*change_str(char *str, char **var, t_shell *data, int j)
-{
-	char	*nstr;
-	int		i;
-	int		t;
-	int		k;
-	int		quote;
-
-	nstr = malloc(sizeof(char) * (len_var(data, var) + 1));
-	i = data->start;
-	j = 0;
-	t = 0;
-	quote = 0;
-	while (i < data->start + data->l)
-	{
-		k = 0;
-		quote = quote_flag(quote, str, i);
-		if (str[i] == '$' && quote != 1 && str[i + 1] != ' '
-			&& str[i + 1] != '"' && str[i + 1] != '='
-			&& str[i + 1] != '\'' && str[i + 1] != '\0')
-		{
-			i++;
-			while (i < data->start + data->l
-				&& ((str[i] >= 'A' && str[i] <= 'Z')
-					|| ft_isdigit(str[i]) || str[i] == '_'))
-				i++;
-			while (var[j][k])
-			{
-				nstr[t] = var[j][k];
-				t++;
-				k++;
-			}
-			j++;
-		}
-		else
-		{
-			nstr[t] = str[i];
-			t++;
-			i++;
-		}
-	}
-	nstr[t] = '\0';
-	free_str(var);
-	return (nstr);
-}
-
-static char	*change_dollar(t_shell *data, char *str, int len, int i)
-{
-	int		j;
-	int		start;
-	int		quote;
-	char	**var;
-	char	*temp;
-
-	var = malloc(sizeof(char *) * (len + 1));
-	if (!var)
-		return (NULL);
-	j = 0;
-	quote = 0;
-	while (i < data->start + data->l)
-	{
-		quote = quote_flag(quote, str, i);
-		if (str[i] == '$' && quote != 1 && str[i + 1] != ' '
-			&& str[i + 1] != '"' && str[i + 1] != '\''
-			&& str[i + 1] != '=' && str[i + 1] != '\0')
-		{
-			start = i;
-			i++;
-			while (i < data->start + data->l && ((str[i] >= 'A'
-						&& str[i] <= 'Z') || ft_isdigit(str[i])
-					|| str[i] == '_'))
-				i++;
-			temp = ft_strndup(str, start, i - start);
-			var[j] = ft_dollar(data, temp);
-			j++;
-		}
-		else
-			i++;
-	}
-	var[j] = NULL;
-	return (change_str(str, var, data, j));
 }
 
 char	*init_nstr(t_shell *data, char *str, int start, int l)
