@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 12:22:31 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:48:33 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	infile_redirect(t_shell *data, t_token *t)
 {
-	int	infile;
+	int		infile;
 
 	infile = open(t->next->str[0], O_RDONLY, 0644);
 	if (infile == -1)
@@ -37,7 +37,8 @@ static void	infile_redirect(t_shell *data, t_token *t)
 
 static void	outfile_trunc(t_token *t)
 {
-	int	outfile;
+	int		outfile;
+	t_token	*temp;
 
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
@@ -46,16 +47,17 @@ static void	outfile_trunc(t_token *t)
 			t->next->str[0]);
 		return ;
 	}
-	if (t->prev->type == 1)
-		t->prev->outfile = outfile;
-	else
-		t->prev->prev->prev->outfile = outfile;
+	temp = t;
+	while (temp->type != 1)
+		temp = temp->prev;
+	temp->outfile = outfile;
 	t->next->type = 2;
 }
 
 static void	outfile_append(t_token *t)
 {
-	int	outfile;
+	int		outfile;
+	t_token	*temp;
 
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (outfile == -1)
@@ -64,10 +66,10 @@ static void	outfile_append(t_token *t)
 			t->next->str[0]);
 		return ;
 	}
-	if (t->prev->type == 1)
-		t->prev->outfile = outfile;
-	else
-		t->prev->prev->prev->outfile = outfile;
+	temp = t;
+	while (temp->type != 1)
+		temp = temp->prev;
+	temp->outfile = outfile;
 	t->next->type = 2;
 }
 
