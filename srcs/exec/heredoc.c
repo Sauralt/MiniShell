@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 12:17:42 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:27:26 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,4 @@ void	heredoc(t_shell *data, t_token *t, char *delimiter)
 	}
 	unlink(".heredoc_tmp");
 	t->prev->infile = fd;
-	data->token->next->next->type = 2;
 }
