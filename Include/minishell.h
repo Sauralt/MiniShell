@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 13:59:31 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 14:35:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int		set_token_type(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, t_token *t);
 int		meta_char(char *str);
 void	heredoc(t_shell *data, t_token *t, char *delimiter);
+bool	read_in_stdin(t_shell *data, int fd, char *delimiter);
+char	*expand_dollar(t_shell *data, char *input);
 int		init_stacks(t_shell *data);
 void	check_meta_in_word(t_shell *data, t_token *t);
 
@@ -127,5 +129,6 @@ char	*ft_strndup_no_quote(char *s, int start, int len, t_shell *data);
 char	*loop_no_dollar(char *temp, int start, int len, char *str);
 void	change_tok_str(t_token *t, char *str, int len, t_shell *data);
 int		quote_flag(int quote, char *str, int i);
+char	*ft_strjoin_free(char *s1, char *s2);
 
 #endif
