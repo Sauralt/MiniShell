@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 16:21:50 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:23:52 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	child_process(t_token *t, t_shell *data, int *fd)
 		dup2(fd[1], STDOUT_FILENO);
 	ft_close(fd);
 	exec_abs(t->str, data->env);
-	perror("exec failed");
+	perror("exec failed\n");
 	exit(EXIT_FAILURE);
 }
 

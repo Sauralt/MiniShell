@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_str.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:08:25 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/29 13:17:14 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:44:01 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	is_expandable(char *str, int i, int quote)
 {
 	return (str[i] == '$' && quote != 1 && str[i + 1] != ' '
-		&& str[i + 1] != '"' && str[i + 1] != '='
+		&& str[i + 1] != '"' && str[i + 1] != '=' && str[i + 1] != ':'
 		&& str[i + 1] != '\'' && str[i + 1] != '\0');
 }
 

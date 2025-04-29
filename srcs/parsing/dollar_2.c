@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:54:12 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/29 13:00:42 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:43:53 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static int	is_valid_dollar(char *str, int i)
 {
 	return (str[i] == '$' && str[i + 1] != ' ' && str[i + 1] != '"'
-		&& str[i + 1] != '\'' && str[i + 1] != '=' && str[i + 1] != '\0');
+		&& str[i + 1] != '\'' && str[i + 1] != '='
+		&& str[i + 1] != ':' && str[i + 1] != '\0');
 }
 
 static char	*extract_dollar_key(char *str, int *i, t_shell *data)
