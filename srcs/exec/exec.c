@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 15:55:42 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:17:47 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,16 @@ int	exec_abs(char **cmd, t_env *env)
 
 static void	exec_built(t_shell *data, t_token *cmd)
 {
-	if (!cmd || !cmd->str)
-		return ;
+	if (cmd->infile != STDIN_FILENO)
+	{
+		dup2(cmd->infile, STDIN_FILENO);
+		close(cmd->infile);
+	}
+	if (cmd->outfile != STDOUT_FILENO)
+	{
+		dup2(cmd->outfile, STDOUT_FILENO);
+		close(cmd->outfile);
+	}
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
 		ft_pwd(data);
 	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)
@@ -98,11 +106,11 @@ int	proc(t_shell *data)
 		t = t->next;
 	while (t->next != data->token)
 	{
-		if (builtin(data, data->token) == 1 && t->type != 2)
+		if (builtin(data, t) == 1 && t->type != 2)
 			exec(data, t);
 		t = t->next;
 	}
-	if (builtin(data, data->token) == 1 && t->type != 2)
+	if (builtin(data, t) == 1 && t->type != 2)
 		exec(data, t);
 	close_dup(original_stdin, original_stdout);
 	return (0);

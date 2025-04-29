@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 17:12:31 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:03:18 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	change_tok_str(t_token *t, char *str, int len, t_shell *data)
 		len--;
 	}
 	t->str[i] = NULL;
+	i = 0;
 }
 
 int	quote_flag(int quote, char *str, int i)

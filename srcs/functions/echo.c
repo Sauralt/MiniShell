@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:13:26 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/23 17:02:02 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:05:01 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int	ft_echo(t_token *str)
 	while (str->str[i])
 	{
 		if (i > 1 && str->str[i - 1] && flag == 0)
-			ft_dprintf(str->outfile, " ");
+			printf(" ");
 		flag = 0;
-		ft_dprintf(str->outfile, "%s", str->str[i]);
+		printf("%s", str->str[i]);
 		i++;
 	}
 	if (!no_newline)
-		ft_dprintf(str->outfile, "\n");
+		printf("\n");
 	return (0);
 }
