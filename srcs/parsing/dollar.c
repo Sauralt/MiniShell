@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/28 17:58:21 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:39:33 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ static char	*change_str(char *str, char **var, t_shell *data, int j)
 		k = 0;
 		quote = quote_flag(quote, str, i);
 		if (str[i] == '$' && quote != 1 && str[i + 1] != ' '
-			&& str[i + 1] == '"' && str[i + 1] != '='
-			&& str[i + 1] != '\'' && str[i + 1] == '\0')
+			&& str[i + 1] != '"' && str[i + 1] != '='
+			&& str[i + 1] != '\'' && str[i + 1] != '\0')
 		{
 			i++;
 			while (i < data->start + data->l
@@ -132,7 +132,7 @@ static char	*change_dollar(t_shell *data, char *str, int len, int i)
 	{
 		quote = quote_flag(quote, str, i);
 		if (str[i] == '$' && quote != 1 && str[i + 1] != ' '
-			&& str[i + 1] == '"' && str[i + 1] == '\''
+			&& str[i + 1] != '"' && str[i + 1] != '\''
 			&& str[i + 1] != '=' && str[i + 1] != '\0')
 		{
 			start = i;

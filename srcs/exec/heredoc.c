@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/18 11:32:55 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:17:42 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
 	return (true);
 }
 
-void	heredoc(t_shell *data, char *delimiter)
+void	heredoc(t_shell *data, t_token *t, char *delimiter)
 {
 	int	fd;
 
@@ -132,6 +132,6 @@ void	heredoc(t_shell *data, char *delimiter)
 		return ;
 	}
 	unlink(".heredoc_tmp");
-	data->token->infile = fd;
+	t->prev->infile = fd;
 	data->token->next->next->type = 2;
 }

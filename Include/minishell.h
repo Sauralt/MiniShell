@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 17:12:58 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:18:26 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*init_nstr(t_shell *data, char *str, int start, int len);
 int		set_token_type(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, t_token *t);
 int		meta_char(char *str);
-void	heredoc(t_shell *data, char *delimiter);
+void	heredoc(t_shell *data, t_token *t, char *delimiter);
 int		init_stacks(t_shell *data);
 void	check_meta_in_word(t_shell *data, t_token *t);
 

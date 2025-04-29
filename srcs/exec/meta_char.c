@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 18:19:14 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:22:31 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ static void	outfile_trunc(t_token *t)
 			t->next->str[0]);
 		return ;
 	}
-	t->prev->outfile = outfile;
+	if (t->prev->type == 1)
+		t->prev->outfile = outfile;
+	else
+		t->prev->prev->prev->outfile = outfile;
 	t->next->type = 2;
 }
 
@@ -61,7 +64,10 @@ static void	outfile_append(t_token *t)
 			t->next->str[0]);
 		return ;
 	}
-	t->prev->outfile = outfile;
+	if (t->prev->type == 1)
+		t->prev->outfile = outfile;
+	else
+		t->prev->prev->prev->outfile = outfile;
 	t->next->type = 2;
 }
 
@@ -76,5 +82,5 @@ void	check_meta_char(t_shell *data, t_token *t)
 	if (strcmp(t->str[0], ">>") == 0)
 		outfile_append(t);
 	if (strcmp(t->str[0], "<<") == 0)
-		heredoc(data, t->next->str[0]);
+		heredoc(data, t, t->next->str[0]);
 }
