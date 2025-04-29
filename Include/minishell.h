@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 14:04:07 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/29 14:35:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ t_env	*find_env(t_env *env, const char *key);
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	exec_cmd(char *line);
+void	child_process(t_token *t, t_shell *data, int *fd);
 
 void	ft_cd(t_shell *data, t_token *str);
 int		ft_pwd(t_shell *data);
@@ -95,9 +96,13 @@ void	free_env(t_env *env);
 void	free_str(char **str);
 void	free_tokens(t_token *t);
 void	ft_close(int *fd);
+void	close_dup(int original_stdin, int original_stdout);
 
 int		proc(t_shell *data);
 int		execute(t_shell *data);
+int		exec_simple(t_shell *data, t_token *t);
+int		exec_abs(char **cmd, t_env *env);
+//int		exec(t_shell *data, t_token *t);
 
 void	delfirst_stack(t_env **s);
 void	ft_add_stack(t_env **s, t_env *new);
@@ -105,8 +110,6 @@ t_env	*ft_new_stack(char *t);
 void	init_env(t_shell *data, char **env);
 char	**make_env_str(t_env *env);
 
-int		exec_abs(char **cmd, t_env *env);
-char	**re_split(t_shell *data, char **str);
 char	*ft_verif_str_type(t_shell *data, char *content);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 int		is_valid_var_char(char c);
@@ -114,7 +117,6 @@ int		check_str(char *str);
 char	**change_result(t_shell *data, char **result, char **new_result);
 char	**change_env_var(t_shell *data, char **str, char **result);
 char	**init_str(t_shell *data, char *line);
-int		exec(t_shell *data, t_token *t);
 
 int		ft_dprintf(int fd, const char *f, ...);
 int		ft_printhex(int fd, char c, int l, unsigned int a);

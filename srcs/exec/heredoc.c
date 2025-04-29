@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 15:23:21 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:30:39 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,4 @@ void	heredoc(t_shell *data, t_token *t, char *delimiter)
 	}
 	unlink(".heredoc_tmp");
 	t->prev->infile = fd;
-	data->token->next->next->type = 2;
 }
