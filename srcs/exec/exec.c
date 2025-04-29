@@ -6,36 +6,11 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 16:19:53 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:21:35 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	exec_abs(char **cmd, t_env *env)
-{
-	char	*path;
-	char	**envp;
-	int		i;
-
-	i = 0;
-	envp = make_env_str(env);
-	path = find_path(cmd[0], env, i);
-	if (!path)
-	{
-		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-		exit(EXIT_FAILURE);
-	}
-	if (execve(path, cmd, envp) == -1)
-	{
-		free(path);
-		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-		exit(EXIT_FAILURE);
-	}
-	free(path);
-	free_str(envp);
-	return (0);
-}
 
 static void	exec_built(t_shell *data, t_token *cmd)
 {
