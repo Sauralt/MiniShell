@@ -6,11 +6,21 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/30 12:41:08 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:02:34 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	check_access(char *path, char **cmd)
+{
+	if (!access(cmd[0], X_OK))
+	{
+		free(path);
+		ft_dprintf(2, "%s: no permissions\n", cmd[0]);
+		exit(EXIT_FAILURE);
+	}
+}
 
 int	exec_abs(char **cmd, t_env *env)
 {
@@ -26,6 +36,7 @@ int	exec_abs(char **cmd, t_env *env)
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
 		exit(EXIT_FAILURE);
 	}
+	check_access(path, cmd);
 	if (execve(path, cmd, envp) == -1)
 	{
 		free(path);
