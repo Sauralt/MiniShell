@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/30 11:39:12 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:41:08 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	exec_abs(char **cmd, t_env *env)
 
 void	child_process(t_token *t, t_shell *data, int *fd)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (t->infile != STDIN_FILENO)
 	{
 		dup2(t->infile, STDIN_FILENO);

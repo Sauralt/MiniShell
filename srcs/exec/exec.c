@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/30 11:35:07 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:20:15 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	proc(t_shell *data)
 	original_stdin = dup(STDIN_FILENO);
 	original_stdout = dup(STDOUT_FILENO);
 	t = data->token;
-	if (data->token->type == 2)
+	if (data->token->type == 2 && data->token->next->type == 2)
 		return (ft_dprintf(2, "syntax error\n"), 0);
 	if (data->token->str[0][0] == '/')
 		return (ft_dprintf(2, "%s: is a directory\n", data->token->str[0]), 0);

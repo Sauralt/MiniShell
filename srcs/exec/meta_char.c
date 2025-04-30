@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 12:48:33 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:24:04 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ static void	infile_redirect(t_shell *data, t_token *t)
 	if (t != data->token)
 	{
 		t->prev->infile = infile;
-		t->next->type = 2;
 	}
 	else
 	{
 		t->next->next->infile = infile;
-		t->next->type = 2;
 	}
 }
 
