@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 16:21:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:35:07 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	exec_built(t_shell *data, t_token *cmd)
 		ft_exit(data, cmd);
 }
 
-static int	builtin(t_shell *data, t_token *cmd)
+int	builtin(t_shell *data, t_token *cmd)
 {
 	if (ft_strcmp(cmd->str[0], "echo") == 0
 		|| ft_strcmp(cmd->str[0], "cd") == 0
@@ -73,7 +73,7 @@ static void	handle_pipeline(t_shell *data, t_token *t)
 				ft_close(fd);
 				return (perror("fork"));
 			}
-			if (pid == 0 && builtin(data, t) == 1 && t->type != 2)
+			if (pid == 0 && t->type != 2)
 				child_process(t, data, fd);
 			dup2(fd[0], STDIN_FILENO);
 			ft_close(fd);
@@ -108,8 +108,10 @@ int	proc(t_shell *data)
 	original_stdin = dup(STDIN_FILENO);
 	original_stdout = dup(STDOUT_FILENO);
 	t = data->token;
-	if (data->token->type == 2 && data->token->next == data->token)
+	if (data->token->type == 2)
 		return (ft_dprintf(2, "syntax error\n"), 0);
+	if (data->token->str[0][0] == '/')
+		return (ft_dprintf(2, "%s: is a directory\n", data->token->str[0]), 0);
 	while (t->type != 1 && t->next != data->token)
 		t = t->next;
 	if (t->next == data->token)

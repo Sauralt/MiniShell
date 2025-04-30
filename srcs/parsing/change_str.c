@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:08:25 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/29 16:44:01 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:09:01 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	skip_dollar_key(char *str, int i, t_shell *data)
 {
 	while (i < data->start + data->l
 		&& ((str[i] >= 'A' && str[i] <= 'Z')
-			|| ft_isdigit(str[i]) || str[i] == '_'))
+			|| ft_isascii(str[i]) || str[i] == '_'))
 		i++;
 	return (i);
 }
