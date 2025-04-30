@@ -6,25 +6,43 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:08:25 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/29 16:44:01 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:09:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_expandable(char *str, int i, int quote)
+static int	is_expandable(char *str, int i, int quote, int *f)
 {
-	return (str[i] == '$' && quote != 1 && str[i + 1] != ' '
-		&& str[i + 1] != '"' && str[i + 1] != '=' && str[i + 1] != ':'
-		&& str[i + 1] != '\'' && str[i + 1] != '\0');
+	if (str[i] == '$' && ft_isdigit(str[i + 1]))
+	{
+		(*f) = 1;
+		return (1);
+	}
+	else
+	{
+		(*f) = 0;
+		return (str[i] == '$' && quote != 1 && str[i + 1] != ' '
+			&& str[i + 1] != '"'
+			&& str[i + 1] != '\'' && str[i + 1] != '='
+			&& str[i + 1] != ':' && str[i + 1] != '\0');
+	}
 }
 
-static int	skip_dollar_key(char *str, int i, t_shell *data)
+static int	skip_dollar_key(char *str, int i, t_shell *data, int flag)
 {
-	while (i < data->start + data->l
-		&& ((str[i] >= 'A' && str[i] <= 'Z')
-			|| ft_isdigit(str[i]) || str[i] == '_'))
-		i++;
+	if (flag == 0)
+	{
+		while (i < data->start + data->l
+			&& ((str[i] >= 'A' && str[i] <= 'Z')
+				|| ft_isascii(str[i]) || str[i] == '_'))
+			i++;
+	}
+	else
+	{
+		while (i < data->start + data->l && ft_isdigit(str[i]))
+			i++;
+	}
 	return (i);
 }
 
@@ -41,6 +59,7 @@ static int	insert_var(char *nstr, char *var, int t)
 static char	*build_final_string(char *str, char **var, t_shell *data, int j)
 {
 	char	*nstr;
+	int		f;
 	int		i;
 	int		t;
 	int		quote;
@@ -54,10 +73,10 @@ static char	*build_final_string(char *str, char **var, t_shell *data, int j)
 	while (i < data->start + data->l)
 	{
 		quote = quote_flag(quote, str, i);
-		if (is_expandable(str, i, quote))
+		if (is_expandable(str, i, quote, &f))
 		{
 			i++;
-			i = skip_dollar_key(str, i, data);
+			i = skip_dollar_key(str, i, data, f);
 			t = insert_var(nstr, var[j++], t);
 		}
 		else

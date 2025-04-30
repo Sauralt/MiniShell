@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/30 11:43:50 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/30 14:50:48 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	exec_cmd(char *line);
 void	child_process(t_token *t, t_shell *data, int *fd);
+int		builtin(t_shell *data, t_token *cmd);
 
 void	ft_cd(t_shell *data, t_token *str);
 int		ft_pwd(t_shell *data);

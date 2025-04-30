@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/30 11:32:23 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/30 14:51:00 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ static void	infile_redirect(t_shell *data, t_token *t)
 	if (t != data->token)
 	{
 		t->prev->infile = infile;
-		t->next->type = 2;
 	}
 	else
 	{
 		t->next->next->infile = infile;
-		t->next->type = 2;
 	}
 }
 

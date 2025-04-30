@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/14 18:30:26 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:37:06 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ void	ft_cd(t_shell *data, t_token *str)
 
 	if (!str || !str->str || !str->str[0])
 		resolved_path = cd_home(NULL);
+	if (str->str[2] != NULL && str->str[1] != NULL)
+	{
+		ft_dprintf(2, "cd: too many arguments\n");
+		return ;
+	}
 	else
 	{
 		resolved_path = cd_home(str->str[1]);

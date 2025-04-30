@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/24 10:18:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:37:14 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(int argc, char **argv, char **env)
 
 	data = malloc(sizeof(t_shell));
 	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	init_env(data, env);
 	while (1)
 	{
