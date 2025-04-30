@@ -3,31 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/14 18:33:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:10:33 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
-
-char	*ft_strjoin3(const char *s1, const char *s2, const char *s3)
-{
-	char	*result;
-	size_t	len;
-
-	if (!s1 || !s2 || !s3)
-		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1;
-	result = malloc(len);
-	if (!result)
-		return (NULL);
-	ft_strlcpy(result, s1, len);
-	ft_strlcat(result, s2, len);
-	ft_strlcat(result, s3, len);
-	return (result);
-}
 
 t_env	*find_env(t_env *env, const char *key)
 {
@@ -85,6 +68,22 @@ void	add_or_replace_env(t_shell *data, char *key, char *value)
 	}
 }
 
+static int	is_valid_identifier(const char *str)
+{
+	int	i;
+
+	if (!str || !*str || (!ft_isalpha(str[0]) && str[0] != '_'))
+		return (0);
+	i = 1;
+	while (str[i] && str[i] != '=')
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	ft_export(t_shell *data, t_token *str)
 {
 	char	*key;
@@ -92,22 +91,43 @@ int	ft_export(t_shell *data, t_token *str)
 	char	*delim;
 	int		i;
 
+	if (!str->str[1])
+		return (print_env(data->env), 0);
+
 	i = 1;
 	while (str->str[i])
 	{
-		if (ft_strncmp(str->str[i], "export", 7) == 0)
-			return (print_env(data->env), 0);
+		if (str->str[i][0] == '-')
+		{
+			ft_dprintf(2, "export: `%s': invalid option\n", str->str[i]);
+			return (1);
+		}
 		delim = ft_strchr(str->str[i], '=');
-		if (!delim || delim == str->str[i])
-			return (ft_dprintf(2, "export: invalid identifier\n"), 1);
+		if (!delim)
+			break;
+		if (delim == str->str[i])
+		{
+			ft_dprintf(2, "export: `%s': not a valid identifier\n", str->str[i]);
+			i++;
+			continue;
+		}
 		key = strndup(str->str[i], delim - str->str[i]);
 		value = ft_strdup(delim + 1);
-		if (!key || !value)
-			return (free(key), free(value), perror("malloc"), 1);
+		if (!is_valid_identifier(key))
+		{
+			ft_dprintf(2, "export: `%s': not a valid identifier\n", str->str[i]);
+			free(key);
+			free(value);
+			i++;
+			continue;
+		}
 		add_or_replace_env(data, key, value);
+		free(key);
+		free(value);
 		i++;
 	}
-	free(key);
-	free(value);
 	return (0);
 }
+
+
+

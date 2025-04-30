@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meta_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/29 12:48:33 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:32:23 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	outfile_append(t_token *t)
 
 void	check_meta_char(t_shell *data, t_token *t)
 {
-	if (t->next == t)
+	if (t->next == t || t->next == data->token)
 		return ;
 	if (strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, t);
