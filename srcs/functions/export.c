@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/14 18:33:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/04/30 14:49:42 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,5 @@ int	ft_export(t_shell *data, t_token *str)
 		add_or_replace_env(data, key, value);
 		i++;
 	}
-	free(key);
-	free(value);
 	return (0);
 }
