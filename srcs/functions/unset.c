@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:58 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/28 15:22:17 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:09:38 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,38 @@ void	remove_env_node(t_shell *data, const char *key)
 	}
 }
 
+bool	is_valid_identifier(const char *s)
+{
+	int i = 0;
+
+	if (!s || !s[0])
+		return (false);
+	if (!ft_isalpha(s[0]) && s[0] != '_')
+		return (false);
+	while (s[i])
+	{
+		if (!ft_isalnum(s[i]) && s[i] != '_')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 int	ft_unset(t_shell *data, t_token *str)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (str->str[i])
 	{
-		if (!data || !data->env || !str->str[i])
-			return (1);
-		if (ft_strchr(str->str[i], '='))
+		if (!is_valid_identifier(str->str[i]))
 		{
-			printf("unset: `%s': not a valid identifier\n", str->str[i]);
-			return (data->exit_code = 1);
+			ft_dprintf(2, "unset: `%s': not a valid identifier\n", str->str[i]);
+			data->exit_code = 1;
 		}
-		remove_env_node(data, str->str[i]);
+		else
+			remove_env_node(data, str->str[i]);
 		i++;
 	}
-	return (data->exit_code = 0);
+	return (data->exit_code);
 }
