@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:54:12 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/30 12:10:26 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:57:40 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*extract_dollar_key(char *str, int *i, t_shell *data, int flag)
 	if (flag == 0)
 	{
 		while (*i < data->start + data->l && ((str[*i] >= 'A' && str[*i] <= 'Z')
-				|| ft_isascii(str[*i]) || str[*i] == '_'))
+				|| ft_isascii(str[*i]) || str[*i] == '_') && str[*i] != '$')
 			(*i)++;
 		end = *i;
 	}
