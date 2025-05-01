@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meta_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/30 14:51:00 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:28:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	outfile_trunc(t_token *t)
 		return ;
 	}
 	temp = t;
-	while (temp->type != 1)
+	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
 	temp->outfile = outfile;
 	t->next->type = 2;
@@ -65,7 +65,7 @@ static void	outfile_append(t_token *t)
 		return ;
 	}
 	temp = t;
-	while (temp->type != 1)
+	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
 	temp->outfile = outfile;
 	t->next->type = 2;
