@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/30 14:50:48 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:09:49 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ int		proc(t_shell *data);
 int		execute(t_shell *data);
 int		exec_simple(t_shell *data, t_token *t);
 int		exec_abs(char **cmd, t_env *env);
-//int		exec(t_shell *data, t_token *t);
 
 void	delfirst_stack(t_env **s);
 void	ft_add_stack(t_env **s, t_env *new);
@@ -116,6 +115,7 @@ char	*ft_verif_str_type(t_shell *data, char *content);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 int		is_valid_var_char(char c);
 int		check_str(char *str);
+int		check_tok_order(t_shell *data);
 char	**change_result(t_shell *data, char **result, char **new_result);
 char	**change_env_var(t_shell *data, char **str, char **result);
 char	**init_str(t_shell *data, char *line);

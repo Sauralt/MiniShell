@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/30 15:02:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:25:45 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	exec_abs(char **cmd, t_env *env)
 	char	**envp;
 	int		i;
 
+	if (cmd[0][0] == '\0')
+		return (0);
 	i = 0;
 	envp = make_env_str(env);
 	path = find_path(cmd[0], env, i);

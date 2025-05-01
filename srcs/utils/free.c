@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/30 11:41:38 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:25:02 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,6 @@ void	free_tokens(t_token *t)
 		if (t->outfile != STDOUT_FILENO)
 			close(t->outfile);
 		delfirst(&t);
-	}
-}
-
-void	free_env(t_env *env)
-{
-	while (env)
-	{
-		delfirst_stack(&env);
 	}
 }
 
