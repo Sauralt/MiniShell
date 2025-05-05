@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/01 16:28:21 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:05:34 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,17 @@ static void	infile_redirect(t_shell *data, t_token *t)
 	{
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
 			t->next->str[0]);
+		data->exit_code = 1;
 		return ;
 	}
 	if (t != data->token)
-	{
 		t->prev->infile = infile;
-	}
 	else
-	{
 		t->next->next->infile = infile;
-	}
+	data->exit_code = 0;
 }
 
-static void	outfile_trunc(t_token *t)
+static void	outfile_trunc(t_shell *data, t_token *t)
 {
 	int		outfile;
 	t_token	*temp;
@@ -43,16 +41,17 @@ static void	outfile_trunc(t_token *t)
 	{
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
 			t->next->str[0]);
+		data->exit_code = 1;
 		return ;
 	}
 	temp = t;
 	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
 	temp->outfile = outfile;
-	t->next->type = 2;
+	data->exit_code = 0;
 }
 
-static void	outfile_append(t_token *t)
+static void	outfile_append(t_shell *data, t_token *t)
 {
 	int		outfile;
 	t_token	*temp;
@@ -62,6 +61,7 @@ static void	outfile_append(t_token *t)
 	{
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
 			t->next->str[0]);
+		data->exit_code = 1;
 		return ;
 	}
 	temp = t;
@@ -69,6 +69,7 @@ static void	outfile_append(t_token *t)
 		temp = temp->prev;
 	temp->outfile = outfile;
 	t->next->type = 2;
+	data->exit_code = 0;
 }
 
 void	check_meta_char(t_shell *data, t_token *t)
@@ -78,9 +79,9 @@ void	check_meta_char(t_shell *data, t_token *t)
 	if (strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, t);
 	if (strcmp(t->str[0], ">") == 0)
-		outfile_trunc(t);
+		outfile_trunc(data, t);
 	if (strcmp(t->str[0], ">>") == 0)
-		outfile_append(t);
+		outfile_append(data, t);
 	if (strcmp(t->str[0], "<<") == 0)
 		heredoc(data, t, t->next->str[0]);
 }

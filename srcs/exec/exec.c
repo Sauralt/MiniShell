@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/01 17:22:54 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:33:53 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,18 @@ static void	handle_pipeline(t_shell *data, t_token *t)
 		}
 		t = t->next;
 	}
-	if (builtin(data, t) == 1 && t->type != 2 && exec_simple(data, t) == 1)
-		perror("exec");
 }
 
 void	exec(t_shell *data, t_token *t)
 {
+	while (t->type != 1 && t->next != data->token)
+		t = t->next;
+	if (t->next == data->token && t->type != 1)
+	{
+		t = t->next;
+		ft_dprintf(2, "%s: command not found\n", t->str[0]);
+		return ;
+	}
 	if (ft_strcmp(t->next->str[0], "|") != 0)
 	{
 		if (builtin(data, t) == 1 && t->type != 2)
@@ -113,8 +119,8 @@ int	proc(t_shell *data)
 	original_stdin = dup(STDIN_FILENO);
 	original_stdout = dup(STDOUT_FILENO);
 	t = data->token;
-	if (data->token->type == 2 && data->token->next->type == 2
-		&& data->token->next->type == 1)
+	if (data->token->type == 2 && (data->token->next->type == 2
+			|| data->token->next->type == 1))
 		return (ft_dprintf(2, "syntax error\n"), 0);
 	if (data->token->str[0][0] == '/')
 		return (ft_dprintf(2, "%s: is a directory\n", data->token->str[0]), 0);
