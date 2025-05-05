@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 14:18:38 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:40:45 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,24 @@ static void	init_data(int argc, char **argv, t_shell *data)
 	data->del_num = 0;
 }
 
+static int	conditions(t_shell *data, char *line)
+{
+	int		tok;
+
+	tok = init_tokens(data, line);
+	if (ft_strncmp(line, "\0", 2) != 0 && tok == 1)
+		return (1);
+	if (ft_strncmp(line, "\0", 2) != 0 && tok != 2 && data->exit_code == 0)
+		proc(data);
+	if (ft_strncmp(line, "\0", 2))
+		add_history(line);
+	return (0);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	*data;
 	char	*line;
-	int		tok;
 
 	data = malloc(sizeof(t_shell));
 	signal(SIGINT, handle_sigint);
@@ -42,12 +55,8 @@ int	main(int argc, char **argv, char **env)
 		line = readline("Minishell> ");
 		if (!line)
 			break ;
-		add_history(line);
-		tok = init_tokens(data, line);
-		if (ft_strncmp(line, "\0", 2) != 0 && tok == 1)
+		if (conditions(data, line) == 1)
 			break ;
-		if (ft_strncmp(line, "\0", 2) != 0 && tok != 2)
-			proc(data);
 		free(line);
 		free_tokens(data->token);
 	}
