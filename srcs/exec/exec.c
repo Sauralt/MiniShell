@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 15:40:20 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:43:29 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	proc(t_shell *data)
 	t = data->token;
 	if (data->token->type == 2 && (data->token->next->type == 2
 			|| data->token->next->type == 1))
-		return (ft_dprintf(2, "syntax error\n"), 0);
+		return (0);
 	if (data->token->str[0][0] == '/')
 		return (ft_dprintf(2, "%s: is a directory\n", data->token->str[0]), 0);
 	while (t->type != 1 && t->next != data->token)
