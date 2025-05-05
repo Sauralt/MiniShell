@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/30 13:37:06 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:32:42 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	change_directory(const char *path, t_shell *data)
 	if (chdir(path) != 0)
 	{
 		perror("cd");
+		data->exit_code = 1;
 	}
 	else
 	{
@@ -69,8 +70,10 @@ void	change_directory(const char *path, t_shell *data)
 			setenv("PWD", current_dir, 1);
 			setenv("OLDPWD", data->prev_dir, 1);
 		}
+		data->exit_code = 0;
 	}
 }
+
 
 void	ft_cd(t_shell *data, t_token *str)
 {
@@ -82,6 +85,7 @@ void	ft_cd(t_shell *data, t_token *str)
 	if (str->str[2] != NULL && str->str[1] != NULL)
 	{
 		ft_dprintf(2, "cd: too many arguments\n");
+		data->exit_code = 1;
 		return ;
 	}
 	else

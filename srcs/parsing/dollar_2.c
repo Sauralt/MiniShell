@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:54:12 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/01 17:01:06 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:24:15 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static void	fill_var_array(t_shell *data, char **var, char *str, int *index)
 			{
 				i += 2;
 				var[j++] = ft_itoa(data->exit_code);
+				continue ;
 			}
 			temp = extract_dollar_key(str, &i, data, f);
 			var[j++] = ft_dollar(data, temp);

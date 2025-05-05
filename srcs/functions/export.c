@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/30 14:51:08 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:42:56 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,33 +97,32 @@ int	ft_export(t_shell *data, t_token *str)
 	i = 1;
 	while (str->str[i])
 	{
-		if (str->str[i][0] == '-')
+		if (str->str[i][0] == '-' && str->str[i][1])
 		{
 			ft_dprintf(2, "export: `%s': invalid option\n", str->str[i]);
+			data->exit_code = 1;
 			return (1);
 		}
 		delim = ft_strchr(str->str[i], '=');
-		if (!delim)
-			break;
-		if (delim == str->str[i])
+		if (delim == str->str[i] || !is_valid_identifier(str->str[i]))
 		{
 			ft_dprintf(2, "export: `%s': not a valid identifier\n", str->str[i]);
+			data->exit_code = 1;
 			i++;
-			continue;
+			continue ;
 		}
-		key = strndup(str->str[i], delim - str->str[i]);
-		value = ft_strdup(delim + 1);
-		if (!is_valid_identifier(key))
+		if (delim)
 		{
-			ft_dprintf(2, "export: `%s': not a valid identifier\n", str->str[i]);
+			key = strndup(str->str[i], delim - str->str[i]);
+			value = ft_strdup(delim + 1);
+			if (!key || !value)
+				return (free(key), free(value), perror("malloc"), 1);
+			add_or_replace_env(data, key, value);
 			free(key);
 			free(value);
-			i++;
-			continue;
 		}
-		add_or_replace_env(data, key, value);
-		free(key);
-		free(value);
+		else
+			add_or_replace_env(data, str->str[i], "");
 		i++;
 	}
 	return (0);

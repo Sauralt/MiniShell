@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/01 17:22:54 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:21:48 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ static void	handle_pipeline(t_shell *data, t_token *t)
 		if (t->type == 0)
 		{
 			ft_dprintf(2, "%s: command not found\n", t->str[0]);
+			data->exit_code = 127;
 			return ;
 		}
 		if (t->type == 1)

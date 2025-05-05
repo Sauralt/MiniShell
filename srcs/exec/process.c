@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/01 16:11:10 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:30:27 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	check_access(char *path, char **cmd)
 	}
 }
 
-int	exec_abs(char **cmd, t_env *env)
+int	exec_abs(t_shell *data, char **cmd, t_env *env)
 {
 	char	*path;
 	char	**envp;
@@ -36,6 +36,7 @@ int	exec_abs(char **cmd, t_env *env)
 	if (!path)
 	{
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
+		data->exit_code = 127;
 		exit(EXIT_FAILURE);
 	}
 	check_access(path, cmd);
@@ -43,10 +44,12 @@ int	exec_abs(char **cmd, t_env *env)
 	{
 		free(path);
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
+		data->exit_code = 127;
 		exit(EXIT_FAILURE);
 	}
 	free(path);
 	free_str(envp);
+//	data->exit_code = 0;
 	return (0);
 }
 
@@ -70,7 +73,7 @@ void	child_process(t_token *t, t_shell *data, int *fd)
 	if (builtin(data, t) == 0)
 		exit(EXIT_SUCCESS);
 	else
-		exec_abs(t->str, data->env);
+		exec_abs(data, t->str, data->env);
 	perror("exec failed\n");
 	exit(EXIT_FAILURE);
 }
@@ -93,7 +96,7 @@ int	exec_simple(t_shell *data, t_token *t)
 		close(t->outfile);
 	}
 	if (pid == 0)
-		exec_abs(t->str, data->env);
+		exec_abs(data, t->str, data->env);
 	waitpid(pid, NULL, 0);
 	return (0);
 }

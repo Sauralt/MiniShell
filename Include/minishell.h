@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/01 16:11:06 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:23:39 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	close_dup(int original_stdin, int original_stdout);
 int		proc(t_shell *data);
 int		execute(t_shell *data);
 int		exec_simple(t_shell *data, t_token *t);
-int		exec_abs(char **cmd, t_env *env);
+int		exec_abs(t_shell *data, char **cmd, t_env *env);
 
 void	delfirst_stack(t_env **s);
 void	ft_add_stack(t_env **s, t_env *new);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:54 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/29 12:59:09 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:45:07 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ int	ft_pwd(t_shell *data)
 
 	if (!data)
 		return (1);
-	if (data->token != data->token->next)
-	{
-		printf("pwd: too many arguments\n");
-		return (0);
-	}
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
