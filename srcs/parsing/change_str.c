@@ -14,6 +14,11 @@
 
 static int	is_expandable(char *str, int i, int quote, int *f)
 {
+	if (str[i] == '$' && str[i + 1] == '?')
+	{
+		*f = 2;
+		return (1);
+	}
 	if (str[i] == '$' && ft_isdigit(str[i + 1]))
 	{
 		(*f) = 1;
@@ -31,6 +36,10 @@ static int	is_expandable(char *str, int i, int quote, int *f)
 
 static int	skip_dollar_key(char *str, int i, t_shell *data, int flag)
 {
+	if (flag == 2)
+	{
+		i++;
+	}
 	if (flag == 0)
 	{
 		while (i < data->start + data->l

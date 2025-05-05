@@ -76,7 +76,6 @@ static void	fill_var_array(t_shell *data, char **var, char *str, int *index)
 			{
 				i += 2;
 				var[j++] = ft_itoa(data->exit_code);
-				continue ;
 			}
 			temp = extract_dollar_key(str, &i, data, f);
 			var[j++] = ft_dollar(data, temp);
