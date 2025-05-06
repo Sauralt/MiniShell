@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 17:28:26 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 18:22:19 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,19 @@ static void	infile_redirect(t_shell *data, t_token *t)
 		return ;
 	}
 	if (t != data->token)
+	{
 		t->prev->infile = infile;
+		t->prev->exit_code = 0;
+	}
 	else
+	{
 		t->next->next->infile = infile;
-	data->exit_code = 0;
+		t->next->next->exit_code = 0;
+	}
 	t->next->type = 3;
 }
 
-static void	outfile_trunc(t_shell *data, t_token *t)
+static void	outfile_trunc(t_token *t)
 {
 	int		outfile;
 	t_token	*temp;
@@ -56,11 +61,11 @@ static void	outfile_trunc(t_shell *data, t_token *t)
 	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
 	temp->outfile = outfile;
-	data->exit_code = 0;
+	temp->exit_code = 0;
 	t->next->type = 3;
 }
 
-static void	outfile_append(t_shell *data, t_token *t)
+static void	outfile_append(t_token *t)
 {
 	int		outfile;
 	t_token	*temp;
@@ -80,7 +85,7 @@ static void	outfile_append(t_shell *data, t_token *t)
 	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
 	temp->outfile = outfile;
-	data->exit_code = 0;
+	temp->exit_code = 0;
 	t->next->type = 3;
 }
 
@@ -91,9 +96,9 @@ void	check_meta_char(t_shell *data, t_token *t)
 	if (strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, t);
 	if (strcmp(t->str[0], ">") == 0)
-		outfile_trunc(data, t);
+		outfile_trunc(t);
 	if (strcmp(t->str[0], ">>") == 0)
-		outfile_append(data, t);
+		outfile_append(t);
 	if (strcmp(t->str[0], "<<") == 0)
 		heredoc(data, t, t->next->str[0]);
 }
