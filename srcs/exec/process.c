@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2025/05/06 15:46:13 by mgarsaul         ###   ########.fr       */
+=======
+/*   Updated: 2025/05/06 15:29:16 by cfleuret         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +51,6 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 	}
 	free(path);
 	free_str(envp);
-	data->exit_code = 0;
 	return (0);
 }
 
@@ -68,7 +71,8 @@ void	child_process(t_token *t, t_shell *data, int *fd)
 		dup2(t->outfile, STDOUT_FILENO);
 		close(t->outfile);
 	}
-	if (t->next && strcmp(t->next->str[0], "|") == 0)
+	if (t->next && ft_strcmp(t->next->str[0], "|") == 0
+		&& ft_strncmp(t->next->next->str[0], "grep", 4) != 0)
 		dup2(fd[1], STDOUT_FILENO);
 	ft_close(fd);
 	if (builtin(data, t) == 0)
