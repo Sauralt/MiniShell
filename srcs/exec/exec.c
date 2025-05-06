@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 16:59:33 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:47:52 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,38 +59,30 @@ int	builtin(t_shell *data, t_token *cmd)
 static void	handle_pipeline(t_shell *data, t_token *t)
 {
 	int		fd[2];
-	pid_t	pid;
 
 	while (t->next != data->token)
 	{
-		if (t->type == 0)
-		{
-			ft_dprintf(2, "%s: command not found\n", t->str[0]);
-			data->exit_code = 127;
-			return ;
-		}
-		if (t->type == 1)
-		{
-			if (pipe(fd) == -1)
-				return (perror("pipe"));
-			pid = fork();
-			if (pid < 0)
-			{
-				ft_close(fd);
-				return (perror("fork"));
-			}
-			if (pid == 0 && t->type != 2)
-				child_process(t, data, fd);
-			dup2(fd[0], STDIN_FILENO);
-			ft_close(fd);
-			waitpid(pid, NULL, 0);
-		}
+		if (data->exit_code == 0)
+			pipe_exec(data, t, fd);
 		t = t->next;
+		data->exit_code = 0;
 	}
+	if (data->exit_code == 0)
+		pipe_exec(data, t, fd);
 }
 
 void	exec(t_shell *data, t_token *t)
 {
+	int	flag;
+
+	flag = 0;
+	while (t->next != data->token)
+	{
+		if (t->str[0][0] == '|')
+			flag = 1;
+		t = t->next;
+	}
+	t = t->next;
 	while (t->type != 1 && t->next != data->token)
 		t = t->next;
 	if (t->next == data->token && t->type != 1)
@@ -100,7 +92,7 @@ void	exec(t_shell *data, t_token *t)
 		data->exit_code = 127;
 		return ;
 	}
-	if (ft_strcmp(t->next->str[0], "|") != 0)
+	if (flag == 0)
 	{
 		if (builtin(data, t) == 1 && t->type != 2)
 		{
@@ -123,7 +115,7 @@ int	proc(t_shell *data)
 	t = data->token;
 	if (data->token->type == 2 && (data->token->next->type == 2
 			|| data->token->next->type == 1))
-		return (ft_dprintf(2, "syntax error\n"), 0);
+		return (0);
 	if (data->token->str[0][0] == '/')
 		return (ft_dprintf(2, "%s: is a directory\n", data->token->str[0]), 0);
 	while (t->type != 1 && t->next != data->token)
