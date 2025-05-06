@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 15:05:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:35:33 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	infile_redirect(t_shell *data, t_token *t)
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
 			t->next->str[0]);
 		data->exit_code = 1;
+		t->next->type = 3;
 		return ;
 	}
 	if (t != data->token)
@@ -29,6 +30,7 @@ static void	infile_redirect(t_shell *data, t_token *t)
 	else
 		t->next->next->infile = infile;
 	data->exit_code = 0;
+	t->next->type = 3;
 }
 
 static void	outfile_trunc(t_shell *data, t_token *t)
@@ -39,9 +41,10 @@ static void	outfile_trunc(t_shell *data, t_token *t)
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
 	{
-		ft_dprintf(2, "%s, no file or directory or not permitted\n",
+		ft_dprintf(2, "%s, no directory or not permitted\n",
 			t->next->str[0]);
 		data->exit_code = 1;
+		t->next->type = 3;
 		return ;
 	}
 	temp = t;
@@ -49,6 +52,7 @@ static void	outfile_trunc(t_shell *data, t_token *t)
 		temp = temp->prev;
 	temp->outfile = outfile;
 	data->exit_code = 0;
+	t->next->type = 3;
 }
 
 static void	outfile_append(t_shell *data, t_token *t)
@@ -59,17 +63,18 @@ static void	outfile_append(t_shell *data, t_token *t)
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (outfile == -1)
 	{
-		ft_dprintf(2, "%s, no file or directory or not permitted\n",
+		ft_dprintf(2, "%s, no directory or not permitted\n",
 			t->next->str[0]);
 		data->exit_code = 1;
+		t->next->type = 3;
 		return ;
 	}
 	temp = t;
 	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
 	temp->outfile = outfile;
-	t->next->type = 2;
 	data->exit_code = 0;
+	t->next->type = 3;
 }
 
 void	check_meta_char(t_shell *data, t_token *t)

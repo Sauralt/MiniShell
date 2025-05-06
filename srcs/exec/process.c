@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 13:06:46 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:19:49 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,13 @@ static void	check_access(char *path, char **cmd)
 	}
 }
 
-int	exec_abs(t_shell *data, char **cmd, t_env *env)
+int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 {
 	char	*path;
 	char	**envp;
-	int		i;
 
 	if (cmd[0][0] == '\0')
 		return (0);
-	i = 0;
 	envp = make_env_str(env);
 	path = find_path(cmd[0], env, i);
 	if (!path)
@@ -54,6 +52,9 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env)
 
 void	child_process(t_token *t, t_shell *data, int *fd)
 {
+	int	i;
+
+	i = 0;
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (t->infile != STDIN_FILENO)
@@ -72,7 +73,7 @@ void	child_process(t_token *t, t_shell *data, int *fd)
 	if (builtin(data, t) == 0)
 		exit(EXIT_SUCCESS);
 	else
-		exec_abs(data, t->str, data->env);
+		exec_abs(data, t->str, data->env, i);
 	perror("exec failed\n");
 	exit(EXIT_FAILURE);
 }
@@ -80,7 +81,9 @@ void	child_process(t_token *t, t_shell *data, int *fd)
 int	exec_simple(t_shell *data, t_token *t)
 {
 	pid_t	pid;
+	int		i;
 
+	i = 0;
 	pid = fork();
 	if (pid == -1)
 		return (1);
@@ -95,7 +98,7 @@ int	exec_simple(t_shell *data, t_token *t)
 		close(t->outfile);
 	}
 	if (pid == 0)
-		exec_abs(data, t->str, data->env);
+		exec_abs(data, t->str, data->env, i);
 	waitpid(pid, NULL, 0);
 	return (0);
 }

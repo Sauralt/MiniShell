@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 16:40:15 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:27:06 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	conditions(t_shell *data, char *line)
 	tok = init_tokens(data, line);
 	if (ft_strncmp(line, "\0", 2) != 0 && tok == 1)
 		return (1);
-	if (ft_strncmp(line, "\0", 2) != 0 && tok != 2) //&& data->exit_code == 0)
+	if (ft_strncmp(line, "\0", 2) != 0 && tok != 2)
 		proc(data);
 	if (ft_strncmp(line, "\0", 2))
 		add_history(line);

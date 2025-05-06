@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 14:16:11 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:08:59 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	change_tok_str(t_token *t, char *str, int len, t_shell *data)
 	i = 1;
 	while (len > 0)
 	{
+		if (temp->type == 2)
+			temp = temp->next->next;
 		temp2 = temp->next;
 		t->str[i] = ft_strdup(temp->str[0]);
 		delone(data, temp);

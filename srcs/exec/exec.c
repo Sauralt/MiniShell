@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 13:10:29 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:38:43 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,27 @@ static void	handle_pipeline(t_shell *data, t_token *t)
 
 	while (t->next != data->token)
 	{
-		pipe_exec(data, t, fd);
+		if (data->exit_code == 0)
+			pipe_exec(data, t, fd);
 		t = t->next;
+		data->exit_code = 0;
 	}
-	pipe_exec(data, t, fd);
+	if (data->exit_code == 0)
+		pipe_exec(data, t, fd);
 }
 
 void	exec(t_shell *data, t_token *t)
 {
+	int	flag;
+
+	flag = 0;
+	while (t->next != data->token)
+	{
+		if (t->str[0][0] == '|')
+			flag = 1;
+		t = t->next;
+	}
+	t = t->next;
 	while (t->type != 1 && t->next != data->token)
 		t = t->next;
 	if (t->next == data->token && t->type != 1)
@@ -78,7 +91,7 @@ void	exec(t_shell *data, t_token *t)
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
 		return ;
 	}
-	if (ft_strcmp(t->next->str[0], "|") != 0)
+	if (flag == 0)
 	{
 		if (builtin(data, t) == 1 && t->type != 2)
 		{

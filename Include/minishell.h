@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 13:09:42 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:21:40 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 typedef struct s_token
 {
 	int				type;
+	int				exit_code;
 	char			**str;
 	int				infile;
 	int				outfile;
@@ -104,7 +105,7 @@ void	close_dup(int original_stdin, int original_stdout);
 int		proc(t_shell *data);
 int		execute(t_shell *data);
 int		exec_simple(t_shell *data, t_token *t);
-int		exec_abs(t_shell *data, char **cmd, t_env *env);
+int		exec_abs(t_shell *data, char **cmd, t_env *env, int i);
 
 void	delfirst_stack(t_env **s);
 void	ft_add_stack(t_env **s, t_env *new);
