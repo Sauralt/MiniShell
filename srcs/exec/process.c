@@ -6,11 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2025/05/06 15:46:13 by mgarsaul         ###   ########.fr       */
-=======
-/*   Updated: 2025/05/06 15:29:16 by cfleuret         ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2025/05/06 16:33:54 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

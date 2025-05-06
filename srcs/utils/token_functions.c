@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 14:35:04 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:21:36 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_token	*ft_new_token(t_shell *data, char *content)
 	c->str[1] = NULL;
 	c->infile = 0;
 	c->outfile = 1;
+	c->exit_code = 0;
 	c->next = c;
 	c->prev = c;
 	return (c);
@@ -112,11 +113,11 @@ t_token	*add_param(t_shell *data, t_token *t)
 		return (t);
 	temp = t->next;
 	len = 1;
-	while (temp != t && temp != data->token && temp->str[0][0] != '|')
+	while (temp != t && temp != data->token)
 	{
-		if (temp->type == 2)
+		if (ft_strcmp(temp->str[0], "<") == 0)
 			temp = temp->next->next;
-		if (temp == t || temp == data->token || temp->str[0][0] == '|')
+		if (temp == t || temp == data->token || temp->type == 2)
 			break ;
 		len++;
 		temp = temp->next;

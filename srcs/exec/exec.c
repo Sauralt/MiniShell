@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 16:32:06 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:22:07 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,14 @@ static void	handle_pipeline(t_shell *data, t_token *t)
 
 	while (t->next != data->token)
 	{
-		if (data->exit_code == 0)
+		if (t->exit_code == 0)
 			pipe_exec(data, t, fd);
+		data->exit_code = t->exit_code;
 		t = t->next;
-		data->exit_code = 0;
 	}
-	if (data->exit_code == 0)
+	if (t->exit_code == 0)
 		pipe_exec(data, t, fd);
+	data->exit_code = t->exit_code;
 }
 
 void	exec(t_shell *data, t_token *t)

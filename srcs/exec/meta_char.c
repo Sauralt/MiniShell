@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 14:35:33 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:28:26 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ static void	infile_redirect(t_shell *data, t_token *t)
 	{
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
 			t->next->str[0]);
-		data->exit_code = 1;
+		if (t != data->token)
+			t->prev->exit_code = 1;
+		else
+			t->next->next->exit_code = 1;
 		t->next->type = 3;
 		return ;
 	}
@@ -38,16 +41,18 @@ static void	outfile_trunc(t_shell *data, t_token *t)
 	int		outfile;
 	t_token	*temp;
 
+	temp = t;
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
 	{
 		ft_dprintf(2, "%s, no directory or not permitted\n",
 			t->next->str[0]);
-		data->exit_code = 1;
+		while (temp->type != 1 && temp->prev != t)
+			temp = temp->prev;
+		temp->exit_code = 1;
 		t->next->type = 3;
 		return ;
 	}
-	temp = t;
 	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
 	temp->outfile = outfile;
@@ -60,16 +65,18 @@ static void	outfile_append(t_shell *data, t_token *t)
 	int		outfile;
 	t_token	*temp;
 
+	temp = t;
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (outfile == -1)
 	{
 		ft_dprintf(2, "%s, no directory or not permitted\n",
 			t->next->str[0]);
-		data->exit_code = 1;
+		while (temp->type != 1 && temp->prev != t)
+			temp = temp->prev;
+		temp->exit_code = 1;
 		t->next->type = 3;
 		return ;
 	}
-	temp = t;
 	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
 	temp->outfile = outfile;
