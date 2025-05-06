@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 16:43:29 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:10:29 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,34 +59,13 @@ int	builtin(t_shell *data, t_token *cmd)
 static void	handle_pipeline(t_shell *data, t_token *t)
 {
 	int		fd[2];
-	pid_t	pid;
 
 	while (t->next != data->token)
 	{
-		if (t->type == 0)
-		{
-			ft_dprintf(2, "%s: command not found\n", t->str[0]);
-			data->exit_code = 127;
-			return ;
-		}
-		if (t->type == 1)
-		{
-			if (pipe(fd) == -1)
-				return (perror("pipe"));
-			pid = fork();
-			if (pid < 0)
-			{
-				ft_close(fd);
-				return (perror("fork"));
-			}
-			if (pid == 0 && t->type != 2)
-				child_process(t, data, fd);
-			dup2(fd[0], STDIN_FILENO);
-			ft_close(fd);
-			waitpid(pid, NULL, 0);
-		}
+		pipe_exec(data, t, fd);
 		t = t->next;
 	}
+	pipe_exec(data, t, fd);
 }
 
 void	exec(t_shell *data, t_token *t)

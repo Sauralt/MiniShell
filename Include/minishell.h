@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 15:40:11 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:09:42 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ bool	read_in_stdin(t_shell *data, int fd, char *delimiter);
 char	*expand_dollar(t_shell *data, char *input);
 int		init_stacks(t_shell *data);
 void	check_meta_in_word(t_shell *data, t_token *t);
+void	pipe_exec(t_shell *data, t_token *t, int *fd);
 
 t_token	*add_param(t_shell *data, t_token *t);
 t_token	*ft_new_token(t_shell *data, char *content);

@@ -1,16 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
+/*   random_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:06:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/01 17:12:03 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:10:34 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	pipe_exec(t_shell *data, t_token *t, int *fd)
+{
+	pid_t	pid;
+
+	if (t->type == 0)
+	{
+		ft_dprintf(2, "%s: command not found\n", t->str[0]);
+		data->exit_code = 127;
+		return ;
+	}
+	if (t->type == 1)
+	{
+		if (pipe(fd) == -1)
+			return (perror("pipe"));
+		pid = fork();
+		if (pid < 0)
+		{
+			ft_close(fd);
+			return (perror("fork"));
+		}
+		if (pid == 0 && t->type != 2)
+			child_process(t, data, fd);
+		dup2(fd[0], STDIN_FILENO);
+		ft_close(fd);
+		waitpid(pid, NULL, 0);
+	}
+}
 
 int	check_tok_order(t_shell *data)
 {
