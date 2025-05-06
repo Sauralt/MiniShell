@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:37:54 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 14:18:23 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:32:40 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_env(t_shell *data, char **env)
 
 	i = 0;
 	data->exit_code = 0;
+	g_signal_pid = 0;
 	while (env[i])
 	{
 		if (i == 0)

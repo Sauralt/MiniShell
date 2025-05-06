@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 14:47:44 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:28:40 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 
 # define BUFFER_SIZE 1024
 # define PATH_SIZE 1024
+
+extern pid_t	g_signal_pid;
 
 typedef struct s_token
 {

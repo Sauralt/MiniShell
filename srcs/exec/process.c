@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 14:48:18 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:46:13 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,11 @@ void	child_process(t_token *t, t_shell *data, int *fd)
 
 int	exec_simple(t_shell *data, t_token *t)
 {
-	pid_t	pid;
 	int		i;
 
 	i = 0;
-	pid = fork();
-	if (pid == -1)
+	g_signal_pid = fork();
+	if (g_signal_pid == -1)
 		return (1);
 	if (t->infile != STDIN_FILENO)
 	{
@@ -98,9 +97,9 @@ int	exec_simple(t_shell *data, t_token *t)
 		dup2(t->outfile, STDOUT_FILENO);
 		close(t->outfile);
 	}
-	if (pid == 0)
+	if (g_signal_pid == 0)
 		exec_abs(data, t->str, data->env, i);
-	waitpid(pid, NULL, 0);
+	waitpid(g_signal_pid, NULL, 0);
 	return (0);
 }
 

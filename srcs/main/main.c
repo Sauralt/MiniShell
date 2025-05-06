@@ -6,16 +6,22 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 14:48:26 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:32:28 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
+pid_t	g_signal_pid;
+
 void	handle_sigint(int sig)
 {
 	(void)sig;
-	printf("\nMinishell> ");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	printf("\n");
+	if (g_signal_pid == 0)
+		rl_redisplay();
 }
 
 static void	init_data(int argc, char **argv, t_shell *data)
@@ -59,6 +65,7 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		free(line);
 		free_tokens(data->token);
+		g_signal_pid = 0;
 	}
 	free_all(data, line);
 	return (0);
