@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/05 15:32:42 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/05 18:06:56 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	change_directory(const char *path, t_shell *data)
 		data->exit_code = 0;
 	}
 }
-
 
 void	ft_cd(t_shell *data, t_token *str)
 {

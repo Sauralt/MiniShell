@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 15:40:45 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:02:27 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	conditions(t_shell *data, char *line)
 	tok = init_tokens(data, line);
 	if (ft_strncmp(line, "\0", 2) != 0 && tok == 1)
 		return (1);
-	if (ft_strncmp(line, "\0", 2) != 0 && tok != 2 && data->exit_code == 0)
+	if (ft_strncmp(line, "\0", 2) != 0 && tok != 2)
 		proc(data);
 	if (ft_strncmp(line, "\0", 2))
 		add_history(line);

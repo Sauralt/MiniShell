@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 15:40:20 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:59:33 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	exec(t_shell *data, t_token *t)
 	{
 		t = t->next;
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
+		data->exit_code = 127;
 		return ;
 	}
 	if (ft_strcmp(t->next->str[0], "|") != 0)

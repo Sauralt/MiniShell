@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 14:30:27 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:54:12 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env)
 	}
 	free(path);
 	free_str(envp);
-//	data->exit_code = 0;
+	data->exit_code = 0;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:58 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/30 15:09:38 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:50:11 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_unset(t_shell *data, t_token *str)
 		if (!is_valid_identifier(str->str[i]))
 		{
 			ft_dprintf(2, "unset: `%s': not a valid identifier\n", str->str[i]);
-			data->exit_code = 1;
+			data->exit_code = 0;
 		}
 		else
 			remove_env_node(data, str->str[i]);
