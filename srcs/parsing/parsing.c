@@ -61,6 +61,9 @@ char	*remove_closed_quotes(char *line)
 
 char	parsing_loop(char*line, char quote, int *i)
 {
+	int	flag;
+
+	flag = 0;
 	while (line[*i] && line[*i] != ' ')
 	{
 		if (line[*i] == '\'' || line[*i] == '"')
@@ -68,13 +71,20 @@ char	parsing_loop(char*line, char quote, int *i)
 			quote = line[*i];
 			(*i)++;
 			while (line[*i] && line[*i] != quote)
+			{
+				if (line[*i] == '<' || line[*i] == '>' || line[*i] == '|')
+					flag = 1;
 				(*i)++;
+			}
 			if (line[*i] == '\0')
 				return (ft_dprintf(2, "open quote\n"), 2);
 		}
 		(*i)++;
 	}
-	return (quote);
+	if (flag == 1)
+		return (quote);
+	else
+		return ('\0');
 }
 
 int	parsing(t_shell *data, char *line)

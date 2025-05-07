@@ -12,12 +12,18 @@
 
 #include "../Include/minishell.h"
 
-int	ft_pwd(t_shell *data)
+int	ft_pwd(t_shell *data, t_token *t)
 {
 	char	*pwd;
 
 	if (!data)
 		return (1);
+	if (t->str[1][0] == '-')
+	{
+		data->exit_code = 2;
+		ft_dprintf(2, "%s: %s: invalid option\n", t->str[0], t->str[1]);
+		return (1);
+	}
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{

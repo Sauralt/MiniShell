@@ -59,6 +59,7 @@ char	*remove_closed_quotes(char *line);
 int		parsing(t_shell *data, char *line);
 void	init_list_tok(t_shell *data, char *str, char quote);
 char	*init_nstr(t_shell *data, char *str, int start, int len);
+int		last_init(t_token *c, t_shell *data, char *content);
 int		set_token_type(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, t_token *t);
 int		meta_char(char *str);
@@ -80,6 +81,7 @@ void	delfirst(t_token **s);
 void	delone(t_shell *data, t_token *t);
 
 char	*find_path(char *cmd, t_env *envp, int i);
+char	*find_absolute(char *cmd);
 t_env	*find_env(t_env *env, const char *key);
 
 void	handle_sigint(int sig);
@@ -89,7 +91,7 @@ void	child_process(t_token *t, t_shell *data, int *fd);
 int		builtin(t_shell *data, t_token *cmd);
 
 void	ft_cd(t_shell *data, t_token *str);
-int		ft_pwd(t_shell *data);
+int		ft_pwd(t_shell *data, t_token *t);
 int		ft_env(t_shell *data);
 int		ft_echo(t_token *str);
 int		ft_unset(t_shell *data, t_token *str);

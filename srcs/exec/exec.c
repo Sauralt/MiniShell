@@ -25,7 +25,7 @@ static void	exec_built(t_shell *data, t_token *cmd)
 		close(cmd->outfile);
 	}
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
-		ft_pwd(data);
+		ft_pwd(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)
 		ft_env(data);
 	else if (ft_strncmp(cmd->str[0], "cd", 3) == 0 && cmd->next == cmd->prev)
@@ -89,17 +89,19 @@ void	exec(t_shell *data, t_token *t)
 	if (t->next == data->token && t->type != 1)
 	{
 		t = t->next;
-		ft_dprintf(2, "%s: command not found\n", t->str[0]);
+		if (t->type == 0)
+			ft_dprintf(2, "%s: command not found\n", t->str[0]);
 		data->exit_code = 127;
 		return ;
 	}
 	if (flag == 0)
 	{
-		if (builtin(data, t) == 1 && t->type != 2)
+		if (builtin(data, t) == 1 && t->type != 2 && t->exit_code == 0)
 		{
 			if (exec_simple(data, t) == 1)
 				perror("fork");
 		}
+		data->exit_code = t->exit_code;
 		return ;
 	}
 	handle_pipeline(data, t);
