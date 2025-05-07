@@ -100,14 +100,14 @@ int	ft_export(t_shell *data, t_token *str)
 		if (str->str[i][0] == '-' && str->str[i][1])
 		{
 			ft_dprintf(2, "export: `%s': invalid option\n", str->str[i]);
-			data->exit_code = 1;
+			str->exit_code = 1;
 			return (1);
 		}
 		delim = ft_strchr(str->str[i], '=');
 		if (delim == str->str[i] || !is_valid_identifier(str->str[i]))
 		{
 			ft_dprintf(2, "export: `%s': not a valid identifier\n", str->str[i]);
-			data->exit_code = 1;
+			str->exit_code = 1;
 			i++;
 			continue ;
 		}

@@ -12,14 +12,53 @@
 
 #include "minishell.h"
 
-static void	check_access(char *path, char **cmd)
+// static void	check_access(char *path, char **cmd)
+// {
+// 	if (!access(cmd[0], X_OK))
+// 	{
+// 		free(path);
+// 		ft_dprintf(2, "%s: no permissions\n", cmd[0]);
+// 		exit(EXIT_FAILURE);
+// 	}
+// }
+
+// int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
+// {
+// 	char	*path;
+// 	char	**envp;
+
+// 	if (cmd[0][0] == '\0')
+// 		return (0);
+// 	envp = make_env_str(env);
+// 	path = find_path(cmd[0], env, i);
+// 	if (!path)
+// 	{
+// 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
+// 		data->exit_code = 127;
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	check_access(path, cmd);
+// 	if (execve(path, cmd, envp) == -1)
+// 	{
+// 		free(path);
+// 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
+// 		data->exit_code = 127;
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	free(path);
+// 	free_str(envp);
+// 	return (0);
+// }
+
+#include <sys/stat.h> // pour stat()
+
+int	is_directory(const char *path)
 {
-	if (!access(cmd[0], X_OK))
-	{
-		free(path);
-		ft_dprintf(2, "%s: no permissions\n", cmd[0]);
-		exit(EXIT_FAILURE);
-	}
+	struct stat	sb;
+
+	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
+		return (1);
+	return (0);
 }
 
 int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
@@ -27,27 +66,68 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 	char	*path;
 	char	**envp;
 
-	if (cmd[0][0] == '\0')
-		return (0);
+	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
+		exit(0);
+
 	envp = make_env_str(env);
+	if (cmd[0][0] == '/' || cmd[0][0] == '.')
+	{
+		if (access(cmd[0], F_OK) != 0)
+		{
+			ft_dprintf(2, "%s: No such file or directory\n", cmd[0]);
+			data->exit_code = 127;
+			exit(127);
+		}
+		if (is_directory(cmd[0]))
+		{
+			ft_dprintf(2, "%s: Is a directory\n", cmd[0]);
+			data->exit_code = 126;
+			exit(126);
+		}
+		if (access(cmd[0], X_OK) != 0)
+		{
+			ft_dprintf(2, "%s: Permission denied\n", cmd[0]);
+			data->exit_code = 126;
+			exit(126);
+		}
+		execve(cmd[0], cmd, envp);
+		perror(cmd[0]);
+		data->exit_code = 127;
+		exit(127);
+	}
 	path = find_path(cmd[0], env, i);
 	if (!path)
 	{
 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
 		data->exit_code = 127;
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
-	check_access(path, cmd);
-	if (execve(path, cmd, envp) == -1)
+	if (access(path, F_OK) != 0)
 	{
+		ft_dprintf(2, "%s: No such file or directory\n", path);
 		free(path);
-		ft_dprintf(2, "%s: command not found\n", cmd[0]);
 		data->exit_code = 127;
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
+	if (is_directory(path))
+	{
+		ft_dprintf(2, "%s: Is a directory\n", path);
+		free(path);
+		data->exit_code = 126;
+		exit(126);
+	}
+	if (access(path, X_OK) != 0)
+	{
+		ft_dprintf(2, "%s: Permission denied\n", path);
+		free(path);
+		data->exit_code = 126;
+		exit(126);
+	}
+	execve(path, cmd, envp);
+	perror(path);
 	free(path);
-	free_str(envp);
-	return (0);
+	data->exit_code = 127;
+	exit(127);
 }
 
 void	child_process(t_token *t, t_shell *data, int *fd)

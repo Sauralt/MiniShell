@@ -84,7 +84,7 @@ void	ft_cd(t_shell *data, t_token *str)
 	if (str->str[2] != NULL && str->str[1] != NULL)
 	{
 		ft_dprintf(2, "cd: too many arguments\n");
-		data->exit_code = 1;
+		str->exit_code = 1;
 		return ;
 	}
 	else

@@ -76,7 +76,7 @@ int	ft_exit(t_shell *data, t_token *str)
 		if (str->str[2])
 		{
 			ft_dprintf(2, "minishell: exit: too many arguments\n");
-			data->exit_code = 1;
+			str->exit_code = 1;
 			return (1);
 		}
 		data->exit_code = ft_atol(str->str[1]);
