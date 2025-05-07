@@ -84,6 +84,11 @@ char	*init_nstr(t_shell *data, char *str, int start, int l)
 	i = start;
 	len = 0;
 	quote = 0;
+	if (data->token)
+	{
+		if (ft_strcmp(data->token->prev->str[0], "<<") == 0)
+			return (str);
+	}
 	while (i < start + l)
 	{
 		quote = quote_flag(quote, str, i);

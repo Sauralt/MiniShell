@@ -35,9 +35,16 @@ static char	*expand_variable(t_shell *data, char *input, int *i, char *result)
 		j++;
 	var = ft_substr(input, *i + 1, j - (*i + 1));
 	env = find_env(data->env, var);
-	val = ft_strchr(env->str, '=');
-	if (env && val)
-		result = ft_strjoin_free(result, ft_strdup(val + 1));
+	if (env)
+	{
+		val = ft_strchr(env->str, '=');
+		if (val)
+			result = ft_strjoin_free(result, ft_strdup(val + 1));
+	}
+	free(var);
+	*i = j;
+	return (result);
+
 	free(var);
 	*i = j;
 	return (result);

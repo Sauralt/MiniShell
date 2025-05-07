@@ -18,7 +18,7 @@ int	ft_pwd(t_shell *data, t_token *t)
 
 	if (!data)
 		return (1);
-	if (t->str[1][0] == '-')
+	if (t->str[1] && t->str[1][0] == '-')
 	{
 		data->exit_code = 2;
 		ft_dprintf(2, "%s: %s: invalid option\n", t->str[0], t->str[1]);
