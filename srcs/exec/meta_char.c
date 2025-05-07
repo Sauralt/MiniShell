@@ -12,6 +12,25 @@
 
 #include "minishell.h"
 
+static void	infile_loop(t_token *t, int flag, int infile, int exit_code)
+{
+	t_token	*temp;
+
+	temp = t;
+	if (flag == 0)
+	{
+		while (temp->type != 1 && temp->prev != t)
+			temp = temp->prev;
+	}
+	else
+	{
+		while (temp->type != 1 && temp->next != t)
+			temp = temp->next;
+	}
+	temp->infile = infile;
+	temp->exit_code = exit_code;
+}
+
 static void	infile_redirect(t_shell *data, t_token *t)
 {
 	int		infile;
@@ -22,22 +41,16 @@ static void	infile_redirect(t_shell *data, t_token *t)
 		ft_dprintf(2, "%s, no file or directory or not permitted\n",
 			t->next->str[0]);
 		if (t != data->token)
-			t->prev->exit_code = 1;
+			infile_loop(t, 0, 0, 1);
 		else
-			t->next->next->exit_code = 1;
+			infile_loop(t, 1, 0, 1);
 		t->next->type = 3;
 		return ;
 	}
 	if (t != data->token)
-	{
-		t->prev->infile = infile;
-		t->prev->exit_code = 0;
-	}
+		infile_loop(t, 0, infile, 0);
 	else
-	{
-		t->next->next->infile = infile;
-		t->next->next->exit_code = 0;
-	}
+		infile_loop(t, 1, infile, 0);
 	t->next->type = 3;
 }
 
@@ -61,7 +74,6 @@ static void	outfile_trunc(t_token *t)
 	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
 	temp->outfile = outfile;
-	temp->exit_code = 0;
 	t->next->type = 3;
 }
 
@@ -85,7 +97,6 @@ static void	outfile_append(t_token *t)
 	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
 	temp->outfile = outfile;
-	temp->exit_code = 0;
 	t->next->type = 3;
 }
 

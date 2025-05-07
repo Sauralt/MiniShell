@@ -50,7 +50,8 @@ int	check_tok_order(t_shell *data)
 	t = data->token;
 	while (t->next != data->token)
 	{
-		if (t->type == 2 && t->next->type == 2)
+		if ((t->type == 2 && ft_strcmp(t->str[0], t->next->str[0]) == 0)
+			|| (t->type == 2 && t->next->str[0][0] == '|'))
 		{
 			data->exit_code = 2;
 			return (ft_dprintf(2, "syntax error near unexpected token `%s'\n",

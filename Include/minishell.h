@@ -89,7 +89,7 @@ void	child_process(t_token *t, t_shell *data, int *fd);
 int		builtin(t_shell *data, t_token *cmd);
 
 void	ft_cd(t_shell *data, t_token *str);
-int		ft_pwd(t_shell *data);
+int		ft_pwd(t_shell *data, t_token *t);
 int		ft_env(t_shell *data);
 int		ft_echo(t_token *str);
 int		ft_unset(t_shell *data, t_token *str);
