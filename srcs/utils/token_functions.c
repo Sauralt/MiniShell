@@ -15,7 +15,7 @@
 t_token	*ft_new_token(t_shell *data, char *content)
 {
 	t_token	*c;
-	char *temp;
+	//char *temp;
 
 	c = malloc(sizeof(*c));
 	if (c == NULL)
@@ -26,16 +26,16 @@ t_token	*ft_new_token(t_shell *data, char *content)
 		free(c);
 		return (NULL);
 	}
-	if (access(content, F_OK) == 0)
-	{
-		temp = find_absolute(ft_strdup(content));
-		c->str[0] = temp;
-		if (last_init(c, data, temp) == 1)
-			return (NULL);
-		else
-			return (c);
-	}
-	else
+	// if (access(content, F_OK) == 0)
+	// {
+	// 	temp = find_absolute(ft_strdup(content));
+	// 	c->str[0] = temp;
+	// 	if (last_init(c, data, temp) == 1)
+	// 		return (NULL);
+	// 	else
+	// 		return (c);
+	// }
+	//else
 		c->str[0] = ft_strdup(content);
 	if (last_init(c, data, content) == 1)
 		return (NULL);
