@@ -68,7 +68,7 @@ void	add_or_replace_env(t_shell *data, char *key, char *value)
 	}
 }
 
-static int	is_valid_identifier(const char *str)
+int	is_valid_identifier_export(const char *str)
 {
 	int	i;
 
@@ -86,8 +86,6 @@ static int	is_valid_identifier(const char *str)
 
 int	ft_export(t_shell *data, t_token *str)
 {
-	char	*key;
-	char	*value;
 	char	*delim;
 	int		i;
 
@@ -104,25 +102,11 @@ int	ft_export(t_shell *data, t_token *str)
 			return (1);
 		}
 		delim = ft_strchr(str->str[i], '=');
-		if (delim == str->str[i] || !is_valid_identifier(str->str[i]))
-		{
-			ft_dprintf(2, "export: `%s': not a valid identifier\n", str->str[i]);
-			str->exit_code = 1;
-			i++;
-			continue ;
-		}
-		if (delim)
-		{
-			key = strndup(str->str[i], delim - str->str[i]);
-			value = ft_strdup(delim + 1);
-			if (!key || !value)
-				return (free(key), free(value), perror("malloc"), 1);
-			add_or_replace_env(data, key, value);
-			free(key);
-			free(value);
-		}
-		else
+		if (export_norm(data, i, delim, str) == 1)
+			return (1);
+		if (!delim)
 			add_or_replace_env(data, str->str[i], "");
+
 		i++;
 	}
 	return (0);

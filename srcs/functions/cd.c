@@ -12,16 +12,6 @@
 
 #include "../Include/minishell.h"
 
-int	get_current_directory(char *buffer, size_t size)
-{
-	if (getcwd(buffer, size) == NULL)
-	{
-		perror("getcwd");
-		return (0);
-	}
-	return (1);
-}
-
 const char	*cd_home(const char *path)
 {
 	const char	*home;
@@ -57,16 +47,8 @@ void	set_env_var(t_shell *data, const char *key, const char *value)
 	key_len = ft_strlen(key);
 	new_entry = NULL;
 	new_entry = ft_strjoin3(key, "=", value);
-	while (env)
-	{
-		if (ft_strncmp(env->str, key, key_len) == 0 && env->str[key_len] == '=')
-		{
-			free(env->str);
-			env->str = new_entry;
-			return ;
-		}
-		env = env->next;
-	}
+	if (set_env_var_loop(env, new_entry, key_len, key) == 1)
+		return ;
 	new = malloc(sizeof(t_env));
 	new->str = new_entry;
 	new->prev = NULL;

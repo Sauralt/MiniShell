@@ -44,10 +44,6 @@ static char	*expand_variable(t_shell *data, char *input, int *i, char *result)
 	free(var);
 	*i = j;
 	return (result);
-
-	free(var);
-	*i = j;
-	return (result);
 }
 
 static char	*append_char(char *result, char c)

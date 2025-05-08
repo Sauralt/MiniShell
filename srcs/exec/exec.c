@@ -76,14 +76,7 @@ void	exec(t_shell *data, t_token *t)
 {
 	int	flag;
 
-	flag = 0;
-	while (t->next != data->token)
-	{
-		if (t->str[0][0] == '|')
-			flag = 1;
-		t = t->next;
-	}
-	t = t->next;
+	flag = exec_flag(data, t);
 	while (t->type != 1 && t->next != data->token)
 		t = t->next;
 	if (t->next == data->token && t->type != 1)

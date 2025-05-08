@@ -17,11 +17,13 @@ FUNCTIONS =	srcs/functions/cd.c srcs/functions/echo.c srcs/functions/env.c \
 MAIN =		srcs/main/cmd_input.c srcs/main/main.c
 
 PARSING =	srcs/parsing/dollar.c srcs/parsing/parsing.c srcs/parsing/init_types.c \
-			srcs/parsing/meta_in_word.c srcs/parsing/remove_quotes.c srcs/parsing/dollar_2.c \
-			srcs/parsing/change_str.c 
+			srcs/parsing/meta_in_word.c srcs/parsing/remove_quotes.c \
+			srcs/parsing/dollar_2.c srcs/parsing/change_str.c 
 
 UTILS =		srcs/utils/env_functions.c srcs/utils/find.c srcs/utils/free.c \
-			srcs/utils/random_utils.c srcs/utils/token_functions.c srcs/utils/random_utils_2.c
+			srcs/utils/random_utils.c srcs/utils/token_functions.c \
+			srcs/utils/random_utils_2.c srcs/utils/norm_functions.c \
+			srcs/utils/builtins_norm.c
 
 FT_DPRINTF = srcs/ft_dprintf/ft_dprintf.c srcs/ft_dprintf/ft_printhex.c srcs/ft_dprintf/ft_printint.c \
 			srcs/ft_dprintf/ft_printptr.c srcs/ft_dprintf/ft_printstring.c srcs/ft_dprintf/ft_printuns.c

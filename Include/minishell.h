@@ -97,7 +97,14 @@ int		ft_echo(t_token *str);
 int		ft_unset(t_shell *data, t_token *str);
 int		ft_export(t_shell *data, t_token *str);
 int		ft_exit(t_shell *data, t_token *str);
+
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
+int		set_env_var_loop(t_env *env, char *new_entry, int key_len,
+			const char *key);
+int		get_current_directory(char *buffer, size_t size);
+int		export_norm(t_shell *data, int i, char *delim, t_token *str);
+int		is_valid_identifier_export(const char *str);
+void	add_or_replace_env(t_shell *data, char *key, char *value);
 
 void	free_all(t_shell *data, char *line);
 void	free_env(t_env *env);
@@ -138,5 +145,7 @@ char	*loop_no_dollar(char *temp, int start, int len, char *str);
 void	change_tok_str(t_token *t, char *str, int len, t_shell *data);
 int		quote_flag(int quote, char *str, int i);
 char	*ft_strjoin_free(char *s1, char *s2);
+
+int		exec_flag(t_shell *data, t_token *t);
 
 #endif
