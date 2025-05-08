@@ -46,6 +46,37 @@ const char	*handle_cd_dash(const char *path)
 	return (path);
 }
 
+void	set_env_var(t_shell *data, const char *key, const char *value)
+{
+	t_env	*env;
+	size_t	key_len;
+	char	*new_entry;
+	t_env	*new;
+
+	env = data->env;
+	key_len = ft_strlen(key);
+	new_entry = NULL;
+	new_entry = ft_strjoin3(key, "=", value);
+	while (env)
+	{
+		if (ft_strncmp(env->str, key, key_len) == 0 && env->str[key_len] == '=')
+		{
+			free(env->str);
+			env->str = new_entry;
+			return ;
+		}
+		env = env->next;
+	}
+	new = malloc(sizeof(t_env));
+	new->str = new_entry;
+	new->prev = NULL;
+	new->next = data->env;
+	if (data->env)
+		data->env->prev = new;
+	data->env = new;
+}
+
+
 void	change_directory(const char *path, t_shell *data)
 {
 	char	current_dir[PATH_SIZE];
@@ -67,8 +98,8 @@ void	change_directory(const char *path, t_shell *data)
 		data->prev_dir[PATH_SIZE - 1] = '\0';
 		if (get_current_directory(current_dir, sizeof(current_dir)))
 		{
-			setenv("PWD", current_dir, 1);
-			setenv("OLDPWD", data->prev_dir, 1);
+			set_env_var(data, "PWD", current_dir);
+			set_env_var(data, "OLDPWD", data->prev_dir);
 		}
 		data->exit_code = 0;
 	}
