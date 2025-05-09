@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 15:36:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:45:01 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,32 +25,15 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 {
 	char	*path;
 	char	**envp;
+	int		exit_flag;
 
 	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
 		exit(0);
 	envp = make_env_str(env);
 	path = find_path(cmd[0], env, i);
-	if (access(path, F_OK) != 0)
-	{
-		ft_dprintf(2, "%s: No such file or directory\n", path);
-		free(path);
-		data->exit_code = 127;
-		exit(127);
-	}
-	if (is_directory(path))
-	{
-		ft_dprintf(2, "%s: Is a directory\n", path);
-		free(path);
-		data->exit_code = 126;
-		exit(126);
-	}
-	if (access(path, X_OK) != 0)
-	{
-		ft_dprintf(2, "%s: Permission denied\n", path);
-		free(path);
-		data->exit_code = 126;
-		exit(126);
-	}
+	exit_flag = valid_path(data, path);
+	if (exit_flag != 0)
+		exit(exit_flag);
 	cmd[0] = find_absolute(cmd[0]);
 	execve(path, cmd, envp);
 	perror(path);
@@ -96,16 +79,7 @@ int	exec_simple(t_shell *data, t_token *t)
 	g_signal_pid = fork();
 	if (g_signal_pid == -1)
 		return (1);
-	if (t->infile != STDIN_FILENO)
-	{
-		dup2(t->infile, STDIN_FILENO);
-		close(t->infile);
-	}
-	if (t->outfile != STDOUT_FILENO)
-	{
-		dup2(t->outfile, STDOUT_FILENO);
-		close(t->outfile);
-	}
+	redirected(t);
 	if (g_signal_pid == 0)
 		exec_abs(data, t->str, data->env, i);
 	waitpid(g_signal_pid, &status, 0);

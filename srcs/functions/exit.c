@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/09 11:49:57 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:04:47 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,10 @@ int	is_numeric(const char *str)
 		return (0);
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
-
 	if (*str == '+' || *str == '-')
 		str++;
-
 	if (!*str)
 		return (0);
-
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
@@ -43,14 +40,12 @@ long	ft_atol(const char *str)
 	result = 0;
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
-
 	if (*str == '-' || *str == '+')
 	{
 		if (*str == '-')
 			sign = -1;
 		str++;
 	}
-
 	while (*str && ft_isdigit(*str))
 	{
 		result = result * 10 + (*str - '0');
@@ -58,7 +53,6 @@ long	ft_atol(const char *str)
 	}
 	return (result * sign);
 }
-
 
 int	ft_exit(t_token *str)
 {

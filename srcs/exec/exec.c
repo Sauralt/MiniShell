@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 15:31:43 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:01:54 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,27 +107,17 @@ int	proc(t_shell *data)
 	int		original_stdin;
 	int		original_stdout;
 
+	if (data->exit_code < 0)
+	{
+		data->exit_code = 0;
+		return (0);
+	}
 	original_stdin = dup(STDIN_FILENO);
 	original_stdout = dup(STDOUT_FILENO);
 	t = data->token;
 	if (data->token->type == 2 && (data->token->next->type == 2
 			|| data->token->next->type == 1))
 		return (0);
-	// if (data->token->str[0][0] == '/')
-	// {
-	// 	if (access(t->str[0], F_OK) == 0)
-	// 	{
-	// 		data->exit_code = 126;
-	// 		return (ft_dprintf(2, "%s: Is a directory\n",
-	// 				data->token->str[0]), 0);
-	// 	}
-	// 	else
-	// 	{
-	// 		data->exit_code = 127;
-	// 		return (ft_dprintf(2, "%s: No such file or directory\n",
-	// 				data->token->str[0]), 0);
-	// 	}
-	// }
 	while (t->type != 1 && t->next != data->token)
 		t = t->next;
 	if (t->next == data->token)

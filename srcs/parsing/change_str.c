@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:08:25 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/01 16:55:27 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:39:12 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ static char	*build_final_string(char *str, char **var, t_shell *data, int j)
 	quote = 0;
 	t = 0;
 	nstr = malloc(sizeof(char) * (len_var(data, var) + 1));
-	if (!nstr)
-		return (NULL);
 	while (i < data->start + data->l)
 	{
 		quote = quote_flag(quote, str, i);

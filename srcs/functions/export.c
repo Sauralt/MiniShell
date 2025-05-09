@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/09 10:52:11 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:06:15 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int	ft_export(t_shell *data, t_token *str)
 
 	if (!str->str[1])
 		return (print_env(data->env), 0);
-
 	i = 1;
 	while (str->str[i])
 	{
@@ -106,12 +105,8 @@ int	ft_export(t_shell *data, t_token *str)
 			return (1);
 		if (!delim)
 			add_or_replace_env(data, str->str[i], "");
-
 		i++;
 	}
 	str->exit_code = 0;
 	return (0);
 }
-
-
-

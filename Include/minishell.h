@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 13:10:15 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:56:29 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,5 +148,9 @@ int		quote_flag(int quote, char *str, int i);
 char	*ft_strjoin_free(char *s1, char *s2);
 
 int		exec_flag(t_shell *data, t_token *t);
+void	redirected(t_token *t);
+int		valid_path(t_shell *data, char *path);
+int		is_directory(const char *path);
+void	ft_pipe(int *fd, int status, t_shell *data, t_token *t);
 
 #endif

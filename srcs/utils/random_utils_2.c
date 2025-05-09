@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:06:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 15:33:58 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:56:18 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	pipe_exec(t_shell *data, t_token *t, int *fd)
 {
-	pid_t	pid;
 	int		status;
 
+	status = 0;
 	if (t->type == 0)
 	{
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
@@ -25,30 +25,15 @@ void	pipe_exec(t_shell *data, t_token *t, int *fd)
 	}
 	if (t->type == 1)
 	{
-		if (pipe(fd) == -1)
-			return (perror("pipe"));
-		pid = fork();
-		if (pid < 0)
-		{
-			ft_close(fd);
-			return (perror("fork"));
-		}
-		if (pid == 0 && t->type != 2)
-		{
-			child_process(t, data, fd);
-			ft_close(fd);
-		}
-		if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
-			dup2(fd[0], STDIN_FILENO);
-		ft_close(fd);
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			t->exit_code = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			t->exit_code = 128 + WTERMSIG(status);
-		else
-			t->exit_code = 1;
+		ft_pipe(fd, status, data, t);
 	}
+}
+
+static int	last_token(t_shell *data)
+{
+	data->exit_code = 2;
+	return (ft_dprintf(2, " syntax error near unexpected token `newline'\n")
+		, 2);
 }
 
 int	check_tok_order(t_shell *data)
@@ -74,11 +59,7 @@ int	check_tok_order(t_shell *data)
 		t = t->next;
 	}
 	if (t->type == 2)
-	{
-		data->exit_code = 2;
-		return (ft_dprintf(2, " syntax error near unexpected token `newline'\n")
-			, 2);
-	}
+		return (last_token(data));
 	return (0);
 }
 
