@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   random_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:06:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 11:28:32 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:54:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,11 @@ void	pipe_exec(t_shell *data, t_token *t, int *fd)
 			child_process(t, data, fd);
 			ft_close(fd);
 		}
-		dup2(fd[0], STDIN_FILENO);
+		if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
+			dup2(fd[0], STDIN_FILENO);
 		ft_close(fd);
 		waitpid(pid, NULL, 0);
+		t->exit_code = 0;
 	}
 }
 
@@ -51,7 +53,8 @@ int	check_tok_order(t_shell *data)
 	while (t->next != data->token)
 	{
 		if ((t->type == 2 && ft_strcmp(t->str[0], t->next->str[0]) == 0)
-			|| (t->type == 2 && t->next->str[0][0] == '|'))
+			|| (t->type == 2 && t->next->str[0][0] == '|')
+			|| t->str[0][0] == '|')
 		{
 			data->exit_code = 2;
 			return (ft_dprintf(2, "syntax error near unexpected token `%s'\n",

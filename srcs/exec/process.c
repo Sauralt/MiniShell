@@ -3,54 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 11:48:17 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:00:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// static void	check_access(char *path, char **cmd)
-// {
-// 	if (!access(cmd[0], X_OK))
-// 	{
-// 		free(path);
-// 		ft_dprintf(2, "%s: no permissions\n", cmd[0]);
-// 		exit(EXIT_FAILURE);
-// 	}
-// }
-
-// int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
-// {
-// 	char	*path;
-// 	char	**envp;
-
-// 	if (cmd[0][0] == '\0')
-// 		return (0);
-// 	envp = make_env_str(env);
-// 	path = find_path(cmd[0], env, i);
-// 	if (!path)
-// 	{
-// 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-// 		data->exit_code = 127;
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	check_access(path, cmd);
-// 	if (execve(path, cmd, envp) == -1)
-// 	{
-// 		free(path);
-// 		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-// 		data->exit_code = 127;
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	free(path);
-// 	free_str(envp);
-// 	return (0);
-// }
-
-#include <sys/stat.h>
 
 int	is_directory(const char *path)
 {
@@ -69,39 +29,13 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
 		exit(0);
 	envp = make_env_str(env);
-	if (cmd[0][0] == '/' || cmd[0][0] == '.')
-	{
-		if (access(cmd[0], F_OK) != 0)
-		{
-			ft_dprintf(2, "%s: No such file or directory\n", cmd[0]);
-			data->exit_code = 127;
-			exit(127);
-		}		if (access(cmd[0], F_OK) != 0)
-		{
-			ft_dprintf(2, "%s: No such file or directory\n", cmd[0]);
-			data->exit_code = 127;
-			exit(127);
-			ft_dprintf(2, "%s: Is a directory\n", cmd[0]);
-			data->exit_code = 126;
-			exit(126);
-		}
-		if (access(cmd[0], X_OK) != 0)
-		{
-			ft_dprintf(2, "%s: Permission denied\n", cmd[0]);
-			data->exit_code = 126;
-			exit(126);
-		}
-		execve(cmd[0], cmd, envp);
-		perror(cmd[0]);
-		data->exit_code = 127;
-		exit(127);
-	}
 	path = find_path(cmd[0], env, i);
 	if (access(path, F_OK) != 0)
 	{
 		ft_dprintf(2, "%s: No such file or directory\n", path);
 		free(path);
 		data->exit_code = 127;
+		printf("%d\n", data->exit_code);
 		exit(127);
 	}
 	if (is_directory(path))
@@ -142,8 +76,7 @@ void	child_process(t_token *t, t_shell *data, int *fd)
 		dup2(t->outfile, STDOUT_FILENO);
 		close(t->outfile);
 	}
-	if (t->next && ft_strcmp(t->next->str[0], "|") == 0
-		&& ft_strncmp(t->next->next->str[0], "grep", 4) != 0)
+	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 		dup2(fd[1], STDOUT_FILENO);
 	ft_close(fd);
 	if (builtin(data, t) == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 11:45:54 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:02:16 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ static void	handle_pipeline(t_shell *data, t_token *t)
 	{
 		if (t->exit_code == 0)
 			pipe_exec(data, t, fd);
-		data->exit_code = t->exit_code;
+		//data->exit_code = t->exit_code;
 		t = t->next;
 	}
 	if (t->exit_code == 0)
-		pipe_exec(data, t, fd);
-	data->exit_code = t->exit_code;
+		exec_simple(data, t);
+	//data->exit_code = t->exit_code;
 }
 
 void	exec(t_shell *data, t_token *t)
@@ -94,7 +94,7 @@ void	exec(t_shell *data, t_token *t)
 			if (exec_simple(data, t) == 1)
 				perror("fork");
 		}
-		data->exit_code = t->exit_code;
+		//data->exit_code = t->exit_code;
 		return ;
 	}
 	handle_pipeline(data, t);
