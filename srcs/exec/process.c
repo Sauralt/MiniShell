@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 11:34:39 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:48:17 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,8 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 	execve(path, cmd, envp);
 	perror(path);
 	free(path);
-	return (0);
+	data->exit_code = 127;
+	exit(127);
 }
 
 void	child_process(t_token *t, t_shell *data, int *fd)

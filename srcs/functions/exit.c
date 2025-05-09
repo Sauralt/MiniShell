@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/09 10:52:22 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:49:57 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,5 @@ int	ft_exit(t_token *str)
 		}
 		str->exit_code = ft_atol(str->str[1]);
 	}
-	str->exit_code = 0;
 	exit((unsigned char)str->exit_code);
 }

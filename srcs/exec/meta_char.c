@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meta_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 18:22:19 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 12:06:29 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void	infile_redirect(t_shell *data, t_token *t)
 		else
 			infile_loop(t, 1, 0, 1);
 		t->next->type = 3;
+		data->exit_code = 1;
 		return ;
 	}
 	if (t != data->token)
