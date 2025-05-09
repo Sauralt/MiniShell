@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 18:49:52 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 10:37:40 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	exec_built(t_shell *data, t_token *cmd)
 	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
 		ft_unset(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0)
-		ft_exit(data, cmd);
+		ft_exit(cmd);
 }
 
 int	builtin(t_shell *data, t_token *cmd)

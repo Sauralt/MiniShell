@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 19:03:24 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:34:39 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@
 // 	return (0);
 // }
 
-#include <sys/stat.h> // pour stat()
+#include <sys/stat.h>
 
 int	is_directory(const char *path)
 {
@@ -68,7 +68,6 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 
 	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
 		exit(0);
-
 	envp = make_env_str(env);
 	if (cmd[0][0] == '/' || cmd[0][0] == '.')
 	{
@@ -77,9 +76,11 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 			ft_dprintf(2, "%s: No such file or directory\n", cmd[0]);
 			data->exit_code = 127;
 			exit(127);
-		}
-		if (is_directory(cmd[0]))
+		}		if (access(cmd[0], F_OK) != 0)
 		{
+			ft_dprintf(2, "%s: No such file or directory\n", cmd[0]);
+			data->exit_code = 127;
+			exit(127);
 			ft_dprintf(2, "%s: Is a directory\n", cmd[0]);
 			data->exit_code = 126;
 			exit(126);
@@ -96,12 +97,6 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 		exit(127);
 	}
 	path = find_path(cmd[0], env, i);
-	if (!path)
-	{
-		ft_dprintf(2, "%s: command not found\n", cmd[0]);
-		data->exit_code = 127;
-		exit(127);
-	}
 	if (access(path, F_OK) != 0)
 	{
 		ft_dprintf(2, "%s: No such file or directory\n", path);
@@ -126,8 +121,7 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 	execve(path, cmd, envp);
 	perror(path);
 	free(path);
-	data->exit_code = 127;
-	exit(127);
+	return (0);
 }
 
 void	child_process(t_token *t, t_shell *data, int *fd)

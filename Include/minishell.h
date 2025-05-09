@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 16:33:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 10:37:41 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		ft_env(t_shell *data);
 int		ft_echo(t_token *str);
 int		ft_unset(t_shell *data, t_token *str);
 int		ft_export(t_shell *data, t_token *str);
-int		ft_exit(t_shell *data, t_token *str);
+int		ft_exit(t_token *str);
 
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 int		set_env_var_loop(t_env *env, char *new_entry, int key_len,

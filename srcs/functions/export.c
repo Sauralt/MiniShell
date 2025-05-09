@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/05 14:42:56 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/09 10:52:11 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int	ft_export(t_shell *data, t_token *str)
 
 		i++;
 	}
+	str->exit_code = 0;
 	return (0);
 }
 

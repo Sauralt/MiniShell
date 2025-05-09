@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/05 15:00:46 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/09 10:52:22 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ long	ft_atol(const char *str)
 }
 
 
-int	ft_exit(t_shell *data, t_token *str)
+int	ft_exit(t_token *str)
 {
 	int	has_arg;
 
@@ -79,7 +79,8 @@ int	ft_exit(t_shell *data, t_token *str)
 			str->exit_code = 1;
 			return (1);
 		}
-		data->exit_code = ft_atol(str->str[1]);
+		str->exit_code = ft_atol(str->str[1]);
 	}
-	exit((unsigned char)data->exit_code);
+	str->exit_code = 0;
+	exit((unsigned char)str->exit_code);
 }
