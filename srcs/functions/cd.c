@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/09 16:03:58 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:04:17 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,5 @@ void	ft_cd(t_shell *data, t_token *str)
 	strncpy(new_path, resolved_path, PATH_SIZE - 1);
 	new_path[PATH_SIZE - 1] = '\0';
 	change_directory(new_path, data);
+	str->exit_code = data->exit_code;
 }
