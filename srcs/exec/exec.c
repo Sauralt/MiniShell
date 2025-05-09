@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 14:02:16 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:31:43 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ static void	handle_pipeline(t_shell *data, t_token *t)
 	{
 		if (t->exit_code == 0)
 			pipe_exec(data, t, fd);
-		//data->exit_code = t->exit_code;
+		data->exit_code = t->exit_code;
 		t = t->next;
 	}
-	if (t->exit_code == 0)
+	if (t->exit_code == 0 && t->type == 1)
 		exec_simple(data, t);
-	//data->exit_code = t->exit_code;
+	data->exit_code = t->exit_code;
 }
 
 void	exec(t_shell *data, t_token *t)
@@ -94,10 +94,11 @@ void	exec(t_shell *data, t_token *t)
 			if (exec_simple(data, t) == 1)
 				perror("fork");
 		}
-		//data->exit_code = t->exit_code;
+		data->exit_code = t->exit_code;
 		return ;
 	}
-	handle_pipeline(data, t);
+	else
+		handle_pipeline(data, t);
 }
 
 int	proc(t_shell *data)
@@ -112,8 +113,21 @@ int	proc(t_shell *data)
 	if (data->token->type == 2 && (data->token->next->type == 2
 			|| data->token->next->type == 1))
 		return (0);
-	if (data->token->str[0][0] == '/')
-		return (ft_dprintf(2, "%s: is a directory\n", data->token->str[0]), 0);
+	// if (data->token->str[0][0] == '/')
+	// {
+	// 	if (access(t->str[0], F_OK) == 0)
+	// 	{
+	// 		data->exit_code = 126;
+	// 		return (ft_dprintf(2, "%s: Is a directory\n",
+	// 				data->token->str[0]), 0);
+	// 	}
+	// 	else
+	// 	{
+	// 		data->exit_code = 127;
+	// 		return (ft_dprintf(2, "%s: No such file or directory\n",
+	// 				data->token->str[0]), 0);
+	// 	}
+	// }
 	while (t->type != 1 && t->next != data->token)
 		t = t->next;
 	if (t->next == data->token)

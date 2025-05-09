@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 18:23:11 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:28:55 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_token	*ft_new_token(t_shell *data, char *content)
 {
 	t_token	*c;
-	//char *temp;
 
 	c = malloc(sizeof(*c));
 	if (c == NULL)
@@ -26,17 +25,7 @@ t_token	*ft_new_token(t_shell *data, char *content)
 		free(c);
 		return (NULL);
 	}
-	// if (access(content, F_OK) == 0)
-	// {
-	// 	temp = find_absolute(ft_strdup(content));
-	// 	c->str[0] = temp;
-	// 	if (last_init(c, data, temp) == 1)
-	// 		return (NULL);
-	// 	else
-	// 		return (c);
-	// }
-	//else
-		c->str[0] = ft_strdup(content);
+	c->str[0] = ft_strdup(content);
 	if (last_init(c, data, content) == 1)
 		return (NULL);
 	return (c);

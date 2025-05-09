@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 14:00:56 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:36:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 		ft_dprintf(2, "%s: No such file or directory\n", path);
 		free(path);
 		data->exit_code = 127;
-		printf("%d\n", data->exit_code);
 		exit(127);
 	}
 	if (is_directory(path))
@@ -52,6 +51,7 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 		data->exit_code = 126;
 		exit(126);
 	}
+	cmd[0] = find_absolute(cmd[0]);
 	execve(path, cmd, envp);
 	perror(path);
 	free(path);
@@ -90,6 +90,7 @@ void	child_process(t_token *t, t_shell *data, int *fd)
 int	exec_simple(t_shell *data, t_token *t)
 {
 	int		i;
+	int		status;
 
 	i = 0;
 	g_signal_pid = fork();
@@ -107,7 +108,13 @@ int	exec_simple(t_shell *data, t_token *t)
 	}
 	if (g_signal_pid == 0)
 		exec_abs(data, t->str, data->env, i);
-	waitpid(g_signal_pid, NULL, 0);
+	waitpid(g_signal_pid, &status, 0);
+	if (WIFEXITED(status))
+		t->exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		t->exit_code = 128 + WTERMSIG(status);
+	else
+		t->exit_code = 1;
 	return (0);
 }
 

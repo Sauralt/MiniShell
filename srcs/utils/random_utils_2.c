@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:06:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 13:54:56 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:33:58 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	pipe_exec(t_shell *data, t_token *t, int *fd)
 {
 	pid_t	pid;
+	int		status;
 
 	if (t->type == 0)
 	{
@@ -40,8 +41,13 @@ void	pipe_exec(t_shell *data, t_token *t, int *fd)
 		if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 			dup2(fd[0], STDIN_FILENO);
 		ft_close(fd);
-		waitpid(pid, NULL, 0);
-		t->exit_code = 0;
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			t->exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			t->exit_code = 128 + WTERMSIG(status);
+		else
+			t->exit_code = 1;
 	}
 }
 
@@ -50,14 +56,19 @@ int	check_tok_order(t_shell *data)
 	t_token	*t;
 
 	t = data->token;
+	if (t->str[0][0] == '|')
+	{
+		data->exit_code = 2;
+		return (ft_dprintf(2, " syntax error near unexpected token `%s'\n",
+				t->str[0]), 2);
+	}
 	while (t->next != data->token)
 	{
 		if ((t->type == 2 && ft_strcmp(t->str[0], t->next->str[0]) == 0)
-			|| (t->type == 2 && t->next->str[0][0] == '|')
-			|| t->str[0][0] == '|')
+			|| (t->type == 2 && t->next->str[0][0] == '|'))
 		{
 			data->exit_code = 2;
-			return (ft_dprintf(2, "syntax error near unexpected token `%s'\n",
+			return (ft_dprintf(2, " syntax error near unexpected token `%s'\n",
 					t->next->str[0]), 2);
 		}
 		t = t->next;
@@ -65,8 +76,8 @@ int	check_tok_order(t_shell *data)
 	if (t->type == 2)
 	{
 		data->exit_code = 2;
-		return (ft_dprintf(2, "syntax error near unexpected token `newline'\n"),
-			2);
+		return (ft_dprintf(2, " syntax error near unexpected token `newline'\n")
+			, 2);
 	}
 	return (0);
 }
@@ -86,6 +97,8 @@ char	*find_absolute(char *cmd)
 		return (cmd);
 	i++;
 	ncmd = malloc(sizeof(char) * (len - i + 1));
+	if (!ncmd)
+		return (cmd);
 	j = 0;
 	while (cmd[i])
 	{
