@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:43:52 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 16:56:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:56:04 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,10 @@ int	valid_path(t_shell *data, char *path)
 	return (0);
 }
 
-void	ft_pipe(int *fd, int status, t_shell *data, t_token *t)
+void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t)
 {
 	pid_t	pid;
+	int		status;
 
 	if (pipe(fd) == -1)
 		return (perror("pipe"));
@@ -80,10 +81,7 @@ void	ft_pipe(int *fd, int status, t_shell *data, t_token *t)
 		return (perror("fork"));
 	}
 	if (pid == 0 && t->type != 2)
-	{
-		child_process(t, data, fd);
-		ft_close(fd);
-	}
+		child_process(t, data, fd, original);
 	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 		dup2(fd[0], STDIN_FILENO);
 	ft_close(fd);
@@ -94,4 +92,24 @@ void	ft_pipe(int *fd, int status, t_shell *data, t_token *t)
 		t->exit_code = 128 + WTERMSIG(status);
 	else
 		t->exit_code = 1;
+}
+
+void	close_files(t_shell *data)
+{
+	t_token	*t;
+
+	t = data->token;
+	if (t->infile != STDIN_FILENO)
+		close(t->infile);
+	if (t->outfile != STDOUT_FILENO)
+		close(t->outfile);
+	t = t->next;
+	while (t != data->token)
+	{
+		if (t->infile != STDIN_FILENO)
+			close(t->infile);
+		if (t->outfile != STDOUT_FILENO)
+			close(t->outfile);
+		t = t->next;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 16:01:54 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:00:37 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,23 @@ int	builtin(t_shell *data, t_token *cmd)
 	return (1);
 }
 
-static void	handle_pipeline(t_shell *data, t_token *t)
+static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 {
 	int		fd[2];
 
 	while (t->next != data->token)
 	{
 		if (t->exit_code == 0)
-			pipe_exec(data, t, fd);
+			pipe_exec(data, t, fd, original);
 		data->exit_code = t->exit_code;
 		t = t->next;
 	}
 	if (t->exit_code == 0 && t->type == 1)
-		exec_simple(data, t);
+		exec_simple(data, t, original);
 	data->exit_code = t->exit_code;
 }
 
-void	exec(t_shell *data, t_token *t)
+void	exec(t_shell *data, t_token *t, int *original)
 {
 	int	flag;
 
@@ -91,38 +91,40 @@ void	exec(t_shell *data, t_token *t)
 	{
 		if (builtin(data, t) == 1 && t->type != 2 && t->exit_code == 0)
 		{
-			if (exec_simple(data, t) == 1)
+			if (exec_simple(data, t, original) == 1)
 				perror("fork");
 		}
 		data->exit_code = t->exit_code;
 		return ;
 	}
 	else
-		handle_pipeline(data, t);
+		handle_pipeline(data, t, original);
 }
 
 int	proc(t_shell *data)
 {
 	t_token	*t;
-	int		original_stdin;
-	int		original_stdout;
+	int		original[2];
 
 	if (data->exit_code < 0)
 	{
 		data->exit_code = 0;
 		return (0);
 	}
-	original_stdin = dup(STDIN_FILENO);
-	original_stdout = dup(STDOUT_FILENO);
+	original[0] = dup(STDIN_FILENO);
+	original[1] = dup(STDOUT_FILENO);
 	t = data->token;
 	if (data->token->type == 2 && (data->token->next->type == 2
 			|| data->token->next->type == 1))
+	{
+		close_dup(original[0], original[1]);
 		return (0);
+	}
 	while (t->type != 1 && t->next != data->token)
 		t = t->next;
 	if (t->next == data->token)
 		t = t->next;
-	exec(data, t);
-	close_dup(original_stdin, original_stdout);
+	exec(data, t, original);
+	close_dup(original[0], original[1]);
 	return (0);
 }

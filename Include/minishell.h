@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 16:56:29 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:55:25 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ bool	read_in_stdin(t_shell *data, int fd, char *delimiter);
 char	*expand_dollar(t_shell *data, char *input);
 int		init_stacks(t_shell *data);
 void	check_meta_in_word(t_shell *data, t_token *t);
-void	pipe_exec(t_shell *data, t_token *t, int *fd);
+void	pipe_exec(t_shell *data, t_token *t, int *fd, int *original);
 
 t_token	*add_param(t_shell *data, t_token *t);
 t_token	*ft_new_token(t_shell *data, char *content);
@@ -88,7 +88,7 @@ t_env	*find_env(t_env *env, const char *key);
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	exec_cmd(char *line);
-void	child_process(t_token *t, t_shell *data, int *fd);
+void	child_process(t_token *t, t_shell *data, int *fd, int *original);
 int		builtin(t_shell *data, t_token *cmd);
 
 void	ft_cd(t_shell *data, t_token *str);
@@ -113,11 +113,12 @@ void	free_str(char **str);
 void	free_tokens(t_token *t);
 void	ft_close(int *fd);
 void	close_dup(int original_stdin, int original_stdout);
+void	close_files(t_shell *data);
 
 int		proc(t_shell *data);
 int		execute(t_shell *data);
-int		exec_simple(t_shell *data, t_token *t);
-int		exec_abs(t_shell *data, char **cmd, t_env *env, int i);
+int		exec_simple(t_shell *data, t_token *t, int *original);
+int		exec_abs(t_shell *data, char **cmd, t_env *env, int *original);
 
 void	delfirst_stack(t_env **s);
 void	ft_add_stack(t_env **s, t_env *new);
@@ -151,6 +152,6 @@ int		exec_flag(t_shell *data, t_token *t);
 void	redirected(t_token *t);
 int		valid_path(t_shell *data, char *path);
 int		is_directory(const char *path);
-void	ft_pipe(int *fd, int status, t_shell *data, t_token *t);
+void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t);
 
 #endif

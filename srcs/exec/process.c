@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 16:45:01 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:52:26 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ int	is_directory(const char *path)
 	return (0);
 }
 
-int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
+int	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 {
 	char	*path;
 	char	**envp;
 	int		exit_flag;
+	int		i;
 
+	i = 0;
 	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
 		exit(0);
 	envp = make_env_str(env);
@@ -35,6 +37,9 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 	if (exit_flag != 0)
 		exit(exit_flag);
 	cmd[0] = find_absolute(cmd[0]);
+	close(original[0]);
+	close(original[1]);
+	close_files(data);
 	execve(path, cmd, envp);
 	perror(path);
 	free(path);
@@ -42,11 +47,8 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int i)
 	exit(127);
 }
 
-void	child_process(t_token *t, t_shell *data, int *fd)
+void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 {
-	int	i;
-
-	i = 0;
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (t->infile != STDIN_FILENO)
@@ -65,23 +67,21 @@ void	child_process(t_token *t, t_shell *data, int *fd)
 	if (builtin(data, t) == 0)
 		exit(EXIT_SUCCESS);
 	else
-		exec_abs(data, t->str, data->env, i);
+		exec_abs(data, t->str, data->env, original);
 	perror("exec failed\n");
 	exit(EXIT_FAILURE);
 }
 
-int	exec_simple(t_shell *data, t_token *t)
+int	exec_simple(t_shell *data, t_token *t, int *original)
 {
-	int		i;
 	int		status;
 
-	i = 0;
 	g_signal_pid = fork();
 	if (g_signal_pid == -1)
 		return (1);
 	redirected(t);
 	if (g_signal_pid == 0)
-		exec_abs(data, t->str, data->env, i);
+		exec_abs(data, t->str, data->env, original);
 	waitpid(g_signal_pid, &status, 0);
 	if (WIFEXITED(status))
 		t->exit_code = WEXITSTATUS(status);

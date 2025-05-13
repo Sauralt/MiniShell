@@ -6,17 +6,14 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:06:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 16:56:18 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:05:29 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pipe_exec(t_shell *data, t_token *t, int *fd)
+void	pipe_exec(t_shell *data, t_token *t, int *fd, int *original)
 {
-	int		status;
-
-	status = 0;
 	if (t->type == 0)
 	{
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
@@ -25,7 +22,7 @@ void	pipe_exec(t_shell *data, t_token *t, int *fd)
 	}
 	if (t->type == 1)
 	{
-		ft_pipe(fd, status, data, t);
+		ft_pipe(fd, original, data, t);
 	}
 }
 
