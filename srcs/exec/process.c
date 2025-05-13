@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 16:36:52 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:19:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,15 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	if (t->infile != STDIN_FILENO)
-	{
-		dup2(t->infile, STDIN_FILENO);
-		close(t->infile);
-	}
-	if (t->outfile != STDOUT_FILENO)
-	{
-		dup2(t->outfile, STDOUT_FILENO);
-		close(t->outfile);
-	}
+	redirected(t);
 	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 		dup2(fd[1], STDOUT_FILENO);
+	else
+		dup2(fd[0], STDIN_FILENO);
 	ft_close(fd);
 	if (builtin(data, t, 1) == 0)
 		exit(EXIT_SUCCESS);
-	else
+	else if (t->prev && ft_strcmp(t->str[0], "|") != 0)
 		exec_abs(data, t->str, data->env, original);
 	perror("exec failed\n");
 	exit(EXIT_FAILURE);

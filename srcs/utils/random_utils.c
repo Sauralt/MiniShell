@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:34:10 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/06 18:23:18 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:04:06 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	change_tok_str(t_token *t, char *str, int len, t_shell *data)
 	i = 1;
 	while (len > 0)
 	{
-		if (ft_strcmp(temp->str[0], "<") == 0)
+		if (ft_strcmp(temp->str[0], "|") != 0 && temp->type == 2)
 			temp = temp->next->next;
 		else
 		{
