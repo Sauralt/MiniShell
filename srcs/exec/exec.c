@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 17:07:23 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:31:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,7 @@
 
 static void	exec_built(t_shell *data, t_token *cmd, int flag)
 {
-	if (cmd->infile != STDIN_FILENO)
-	{
-		dup2(cmd->infile, STDIN_FILENO);
-		close(cmd->infile);
-	}
-	if (cmd->outfile != STDOUT_FILENO)
-	{
-		dup2(cmd->outfile, STDOUT_FILENO);
-		close(cmd->outfile);
-	}
+	redirected(cmd);
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
 		ft_pwd(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)

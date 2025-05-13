@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/05 16:26:00 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/13 17:56:26 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ int	init_tokens(t_shell *data, char *line)
 	temp = remove_closed_quotes(line);
 	if (!temp)
 		return (1);
-	flag = parsing(data, temp);
+	flag = parsing(data, line);
+	if (!data->token)
+		return (free(temp), 2);
 	if (flag == 1)
 	{
 		free(temp);
@@ -106,6 +108,5 @@ int	init_tokens(t_shell *data, char *line)
 	free(temp);
 	if (check_tok_order(data) == 2)
 		return (2);
-	full_cmd(data);
-	return (0);
+	return (full_cmd(data), 0);
 }
