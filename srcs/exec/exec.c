@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 14:00:37 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:36:20 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	exec_built(t_shell *data, t_token *cmd)
+static void	exec_built(t_shell *data, t_token *cmd, int flag)
 {
 	if (cmd->infile != STDIN_FILENO)
 	{
@@ -36,11 +36,11 @@ static void	exec_built(t_shell *data, t_token *cmd)
 		ft_export(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
 		ft_unset(data, cmd);
-	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0)
+	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0 && flag == 0)
 		ft_exit(cmd);
 }
 
-int	builtin(t_shell *data, t_token *cmd)
+int	builtin(t_shell *data, t_token *cmd, int flag)
 {
 	if (ft_strcmp(cmd->str[0], "echo") == 0
 		|| ft_strcmp(cmd->str[0], "cd") == 0
@@ -50,7 +50,7 @@ int	builtin(t_shell *data, t_token *cmd)
 		|| ft_strcmp(cmd->str[0], "env") == 0
 		|| ft_strcmp(cmd->str[0], "exit") == 0)
 	{
-		exec_built(data, cmd);
+		exec_built(data, cmd, flag);
 		return (0);
 	}
 	return (1);
@@ -68,7 +68,10 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 		t = t->next;
 	}
 	if (t->exit_code == 0 && t->type == 1)
-		exec_simple(data, t, original);
+	{
+		if (builtin(data, t, 1) == 1)
+			exec_simple(data, t, original);
+	}
 	data->exit_code = t->exit_code;
 }
 
@@ -89,7 +92,7 @@ void	exec(t_shell *data, t_token *t, int *original)
 	}
 	if (flag == 0)
 	{
-		if (builtin(data, t) == 1 && t->type != 2 && t->exit_code == 0)
+		if (builtin(data, t, 0) == 1 && t->type != 2 && t->exit_code == 0)
 		{
 			if (exec_simple(data, t, original) == 1)
 				perror("fork");

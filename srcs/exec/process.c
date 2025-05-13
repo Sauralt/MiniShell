@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 14:52:26 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:36:52 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 		dup2(fd[1], STDOUT_FILENO);
 	ft_close(fd);
-	if (builtin(data, t) == 0)
+	if (builtin(data, t, 1) == 0)
 		exit(EXIT_SUCCESS);
 	else
 		exec_abs(data, t->str, data->env, original);
