@@ -6,13 +6,13 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/29 13:20:35 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:59:24 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_env_value(t_env *env, const char *var_name, size_t var_len)
+char	*get_env_value(t_env *env, const char *var_name, size_t var_len)
 {
 	char	*tmp;
 	t_env	*start;

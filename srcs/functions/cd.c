@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/09 17:04:17 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:05:34 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,22 @@ const char	*cd_home(const char *path)
 	return (path);
 }
 
-const char	*handle_cd_dash(const char *path)
+const char	*handle_cd_dash(const char *path, t_shell *data)
 {
-	if (ft_strncmp(path, "-", 1) == 0)
-		return ("..");
-	return (path);
+	char	*oldpwd;
+
+	if (ft_strcmp(path, "-") != 0)
+		return (path);
+	oldpwd = get_env_value(data->env, "OLDPWD", 6);
+	if (!oldpwd || oldpwd[0] == '\0')
+	{
+		ft_dprintf(2, "cd: OLDPWD not set\n");
+		data->exit_code = 1;
+		free(oldpwd);
+		return (NULL);
+	}
+	ft_dprintf(1, "%s\n", oldpwd);
+	return (oldpwd);
 }
 
 void	set_env_var(t_shell *data, const char *key, const char *value)
@@ -103,7 +114,7 @@ void	ft_cd(t_shell *data, t_token *str)
 	{
 		resolved_path = cd_home(str->str[1]);
 		if (resolved_path)
-			resolved_path = handle_cd_dash(resolved_path);
+			resolved_path = handle_cd_dash(resolved_path, data);
 	}
 	if (!resolved_path)
 		return ;
