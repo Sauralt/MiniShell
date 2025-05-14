@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 17:08:30 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:26:55 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void	infile_loop(t_token *t, int flag, int infile, int exit_code)
 		while (temp->type != 1 && temp->next != t)
 			temp = temp->next;
 	}
+	if (temp->infile > 0)
+		close(temp->infile);
 	temp->infile = infile;
 	temp->exit_code = exit_code;
 }
@@ -74,6 +76,8 @@ static void	outfile_trunc(t_token *t)
 	}
 	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
+	if (temp->outfile > 1)
+		close(temp->outfile);
 	temp->outfile = outfile;
 	t->next->type = 3;
 }
@@ -97,6 +101,8 @@ static void	outfile_append(t_token *t)
 	}
 	while (temp->type != 1 && temp->prev != t)
 		temp = temp->prev;
+	if (temp->outfile > 1)
+		close(temp->outfile);
 	temp->outfile = outfile;
 	t->next->type = 3;
 }

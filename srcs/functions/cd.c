@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/14 17:19:48 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:31:22 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,22 +97,22 @@ void	change_directory(char *path, t_shell *data)
 	}
 }
 
-void	ft_cd(t_shell *data, t_token *str)
+void	ft_cd(t_shell *data, t_token *t)
 {
 	char	new_path[PATH_SIZE];
 	char	*resolved_path;
 
-	if (!str || !str->str || !str->str[0])
+	if (!t || !t->str || !t->str[0])
 		resolved_path = cd_home(NULL);
-	if (str->str[1] != NULL && str->str[2] != NULL)
+	if (t->str[1] != NULL && t->str[2] != NULL)
 	{
 		ft_dprintf(2, "cd: too many arguments\n");
-		str->exit_code = 1;
+		t->exit_code = 1;
 		return ;
 	}
 	else
 	{
-		resolved_path = cd_home(str->str[1]);
+		resolved_path = cd_home(t->str[1]);
 		if (resolved_path)
 			resolved_path = handle_cd_dash(resolved_path, data);
 	}
@@ -120,7 +120,7 @@ void	ft_cd(t_shell *data, t_token *str)
 		return ;
 	ft_strncpy(new_path, resolved_path, PATH_SIZE - 1);
 	new_path[PATH_SIZE - 1] = '\0';
-	free(resolved_path);
+	//free(resolved_path);
 	change_directory(new_path, data);
-	str->exit_code = data->exit_code;
+	t->exit_code = data->exit_code;
 }

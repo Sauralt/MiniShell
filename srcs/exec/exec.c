@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/14 15:23:13 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:47:05 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,13 @@ void	exec(t_shell *data, t_token *t, int *original)
 	}
 	if (flag == 0)
 	{
-		if (builtin(data, t, 0, original) == 1 && t->type != 2 && t->exit_code == 0)
+		if (ft_strcmp(t->str[0], "exit") == 0)
+		{
+			close(original[0]);
+			close(original[1]);
+		}
+		if (builtin(data, t, 0, original) == 1 && t->type != 2
+			&& t->exit_code == 0)
 		{
 			if (exec_simple(data, t, original) == 1)
 				perror("fork");
