@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/09 16:06:15 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:25:17 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ void	add_or_replace_env(t_shell *data, char *key, char *value)
 	if (existing)
 	{
 		free(existing->str);
-		existing->str = new_entry;
+		existing->str = ft_strdup(new_entry);
 	}
 	else
 	{
 		ft_add_stack(&data->env, ft_new_stack(new_entry));
 	}
+	free(new_entry);
 }
 
 int	is_valid_identifier_export(const char *str)

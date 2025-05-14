@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 17:07:23 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:23:13 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,7 @@
 
 static void	exec_built(t_shell *data, t_token *cmd, int flag)
 {
-	if (cmd->infile != STDIN_FILENO)
-	{
-		dup2(cmd->infile, STDIN_FILENO);
-		close(cmd->infile);
-	}
-	if (cmd->outfile != STDOUT_FILENO)
-	{
-		dup2(cmd->outfile, STDOUT_FILENO);
-		close(cmd->outfile);
-	}
+	redirected(cmd);
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
 		ft_pwd(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)
@@ -40,7 +31,7 @@ static void	exec_built(t_shell *data, t_token *cmd, int flag)
 		ft_exit(cmd);
 }
 
-int	builtin(t_shell *data, t_token *cmd, int flag)
+int	builtin(t_shell *data, t_token *cmd, int flag, int *original)
 {
 	if (ft_strcmp(cmd->str[0], "echo") == 0
 		|| ft_strcmp(cmd->str[0], "cd") == 0
@@ -50,6 +41,12 @@ int	builtin(t_shell *data, t_token *cmd, int flag)
 		|| ft_strcmp(cmd->str[0], "env") == 0
 		|| ft_strcmp(cmd->str[0], "exit") == 0)
 	{
+		if (flag == 2)
+		{
+			close(original[0]);
+			close(original[1]);
+			flag = 1;
+		}
 		exec_built(data, cmd, flag);
 		return (0);
 	}
@@ -71,7 +68,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	}
 	if (t->exit_code == 0 && t->type == 1)
 	{
-		if (builtin(data, t, 1) == 1)
+		if (builtin(data, t, 1, original) == 1)
 			exec_simple(data, t, original);
 	}
 	data->exit_code = t->exit_code;
@@ -94,7 +91,7 @@ void	exec(t_shell *data, t_token *t, int *original)
 	}
 	if (flag == 0)
 	{
-		if (builtin(data, t, 0) == 1 && t->type != 2 && t->exit_code == 0)
+		if (builtin(data, t, 0, original) == 1 && t->type != 2 && t->exit_code == 0)
 		{
 			if (exec_simple(data, t, original) == 1)
 				perror("fork");

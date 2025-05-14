@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 17:27:20 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:12:19 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 	int		exit_flag;
 	int		i;
 
+	close(original[0]);
+	close(original[1]);
+	close_files(data);
 	i = 0;
 	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
 		exit(0);
@@ -37,9 +40,6 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 	if (exit_flag != 0)
 		exit(exit_flag);
 	cmd[0] = find_absolute(cmd[0]);
-	close(original[0]);
-	close(original[1]);
-	close_files(data);
 	execve(path, cmd, envp);
 	perror(path);
 	free(path);
@@ -55,9 +55,9 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 		dup2(fd[1], STDOUT_FILENO);
 	ft_close(fd);
-	if (builtin(data, t, 1) == 0)
+	if (builtin(data, t, 2, original) == 0)
 		exit(EXIT_SUCCESS);
-	else if (t->prev && ft_strcmp(t->str[0], "|") != 0)
+	else
 		exec_abs(data, t->str, data->env, original);
 	perror("exec failed\n");
 	exit(EXIT_FAILURE);
