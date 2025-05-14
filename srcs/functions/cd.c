@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/14 17:12:26 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:19:48 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-const char	*cd_home(const char *path)
+char	*cd_home(char *path)
 {
-	const char	*home;
+	char	*home;
 
 	if (!path || (path[0] == '~' && (path[1] == '/' || path[1] == '\0')))
 	{
@@ -29,7 +29,7 @@ const char	*cd_home(const char *path)
 	return (path);
 }
 
-const char	*handle_cd_dash(const char *path, t_shell *data)
+char	*handle_cd_dash(char *path, t_shell *data)
 {
 	char	*oldpwd;
 
@@ -69,7 +69,7 @@ void	set_env_var(t_shell *data, const char *key, const char *value)
 	data->env = new;
 }
 
-void	change_directory(const char *path, t_shell *data)
+void	change_directory(char *path, t_shell *data)
 {
 	char	current_dir[PATH_SIZE];
 	char	*pwd;
@@ -99,8 +99,8 @@ void	change_directory(const char *path, t_shell *data)
 
 void	ft_cd(t_shell *data, t_token *str)
 {
-	char		new_path[PATH_SIZE];
-	const char	*resolved_path;
+	char	new_path[PATH_SIZE];
+	char	*resolved_path;
 
 	if (!str || !str->str || !str->str[0])
 		resolved_path = cd_home(NULL);
@@ -118,8 +118,9 @@ void	ft_cd(t_shell *data, t_token *str)
 	}
 	if (!resolved_path)
 		return ;
-	strncpy(new_path, resolved_path, PATH_SIZE - 1);
+	ft_strncpy(new_path, resolved_path, PATH_SIZE - 1);
 	new_path[PATH_SIZE - 1] = '\0';
+	free(resolved_path);
 	change_directory(new_path, data);
 	str->exit_code = data->exit_code;
 }
