@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:54:12 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/09 16:47:50 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/14 15:44:35 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,12 @@ char	*change_dollar(t_shell *data, char *str, int len, int i)
 	index[1] = 0;
 	fill_var_array(data, var, str, index);
 	nstr = change_str(str, var, data, index[1]);
-	if (nstr[0] == '\0')
-	{
-		if (str[data->l +1] == '\0')
-			data->exit_code = -1;
-		return (str);
-	}
+	// if (nstr[0] == '\0')
+	// {
+	// 	if (str[data->l + 1] == '\0')
+	// 		data->exit_code = -1;
+	// 	free(nstr);
+	// 	return (str);
+	// }
 	return (nstr);
 }
