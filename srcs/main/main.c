@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 17:51:21 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:49:04 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-pid_t	g_signal_pid;
+int	g_signal_pid;
 
 void	handle_sigint(int sig)
 {

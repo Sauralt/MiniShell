@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/14 16:25:57 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:37:03 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	ft_exit(t_token *str)
 		if (!is_numeric(str->str[1]))
 		{
 			ft_dprintf(2, "exit: %s: numeric argument required\n", str->str[1]);
+			str->exit_code = 2;
 			return (1);
 		}
 		if (str->str[2])

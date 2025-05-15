@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/14 17:12:19 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:51:12 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 
 void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	redirected(t);
 	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 		dup2(fd[1], STDOUT_FILENO);
@@ -65,15 +63,17 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 
 int	exec_simple(t_shell *data, t_token *t, int *original)
 {
+	pid_t	pid;
 	int		status;
 
-	g_signal_pid = fork();
-	if (g_signal_pid == -1)
+	pid = fork();
+	g_signal_pid = pid;
+	if (pid == -1)
 		return (1);
 	redirected(t);
-	if (g_signal_pid == 0)
+	if (pid == 0)
 		exec_abs(data, t->str, data->env, original);
-	waitpid(g_signal_pid, &status, 0);
+	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		t->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

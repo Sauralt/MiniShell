@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:52:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/15 17:25:28 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:28:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,20 @@ char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path)
 	if (resolved_path)
 		resolved_path = handle_cd_dash(resolved_path, data);
 	return (resolved_path);
+}
+
+void	not_pipe(t_shell *data, t_token *t, int *original)
+{
+	if (ft_strcmp(t->str[0], "exit") == 0)
+	{
+		close(original[0]);
+		close(original[1]);
+	}
+	if (builtin(data, t, 0, original) == 1 && t->type != 2
+		&& t->exit_code == 0)
+	{
+		if (exec_simple(data, t, original) == 1)
+			perror("fork");
+	}
+	data->exit_code = t->exit_code;
 }

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/15 17:25:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/15 18:08:48 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define BUFFER_SIZE 1024
 # define PATH_SIZE 1024
 
-extern pid_t	g_signal_pid;
+extern int	g_signal_pid;
 
 typedef struct s_token
 {
@@ -63,6 +63,7 @@ char	*init_nstr(t_shell *data, char *str, int start, int len);
 int		last_init(t_token *c, t_shell *data, char *content);
 int		set_token_type(t_shell *data, char *str);
 void	check_meta_char(t_shell *data, t_token *t);
+int		last_check(t_shell *data);
 int		meta_char(char *str);
 void	heredoc(t_shell *data, t_token *t, char *delimiter);
 bool	read_in_stdin(t_shell *data, int fd, char *delimiter);
@@ -157,5 +158,6 @@ void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t);
 char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path);
 char	*cd_home(char *path);
 char	*handle_cd_dash(char *path, t_shell *data);
+void	not_pipe(t_shell *data, t_token *t, int *original);
 
 #endif
