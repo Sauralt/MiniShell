@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/14 17:15:03 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:13:34 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*init_nstr(t_shell *data, char *str, int start, int l)
 	int		len;
 	int		quote;
 
-	i = start;
+	i = start - 1;
 	len = 0;
 	quote = 0;
 	if (data->token)
@@ -89,15 +89,14 @@ char	*init_nstr(t_shell *data, char *str, int start, int l)
 		if (ft_strcmp(data->token->prev->str[0], "<<") == 0)
 			return (str);
 	}
-	while (i < start + l)
+	while (i++ < start + l)
 	{
 		quote = quote_flag(quote, str, i);
-		if (str[i] == '$' && quote != 1)
+		if (str[i] == '$' && str[i + 1] != ' ' && str[i + 1] != '"'
+			&& str[i + 1] != '\'' && str[i + 1] != '='
+			&& str[i + 1] != ':' && str[i + 1] != '\0' && quote != 1)
 			len++;
-		i++;
 	}
-	data->start = start;
-	data->l = l;
 	i = data->start;
 	if (len > 0)
 		return (change_dollar(data, str, len, i));
