@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/14 17:12:05 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:25:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,8 @@ int		valid_path(t_shell *data, char *path);
 int		is_directory(const char *path);
 char	*get_env_value(t_env *env, const char *var_name, size_t var_len);
 void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t);
+char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path);
+char	*cd_home(char *path);
+char	*handle_cd_dash(char *path, t_shell *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/14 17:31:22 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:25:35 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*handle_cd_dash(char *path, t_shell *data)
 	return (oldpwd);
 }
 
-void	set_env_var(t_shell *data, const char *key, const char *value)
+static void	set_env_var(t_shell *data, const char *key, const char *value)
 {
 	t_env	*env;
 	size_t	key_len;
@@ -69,7 +69,7 @@ void	set_env_var(t_shell *data, const char *key, const char *value)
 	data->env = new;
 }
 
-void	change_directory(char *path, t_shell *data)
+static void	change_directory(char *path, t_shell *data)
 {
 	char	current_dir[PATH_SIZE];
 	char	*pwd;
@@ -111,16 +111,14 @@ void	ft_cd(t_shell *data, t_token *t)
 		return ;
 	}
 	else
-	{
-		resolved_path = cd_home(t->str[1]);
-		if (resolved_path)
-			resolved_path = handle_cd_dash(resolved_path, data);
-	}
+		resolved_path = init_resolved_path(data, t, resolved_path);
 	if (!resolved_path)
 		return ;
 	ft_strncpy(new_path, resolved_path, PATH_SIZE - 1);
 	new_path[PATH_SIZE - 1] = '\0';
-	//free(resolved_path);
+	if (t->str[1] && t->str[1][0] != '~'
+		&& ft_strcmp(resolved_path, t->str[1]) != 0)
+		free(resolved_path);
 	change_directory(new_path, data);
 	t->exit_code = data->exit_code;
 }

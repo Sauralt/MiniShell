@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:52:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/09 16:05:40 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:25:28 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,12 @@ int	export_norm(t_shell *data, int i, char *delim, t_token *str)
 		free(value);
 	}
 	return (0);
+}
+
+char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path)
+{
+	resolved_path = cd_home(t->str[1]);
+	if (resolved_path)
+		resolved_path = handle_cd_dash(resolved_path, data);
+	return (resolved_path);
 }
