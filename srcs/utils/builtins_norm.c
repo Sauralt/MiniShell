@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_norm.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:52:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/15 17:28:56 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:19:57 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	export_norm(t_shell *data, int i, char *delim, t_token *str)
 	{
 		if (delim < str->str[i] || delim > str->str[i] + ft_strlen(str->str[i]))
 			return (ft_dprintf(2, "export: internal error\n"), 1);
-		key = strndup(str->str[i], delim - str->str[i]);
+		key = ft_strndup(str->str[i], 0, delim - str->str[i]);
 		value = ft_strdup(delim + 1);
 		if (!key || !value)
 			return (free(key), free(value), perror("malloc"), 1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meta_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/14 18:26:55 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:55:59 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,12 @@ void	check_meta_char(t_shell *data, t_token *t)
 {
 	if (t->next == t || t->next == data->token)
 		return ;
-	if (strcmp(t->str[0], "<") == 0)
+	if (ft_strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, t);
-	if (strcmp(t->str[0], ">") == 0)
+	if (ft_strcmp(t->str[0], ">") == 0)
 		outfile_trunc(t);
-	if (strcmp(t->str[0], ">>") == 0)
+	if (ft_strcmp(t->str[0], ">>") == 0)
 		outfile_append(t);
-	if (strcmp(t->str[0], "<<") == 0)
+	if (ft_strcmp(t->str[0], "<<") == 0)
 		heredoc(data, t, t->next->str[0]);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/15 18:06:02 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:10:23 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,9 @@ void	init_list_tok(t_shell *data, char *str, char quote)
 
 int	meta_char(char *str)
 {
-	int	len;
-
-	len = ft_strlen(str);
-	if (strcmp(str, "<") != 0 && strcmp(str, ">") != 0
-		&& ft_strncmp(str, ">>", len) != 0 && strcmp(str, "<<") != 0
-		&& strcmp(str, "|") != 0)
+	if (ft_strcmp(str, "<") != 0 && ft_strcmp(str, ">") != 0
+		&& ft_strcmp(str, ">>") != 0 && ft_strcmp(str, "<<") != 0
+		&& ft_strcmp(str, "|") != 0)
 		return (1);
 	return (0);
 }
