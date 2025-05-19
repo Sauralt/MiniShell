@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/15 17:51:12 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:40:34 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,9 @@ int	exec_simple(t_shell *data, t_token *t, int *original)
 	pid_t	pid;
 	int		status;
 
+	if (g_signal_pid == 2)
+		return (0);
 	pid = fork();
-	g_signal_pid = pid;
 	if (pid == -1)
 		return (1);
 	redirected(t);

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/15 17:49:04 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:47:22 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	handle_sigint(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	printf("\n");
+	if (g_signal_pid == 1)
+		g_signal_pid = 2;
 	if (g_signal_pid == 0)
 		rl_redisplay();
 }

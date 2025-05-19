@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:43:52 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/15 17:49:51 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:48:12 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,12 @@ int	valid_path(t_shell *data, char *path)
 void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t)
 {
 	pid_t	pid;
-	int		status;
 
-	signal(SIGINT, handle_sigint);
 	if (pipe(fd) == -1)
 		return (perror("pipe"));
+	if (g_signal_pid == 2)
+		return ;
 	pid = fork();
-	g_signal_pid = pid;
 	if (pid < 0)
 	{
 		ft_close(fd);
@@ -87,13 +86,6 @@ void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t)
 	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 		dup2(fd[0], STDIN_FILENO);
 	ft_close(fd);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		t->exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		t->exit_code = 128 + WTERMSIG(status);
-	else
-		t->exit_code = 1;
 }
 
 void	close_files(t_shell *data)
