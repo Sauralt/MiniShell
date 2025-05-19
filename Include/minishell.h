@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/15 18:08:48 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:44:32 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ void	init_list_tok(t_shell *data, char *str, char quote);
 char	*init_nstr(t_shell *data, char *str, int start, int len);
 int		last_init(t_token *c, t_shell *data, char *content);
 int		set_token_type(t_shell *data, char *str);
+
 void	check_meta_char(t_shell *data, t_token *t);
 int		last_check(t_shell *data);
 int		meta_char(char *str);
 void	heredoc(t_shell *data, t_token *t, char *delimiter);
 bool	read_in_stdin(t_shell *data, int fd, char *delimiter);
 char	*expand_dollar(t_shell *data, char *input);
-int		init_stacks(t_shell *data);
 void	check_meta_in_word(t_shell *data, t_token *t);
 void	pipe_exec(t_shell *data, t_token *t, int *fd, int *original);
 
@@ -88,11 +88,12 @@ t_env	*find_env(t_env *env, const char *key);
 
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
-void	exec_cmd(char *line);
 void	child_process(t_token *t, t_shell *data, int *fd, int *original);
 int		builtin(t_shell *data, t_token *cmd, int flag, int *original);
 
 void	ft_cd(t_shell *data, t_token *str);
+char	*cd_home(char *path);
+char	*handle_cd_dash(char *path, t_shell *data);
 int		ft_pwd(t_shell *data, t_token *t);
 int		ft_env(t_shell *data);
 int		ft_echo(t_token *str);
@@ -117,7 +118,6 @@ void	close_dup(int original_stdin, int original_stdout);
 void	close_files(t_shell *data);
 
 int		proc(t_shell *data);
-int		execute(t_shell *data);
 int		exec_simple(t_shell *data, t_token *t, int *original);
 int		exec_abs(t_shell *data, char **cmd, t_env *env, int *original);
 
@@ -127,14 +127,8 @@ t_env	*ft_new_stack(char *t);
 void	init_env(t_shell *data, char **env);
 char	**make_env_str(t_env *env);
 
-char	*ft_verif_str_type(t_shell *data, char *content);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
-int		is_valid_var_char(char c);
-int		check_str(char *str);
 int		check_tok_order(t_shell *data);
-char	**change_result(t_shell *data, char **result, char **new_result);
-char	**change_env_var(t_shell *data, char **str, char **result);
-char	**init_str(t_shell *data, char *line);
 
 int		ft_dprintf(int fd, const char *f, ...);
 int		ft_printhex(int fd, char c, int l, unsigned int a);
@@ -156,8 +150,6 @@ int		is_directory(const char *path);
 char	*get_env_value(t_env *env, const char *var_name, size_t var_len);
 void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t);
 char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path);
-char	*cd_home(char *path);
-char	*handle_cd_dash(char *path, t_shell *data);
 void	not_pipe(t_shell *data, t_token *t, int *original);
 
 #endif
