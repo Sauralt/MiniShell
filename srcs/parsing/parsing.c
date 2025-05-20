@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 17:53:52 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:06:55 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,28 +87,43 @@ char	parsing_loop(char*line, char quote, int *i)
 		return ('\0');
 }
 
-int	parsing(t_shell *data, char *line)
+int	parse_word(t_shell *data, char *line, int *i)
 {
-	int		i;
 	int		start;
 	char	*word;
 	char	quote;
+
+	start = *i;
+	quote = '\0';
+	quote = parsing_loop(line, quote, i);
+	if (quote == 2)
+		return (2);
+
+	word = ft_strndup_no_quote(line, start, *i - start, data);
+	if (!word)
+		return (1);
+
+	init_list_tok(data, word, quote);
+	free(word);
+	return (0);
+}
+
+
+int	parsing(t_shell *data, char *line)
+{
+	int		i;
+	int		ret;
 
 	if (line[0] == '\0')
 		return (2);
 	i = 0;
 	while (line[i])
 	{
-		quote = '\0';
 		if (line[i] != ' ')
 		{
-			start = i;
-			quote = parsing_loop(line, quote, &i);
-			word = ft_strndup_no_quote(line, start, i - start, data);
-			if (!word)
-				return (ft_dprintf(2, "open quote\n"), 2);
-			init_list_tok(data, word, quote);
-			free(word);
+			ret = parse_word(data, line, &i);
+			if (ret != 0)
+				return (ret);
 		}
 		else
 			i++;
