@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/20 14:56:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:01:06 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,16 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 	path = find_path(cmd[0], env, i);
 	exit_flag = valid_path(data, path);
 	if (exit_flag != 0)
+	{
+		free_str(envp);
+		free_exit(data);
 		exit(exit_flag);
+	}
 	cmd[0] = find_absolute(cmd[0]);
 	execve(path, cmd, envp);
 	perror(path);
 	free(path);
+	free_str(envp);
 	data->exit_code = 127;
 	exit(127);
 }
@@ -53,7 +58,7 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 		dup2(fd[1], STDOUT_FILENO);
 	ft_close(fd);
-	if (builtin(data, t, original, 0) == 0)
+	if (builtin(data, t, original, 1) == 0)
 		exit(EXIT_SUCCESS);
 	else
 		exec_abs(data, t->str, data->env, original);

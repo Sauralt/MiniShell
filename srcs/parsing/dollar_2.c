@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:54:12 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/15 17:31:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:26:42 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static int	is_valid_dollar(char *str, int i, int *f)
 		(*f) = 0;
 		return (str[i] == '$' && str[i + 1] != ' ' && str[i + 1] != '"'
 			&& str[i + 1] != '\'' && str[i + 1] != '='
+			&& str[i + 1] != '\t'
 			&& str[i + 1] != ':' && str[i + 1] != '\0');
 	}
 }

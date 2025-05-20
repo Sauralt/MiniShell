@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:16:09 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/15 16:13:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:27:27 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ char	*init_nstr(t_shell *data, char *str, int start, int l)
 		quote = quote_flag(quote, str, i);
 		if (str[i] == '$' && str[i + 1] != ' ' && str[i + 1] != '"'
 			&& str[i + 1] != '\'' && str[i + 1] != '='
+			&& str[i + 1] != '\t'
 			&& str[i + 1] != ':' && str[i + 1] != '\0' && quote != 1)
 			len++;
 	}

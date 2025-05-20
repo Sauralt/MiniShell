@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/20 14:55:39 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:42:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,20 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 {
 	pid_t	pid;
 
-	if (is_builtin(cmd->str[0]) && flag == 0)
+	if (is_builtin(cmd->str[0]) && flag != 2)
 	{
-		close(original[0]);
-		close(original[1]);
 		exec_built(data, cmd);
+		if (flag == 1)
+		{
+			close(original[0]);
+			close(original[1]);
+			free_exit(data);
+		}
 		return (0);
 	}
-	else if (!is_builtin(cmd->str[0]))
+	if (!is_builtin(cmd->str[0]) || flag != 2)
 		return (1);
-	if (flag == 1)
-		pid = fork();
+	pid = fork();
 	if (pid == -1)
 		return (2);
 	if (pid == 0)
@@ -53,6 +56,8 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 		close(original[0]);
 		close(original[1]);
 		exec_built(data, cmd);
+		free_exit(data);
+		exit(0);
 	}
 	ft_waitpid(pid, cmd);
 	return (0);
@@ -72,7 +77,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	}
 	if (t->exit_code == 0 && t->type == 1 && g_signal_pid != 2)
 	{
-		if (builtin(data, t, original, 1) == 1)
+		if (builtin(data, t, original, 2) == 1)
 			exec_simple(data, t, original);
 	}
 	data->exit_code = t->exit_code;

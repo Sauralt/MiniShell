@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:08:25 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/09 16:39:12 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:26:29 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	is_expandable(char *str, int i, int quote, int *f)
 	{
 		(*f) = 0;
 		return (str[i] == '$' && quote != 1 && str[i + 1] != ' '
-			&& str[i + 1] != '"'
+			&& str[i + 1] != '"' && str[i + 1] != '\t'
 			&& str[i + 1] != '\'' && str[i + 1] != '='
 			&& str[i + 1] != ':' && str[i + 1] != '\0');
 	}

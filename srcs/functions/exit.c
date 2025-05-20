@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/20 12:58:46 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:41:17 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-static void	free_exit(t_shell *data)
+void	free_exit(t_shell *data)
 {
 	free_tokens(data->token);
 	free_env(data->env);
