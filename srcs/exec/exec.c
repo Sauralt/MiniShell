@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 14:19:07 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:55:39 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	exec_built(t_shell *data, t_token *cmd, int flag)
+static void	exec_built(t_shell *data, t_token *cmd)
 {
 	redirected(cmd);
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
@@ -27,30 +27,35 @@ static void	exec_built(t_shell *data, t_token *cmd, int flag)
 		ft_export(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
 		ft_unset(data, cmd);
-	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0 && flag == 0)
-		ft_exit(cmd);
+	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0)
+		ft_exit(data, cmd);
 }
 
-int	builtin(t_shell *data, t_token *cmd, int flag, int *original)
+int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 {
-	if (ft_strcmp(cmd->str[0], "echo") == 0
-		|| ft_strcmp(cmd->str[0], "cd") == 0
-		|| ft_strcmp(cmd->str[0], "pwd") == 0
-		|| ft_strcmp(cmd->str[0], "export") == 0
-		|| ft_strcmp(cmd->str[0], "unset") == 0
-		|| ft_strcmp(cmd->str[0], "env") == 0
-		|| ft_strcmp(cmd->str[0], "exit") == 0)
+	pid_t	pid;
+
+	if (is_builtin(cmd->str[0]) && flag == 0)
 	{
-		if (flag == 2)
-		{
-			close(original[0]);
-			close(original[1]);
-			flag = 1;
-		}
-		exec_built(data, cmd, flag);
+		close(original[0]);
+		close(original[1]);
+		exec_built(data, cmd);
 		return (0);
 	}
-	return (1);
+	else if (!is_builtin(cmd->str[0]))
+		return (1);
+	if (flag == 1)
+		pid = fork();
+	if (pid == -1)
+		return (2);
+	if (pid == 0)
+	{
+		close(original[0]);
+		close(original[1]);
+		exec_built(data, cmd);
+	}
+	ft_waitpid(pid, cmd);
+	return (0);
 }
 
 static void	handle_pipeline(t_shell *data, t_token *t, int *original)
@@ -58,22 +63,22 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	int		fd[2];
 
 	g_signal_pid = 1;
-	while (t->next != data->token)
+	while (t->next != data->token && g_signal_pid != 2)
 	{
 		if (t->exit_code == 0)
 			pipe_exec(data, t, fd, original);
 		data->exit_code = t->exit_code;
 		t = t->next;
 	}
-	if (t->exit_code == 0 && t->type == 1)
+	if (t->exit_code == 0 && t->type == 1 && g_signal_pid != 2)
 	{
-		if (builtin(data, t, 1, original) == 1)
+		if (builtin(data, t, original, 1) == 1)
 			exec_simple(data, t, original);
 	}
 	data->exit_code = t->exit_code;
 }
 
-void	exec(t_shell *data, t_token *t, int *original)
+static void	exec(t_shell *data, t_token *t, int *original)
 {
 	int	flag;
 

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 14:40:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:56:20 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 		dup2(fd[1], STDOUT_FILENO);
 	ft_close(fd);
-	if (builtin(data, t, 2, original) == 0)
+	if (builtin(data, t, original, 0) == 0)
 		exit(EXIT_SUCCESS);
 	else
 		exec_abs(data, t->str, data->env, original);
@@ -64,23 +64,14 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 int	exec_simple(t_shell *data, t_token *t, int *original)
 {
 	pid_t	pid;
-	int		status;
 
-	if (g_signal_pid == 2)
-		return (0);
 	pid = fork();
 	if (pid == -1)
 		return (1);
 	redirected(t);
 	if (pid == 0)
 		exec_abs(data, t->str, data->env, original);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		t->exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		t->exit_code = 128 + WTERMSIG(status);
-	else
-		t->exit_code = 1;
+	ft_waitpid(pid, t);
 	return (0);
 }
 

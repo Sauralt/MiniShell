@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 14:47:22 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:47:44 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ int	main(int argc, char **argv, char **env)
 		g_signal_pid = 0;
 	}
 	free_all(data, line);
+	printf("exit\n");
 	return (0);
 }

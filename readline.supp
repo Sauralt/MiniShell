@@ -1,0 +1,14 @@
+{
+   readline
+   Memcheck:Leak
+   ...
+   fun:readline
+   ...
+}
+{
+   std
+   Memcheck:Leak
+   ...
+   obj:*/bin/*
+   ...
+}

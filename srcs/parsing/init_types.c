@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 14:10:23 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:23:51 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ int	init_tokens(t_shell *data, char *line)
 		return (2);
 	}
 	free(temp);
-	if (check_tok_order(data) == 2)
-		return (2);
 	full_cmd(data);
+	if (check_tok_order(data) == 2 && data->exit_code == 0)
+		return (2);
 	return (last_check(data));
 }

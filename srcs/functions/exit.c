@@ -6,13 +6,21 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/15 17:37:03 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 12:58:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-int	is_numeric(const char *str)
+static void	free_exit(t_shell *data)
+{
+	free_tokens(data->token);
+	free_env(data->env);
+	free(data);
+	rl_clear_history();
+}
+
+static int	is_numeric(const char *str)
 {
 	if (!str || !*str)
 		return (0);
@@ -31,7 +39,7 @@ int	is_numeric(const char *str)
 	return (1);
 }
 
-long	ft_atol(const char *str)
+static long	ft_atol(const char *str)
 {
 	long	result;
 	int		sign;
@@ -54,7 +62,7 @@ long	ft_atol(const char *str)
 	return (result * sign);
 }
 
-int	ft_exit(t_token *str)
+int	ft_exit(t_shell *data, t_token *str)
 {
 	int	has_arg;
 
@@ -76,5 +84,7 @@ int	ft_exit(t_token *str)
 		}
 		str->exit_code = ft_atol(str->str[1]);
 	}
-	exit((unsigned char)str->exit_code);
+	has_arg = str->exit_code;
+	free_exit(data);
+	exit((unsigned char)has_arg);
 }

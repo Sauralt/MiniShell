@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 14:44:32 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:55:50 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_env	*find_env(t_env *env, const char *key);
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	child_process(t_token *t, t_shell *data, int *fd, int *original);
-int		builtin(t_shell *data, t_token *cmd, int flag, int *original);
+int		builtin(t_shell *data, t_token *cmd, int *original, int flag);
 
 void	ft_cd(t_shell *data, t_token *str);
 char	*cd_home(char *path);
@@ -99,7 +99,7 @@ int		ft_env(t_shell *data);
 int		ft_echo(t_token *str);
 int		ft_unset(t_shell *data, t_token *str);
 int		ft_export(t_shell *data, t_token *str);
-int		ft_exit(t_token *str);
+int		ft_exit(t_shell *data, t_token *str);
 
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 int		set_env_var_loop(t_env *env, char *new_entry, int key_len,
@@ -151,5 +151,6 @@ char	*get_env_value(t_env *env, const char *var_name, size_t var_len);
 void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t);
 char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path);
 void	not_pipe(t_shell *data, t_token *t, int *original);
+void	ft_waitpid(pid_t pid, t_token *cmd);
 
 #endif

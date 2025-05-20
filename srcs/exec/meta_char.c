@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   meta_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 13:55:59 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:32:07 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	infile_redirect(t_shell *data, t_token *t)
 	t->next->type = 3;
 }
 
-static void	outfile_trunc(t_token *t)
+static void	outfile_trunc(t_shell *data, t_token *t)
 {
 	int		outfile;
 	t_token	*temp;
@@ -71,6 +71,7 @@ static void	outfile_trunc(t_token *t)
 		while (temp->type != 1 && temp->prev != t)
 			temp = temp->prev;
 		temp->exit_code = 1;
+		data->exit_code = temp->exit_code;
 		t->next->type = 3;
 		return ;
 	}
@@ -82,7 +83,7 @@ static void	outfile_trunc(t_token *t)
 	t->next->type = 3;
 }
 
-static void	outfile_append(t_token *t)
+static void	outfile_append(t_shell *data, t_token *t)
 {
 	int		outfile;
 	t_token	*temp;
@@ -96,6 +97,7 @@ static void	outfile_append(t_token *t)
 		while (temp->type != 1 && temp->prev != t)
 			temp = temp->prev;
 		temp->exit_code = 1;
+		data->exit_code = temp->exit_code;
 		t->next->type = 3;
 		return ;
 	}
@@ -114,9 +116,9 @@ void	check_meta_char(t_shell *data, t_token *t)
 	if (ft_strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, t);
 	if (ft_strcmp(t->str[0], ">") == 0)
-		outfile_trunc(t);
+		outfile_trunc(data, t);
 	if (ft_strcmp(t->str[0], ">>") == 0)
-		outfile_append(t);
+		outfile_append(data, t);
 	if (ft_strcmp(t->str[0], "<<") == 0)
 		heredoc(data, t, t->next->str[0]);
 }

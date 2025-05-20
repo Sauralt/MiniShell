@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:01:42 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/18 15:56:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:55:10 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,17 @@ bool	is_builtin(char *line)
 		|| ft_strcmp(line, "exit") == 0)
 		return (true);
 	return (false);
+}
+
+void	ft_waitpid(pid_t pid, t_token *cmd)
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		cmd->exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		cmd->exit_code = 128 + WTERMSIG(status);
+	else
+		cmd->exit_code = 1;
 }
