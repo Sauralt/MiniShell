@@ -41,7 +41,10 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 			close_origin(original);
 		exec_built(data, cmd);
 		if (flag == 1)
+		{
+			close_origin(original);
 			free_exit(data);
+		}
 		return (0);
 	}
 	if (!is_builtin(cmd->str[0]) || flag != 2)
