@@ -153,5 +153,6 @@ char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path);
 void	not_pipe(t_shell *data, t_token *t, int *original);
 void	ft_waitpid(pid_t pid, t_token *cmd);
 void	free_exit(t_shell *data);
+void	infile_loop(t_token *t, int flag, int infile, int exit_code);
 
 #endif

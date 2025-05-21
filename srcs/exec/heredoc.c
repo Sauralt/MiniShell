@@ -105,5 +105,8 @@ void	heredoc(t_shell *data, t_token *t, char *delimiter)
 		return ;
 	}
 	unlink(".heredoc_tmp");
-	t->prev->infile = fd;
+	if (t != data->token)
+		infile_loop(t, 0, fd, 0);
+	else
+		infile_loop(t, 1, fd, 0);
 }

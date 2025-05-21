@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	infile_loop(t_token *t, int flag, int infile, int exit_code)
+void	infile_loop(t_token *t, int flag, int infile, int exit_code)
 {
 	t_token	*temp;
 
@@ -29,7 +29,8 @@ static void	infile_loop(t_token *t, int flag, int infile, int exit_code)
 	}
 	if (temp->infile > 0)
 		close(temp->infile);
-	temp->infile = infile;
+	if (temp != t)
+		temp->infile = infile;
 	temp->exit_code = exit_code;
 }
 
