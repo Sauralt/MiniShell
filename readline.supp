@@ -6,6 +6,13 @@
    ...
 }
 {
+   add_history
+   Memcheck:Leak
+   ...
+   fun:add_history
+   ...
+}
+{
    std
    Memcheck:Leak
    ...

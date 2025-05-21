@@ -105,5 +105,5 @@ void	heredoc(t_shell *data, t_token *t, char *delimiter)
 		return ;
 	}
 	unlink(".heredoc_tmp");
-	t->prev->infile = fd;
+	heredoc_norm(data, t, fd);
 }

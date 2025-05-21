@@ -34,3 +34,23 @@ void	ft_waitpid(pid_t pid, t_token *cmd)
 	else
 		cmd->exit_code = 1;
 }
+
+void	heredoc_norm(t_shell *data, t_token *t, int fd)
+{
+	if (t != data->token)
+		infile_loop(t, 0, fd, 0);
+	else
+		infile_loop(t, 1, fd, 0);
+}
+
+void	exit_proc(t_shell *data, int exit_flag)
+{
+	free_exit(data);
+	exit(exit_flag);
+}
+
+void	close_origin(int *original)
+{
+	close(original[0]);
+	close(original[1]);
+}

@@ -37,13 +37,11 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 
 	if (is_builtin(cmd->str[0]) && flag != 2)
 	{
+		if (flag == 1)
+			close_origin(original);
 		exec_built(data, cmd);
 		if (flag == 1)
-		{
-			close(original[0]);
-			close(original[1]);
 			free_exit(data);
-		}
 		return (0);
 	}
 	if (!is_builtin(cmd->str[0]) || flag != 2)
@@ -53,11 +51,9 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 		return (2);
 	if (pid == 0)
 	{
-		close(original[0]);
-		close(original[1]);
+		close_origin(original);
 		exec_built(data, cmd);
-		free_exit(data);
-		exit(0);
+		exit_proc(data, 0);
 	}
 	ft_waitpid(pid, cmd);
 	return (0);
@@ -67,7 +63,6 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 {
 	int		fd[2];
 
-	g_signal_pid = 1;
 	while (t->next != data->token && g_signal_pid != 2)
 	{
 		if (t->exit_code == 0)
@@ -87,6 +82,7 @@ static void	exec(t_shell *data, t_token *t, int *original)
 {
 	int	flag;
 
+	g_signal_pid = 1;
 	flag = exec_flag(data, t);
 	while (t->type != 1 && t->next != data->token)
 		t = t->next;
@@ -112,11 +108,6 @@ int	proc(t_shell *data)
 	t_token	*t;
 	int		original[2];
 
-	if (data->exit_code < 0)
-	{
-		data->exit_code = 0;
-		return (0);
-	}
 	original[0] = dup(STDIN_FILENO);
 	original[1] = dup(STDOUT_FILENO);
 	t = data->token;
