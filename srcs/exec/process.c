@@ -21,7 +21,7 @@ int	is_directory(const char *path)
 	return (0);
 }
 
-int	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
+void	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 {
 	char	*path;
 	char	**envp;
@@ -33,23 +33,21 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 	close_files(data);
 	i = 0;
 	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
-		exit(0);
+		exit_proc(data, 0);
 	envp = make_env_str(env);
 	path = find_path(cmd[0], env, i);
 	exit_flag = valid_path(data, path);
 	if (exit_flag != 0)
 	{
 		free_str(envp);
-		free_exit(data);
-		exit(exit_flag);
+		exit_proc(data, exit_flag);
 	}
 	cmd[0] = find_absolute(cmd[0]);
 	execve(path, cmd, envp);
 	perror(path);
 	free(path);
 	free_str(envp);
-	data->exit_code = 127;
-	exit(127);
+	exit_proc(data, 127);
 }
 
 void	child_process(t_token *t, t_shell *data, int *fd, int *original)

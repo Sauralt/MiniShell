@@ -98,16 +98,13 @@ int	parse_word(t_shell *data, char *line, int *i)
 	quote = parsing_loop(line, quote, i);
 	if (quote == 2)
 		return (2);
-
 	word = ft_strndup_no_quote(line, start, *i - start, data);
 	if (!word)
 		return (1);
-
 	init_list_tok(data, word, quote);
 	free(word);
 	return (0);
 }
-
 
 int	parsing(t_shell *data, char *line)
 {

@@ -119,7 +119,7 @@ void	close_files(t_shell *data);
 
 int		proc(t_shell *data);
 int		exec_simple(t_shell *data, t_token *t, int *original);
-int		exec_abs(t_shell *data, char **cmd, t_env *env, int *original);
+void	exec_abs(t_shell *data, char **cmd, t_env *env, int *original);
 
 void	delfirst_stack(t_env **s);
 void	ft_add_stack(t_env **s, t_env *new);
@@ -153,5 +153,9 @@ char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path);
 void	not_pipe(t_shell *data, t_token *t, int *original);
 void	ft_waitpid(pid_t pid, t_token *cmd);
 void	free_exit(t_shell *data);
+void	infile_loop(t_token *t, int flag, int infile, int exit_code);
+void	heredoc_norm(t_shell *data, t_token *t, int fd);
+void	exit_proc(t_shell *data, int exit_flag);
+void	close_origin(int *original);
 
 #endif
