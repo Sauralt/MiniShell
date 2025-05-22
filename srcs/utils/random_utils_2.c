@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:06:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 15:23:22 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/22 20:06:01 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int	check_tok_order(t_shell *data)
 	}
 	while (t->next != data->token)
 	{
-		if (t->type == 2 && t->next->type == 2)
+		if (t->type == 2 && t->next->type == 2
+			&& ft_strcmp(t->next->str[0], "<<") != 0)
 		{
 			data->exit_code = 2;
 			return (ft_dprintf(2, " syntax error near unexpected token `%s'\n",
