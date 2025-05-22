@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/20 17:41:17 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:58:43 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,18 @@ int	ft_exit(t_shell *data, t_token *str)
 		if (!is_numeric(str->str[1]))
 		{
 			ft_dprintf(2, "exit: %s: numeric argument required\n", str->str[1]);
-			str->exit_code = 2;
-			return (1);
+			free_exit(data);
+			exit(2);
 		}
 		if (str->str[2])
 		{
 			ft_dprintf(2, "minishell: exit: too many arguments\n");
-			str->exit_code = 1;
+			data->exit_code = 1;
 			return (1);
 		}
 		str->exit_code = ft_atol(str->str[1]);
 	}
-	has_arg = str->exit_code;
+	has_arg = data->exit_code;
 	free_exit(data);
-	exit((unsigned char)has_arg);
+	exit(has_arg);
 }

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:19:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/20 15:25:28 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/22 19:59:38 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	parsing(t_shell *data, char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ')
+		if (line[i] != ' ' && line[i] != '\t')
 		{
 			ret = parse_word(data, line, &i);
 			if (ret != 0)
