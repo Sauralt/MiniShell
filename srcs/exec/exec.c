@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/20 17:42:21 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:44:17 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,7 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 			close_origin(original);
 		exec_built(data, cmd);
 		if (flag == 1)
-		{
-			close_origin(original);
 			free_exit(data);
-		}
 		return (0);
 	}
 	if (!is_builtin(cmd->str[0]) || flag != 2)
