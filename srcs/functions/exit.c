@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/22 19:58:43 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:47:06 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ static int	is_numeric(const char *str)
 {
 	if (!str || !*str)
 		return (0);
+	if (ft_strcmp(str, "9223372036854775808") == 0
+		|| ft_strcmp(str, "-9223372036854775809") == 0)
+		return (0);
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
 	if (*str == '+' || *str == '-')
@@ -39,7 +42,7 @@ static int	is_numeric(const char *str)
 	return (1);
 }
 
-static long	ft_atol(const char *str)
+static long long	ft_atol(const char *str)
 {
 	long	result;
 	int		sign;
