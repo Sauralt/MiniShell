@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/20 18:01:06 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:05:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ int	exec_simple(t_shell *data, t_token *t, int *original)
 		return (1);
 	redirected(t);
 	if (pid == 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
 		exec_abs(data, t->str, data->env, original);
+	}
 	ft_waitpid(pid, t);
 	return (0);
 }

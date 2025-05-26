@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/20 17:53:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:36:53 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,6 @@ void	infile_loop(t_token *t, int flag, int infile, int exit_code);
 void	heredoc_norm(t_shell *data, t_token *t, int fd);
 void	exit_proc(t_shell *data, int exit_flag);
 void	close_origin(int *original);
+void	ft_check_signals(t_shell *data);
 
 #endif

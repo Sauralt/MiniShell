@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/22 15:44:17 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:11:34 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 		return (2);
 	if (pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		close_origin(original);
 		exec_built(data, cmd);
 		exit_proc(data, 0);

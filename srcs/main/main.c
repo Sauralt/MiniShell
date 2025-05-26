@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/22 16:05:02 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:36:48 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ void	handle_sigint(int sig)
 	printf("\n");
 	if (g_signal_pid == 1)
 		g_signal_pid = sig;
-	if (g_signal_pid == 0)
+	if (g_signal_pid <= 0)
 		rl_redisplay();
+	g_signal_pid = -1;
 }
 
 static void	init_data(int argc, char **argv, t_shell *data)
@@ -66,7 +67,7 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		free(line);
 		free_tokens(data->token);
-		g_signal_pid = 0;
+		ft_check_signals(data);
 	}
 	free_all(data, line);
 	printf("exit\n");
