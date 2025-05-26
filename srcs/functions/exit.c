@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/26 13:47:06 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:57:51 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	ft_exit(t_shell *data, t_token *str)
 		}
 		str->exit_code = ft_atol(str->str[1]);
 	}
-	has_arg = data->exit_code;
+	has_arg = str->exit_code;
 	free_exit(data);
 	exit(has_arg);
 }
