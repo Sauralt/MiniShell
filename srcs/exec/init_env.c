@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:37:54 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/26 15:38:55 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:06:34 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,19 @@
 
 void	init_env(t_shell *data, char **env)
 {
-	int	i;
+	int		i;
+	char	*temp;
+	char	*cwd;
 
+	if (!(*env) || (env[0] && env[1] && !env[2]))
+	{
+		cwd = getcwd(NULL, 0);
+		temp = ft_strjoin("PWD=", cwd);
+		data->env = ft_new_stack(temp);
+		free(temp);
+		free(cwd);
+		return ;
+	}
 	i = 0;
 	data->exit_code = 0;
 	g_signal_pid = 0;
@@ -27,8 +38,6 @@ void	init_env(t_shell *data, char **env)
 			ft_add_stack (&data->env, ft_new_stack(env[i]));
 		i++;
 	}
-	if (!env[0])
-		data->env = ft_new_stack(getcwd(NULL, 0));
 }
 
 void	ft_check_signals(t_shell *data)
