@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/26 17:26:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:27:56 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,31 +71,30 @@ static void	set_env_var(t_shell *data, const char *key, const char *value)
 
 static void	change_directory(char *path, t_shell *data)
 {
-	char	current_dir[PATH_SIZE];
-	char	*pwd;
+	char	old_dir[PATH_SIZE];
+	char	new_dir[PATH_SIZE];
 
-	if (!get_current_directory(current_dir, sizeof(current_dir)))
+	if (!get_current_directory(old_dir, sizeof(old_dir)))
 		return ;
 	if (chdir(path) != 0)
 	{
 		perror("cd");
 		data->exit_code = 1;
+		return ;
 	}
-	else
+	if (!get_current_directory(new_dir, sizeof(new_dir)))
 	{
-		pwd = getenv("PWD");
-		if (pwd == NULL)
-			pwd = current_dir;
-		ft_strncpy(data->prev_dir, pwd, PATH_SIZE - 1);
-		data->prev_dir[PATH_SIZE - 1] = '\0';
-		if (get_current_directory(current_dir, sizeof(current_dir)))
-		{
-			set_env_var(data, "PWD", current_dir);
-			set_env_var(data, "OLDPWD", data->prev_dir);
-		}
-		data->exit_code = 0;
+		perror("cd: getcwd (after chdir)");
+		data->exit_code = 1;
+		return ;
 	}
+	set_env_var(data, "OLDPWD", old_dir);
+	set_env_var(data, "PWD", new_dir);
+	ft_strncpy(data->prev_dir, old_dir, PATH_SIZE - 1);
+	data->prev_dir[PATH_SIZE - 1] = '\0';
+	data->exit_code = 0;
 }
+
 
 void	ft_cd(t_shell *data, t_token *t)
 {
