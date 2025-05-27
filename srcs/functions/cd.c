@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/26 17:26:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:29:17 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static void	change_directory(char *path, t_shell *data)
 			set_env_var(data, "OLDPWD", data->prev_dir);
 		}
 		data->exit_code = 0;
+		free(pwd);
 	}
 }
 

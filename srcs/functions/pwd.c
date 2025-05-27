@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:54 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/26 17:01:48 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:49:43 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	ft_pwd(t_shell *data, t_token *t)
 {
 	t_env	*env;
+	char	*temp;
 
 	if (!data)
 		return (1);
@@ -33,7 +34,9 @@ int	ft_pwd(t_shell *data, t_token *t)
 	}
 	while (ft_strncmp("PWD=", env->str, 4) != 0)
 		env = env->next;
-	printf("%s\n", env->str);
+	temp = ft_strndup(env->str, 4, ft_strlen(env->str) - 4);
+	printf("%s\n", temp);
+	free(temp);
 	data->exit_code = 0;
 	return (0);
 }

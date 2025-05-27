@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:37:54 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/26 17:06:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:01:15 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	init_env(t_shell *data, char **env)
 	char	*temp;
 	char	*cwd;
 
+	data->exit_code = 0;
+	g_signal_pid = 0;
 	if (!(*env) || (env[0] && env[1] && !env[2]))
 	{
 		cwd = getcwd(NULL, 0);
@@ -28,8 +30,6 @@ void	init_env(t_shell *data, char **env)
 		return ;
 	}
 	i = 0;
-	data->exit_code = 0;
-	g_signal_pid = 0;
 	while (env[i])
 	{
 		if (i == 0)

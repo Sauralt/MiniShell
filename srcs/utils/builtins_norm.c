@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:52:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/20 14:03:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:10:40 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ int	set_env_var_loop(t_env *env, char *new_entry, int key_len, const char *key)
 			return (1);
 		}
 		env = env->next;
+	}
+	if (ft_strncmp(env->str, key, key_len) == 0 && env->str[key_len] == '=')
+	{
+		free(env->str);
+		env->str = new_entry;
+		return (1);
 	}
 	return (0);
 }
