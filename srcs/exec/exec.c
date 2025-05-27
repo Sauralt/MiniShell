@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/26 15:11:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:06:48 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,10 @@ static void	exec(t_shell *data, t_token *t, int *original)
 	{
 		t = t->next;
 		if (t->type == 0)
+		{
 			ft_dprintf(2, "%s: command not found\n", t->str[0]);
-		data->exit_code = 127;
+			data->exit_code = 127;
+		}
 		return ;
 	}
 	if (flag == 0)
