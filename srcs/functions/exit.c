@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/26 13:57:51 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:35:43 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	ft_exit(t_shell *data, t_token *str)
 		if (str->str[2])
 		{
 			ft_dprintf(2, "minishell: exit: too many arguments\n");
-			data->exit_code = 1;
+			str->exit_code = 1;
 			return (1);
 		}
 		str->exit_code = ft_atol(str->str[1]);
