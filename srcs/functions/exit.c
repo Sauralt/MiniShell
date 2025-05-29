@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/27 14:37:05 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:58:47 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,15 @@ int	ft_exit(t_shell *data, t_token *str)
 		}
 		if (str->str[2])
 		{
-			ft_dprintf(2, "minishell: exit: too many arguments\n");
 			str->exit_code = 1;
-			return (1);
+			return (ft_dprintf(2, "minishell: exit: too many arguments\n"), 1);
 		}
 		str->exit_code = (unsigned char)ft_atol(str->str[1]);
 	}
-	has_arg = str->exit_code;
+	if (data->exit_code == 0)
+		has_arg = str->exit_code;
+	else
+		has_arg = data->exit_code;
 	free_exit(data);
 	exit(has_arg);
 }
