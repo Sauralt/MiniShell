@@ -18,6 +18,7 @@
 # include <sys/stat.h>
 # include <signal.h>
 # include <stdarg.h>
+# include <pwd.h>
 
 # define BUFFER_SIZE 1024
 # define PATH_SIZE 1024
@@ -104,7 +105,7 @@ int		ft_exit(t_shell *data, t_token *str);
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 int		set_env_var_loop(t_env *env, char *new_entry, int key_len,
 			const char *key);
-int		get_current_directory(char *buffer, size_t size);
+int		get_current_directory(t_env *env, char *buffer, size_t size);
 int		export_norm(t_shell *data, int i, char *delim, t_token *str);
 int		is_valid_identifier_export(const char *str);
 void	add_or_replace_env(t_shell *data, char *key, char *value);

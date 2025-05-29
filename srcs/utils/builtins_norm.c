@@ -12,16 +12,34 @@
 
 #include "minishell.h"
 
-int	get_current_directory(char *buffer, size_t size)
+char	*ft_getcwd(t_env *env)
 {
-	if (getcwd(buffer, size) == NULL)
-	{
-		perror("getcwd");
-		return (0);
-	}
-	return (1);
+	char	buffer[PATH_MAX];
+	char	*cwd;
+
+	if (getcwd(buffer, sizeof(buffer)))
+		return (ft_strdup(buffer));
+	cwd = get_env_value(env, "PWD", 3);
+	if (cwd && *cwd)
+		return (cwd);
+	if (cwd)
+		free(cwd);
+	return (NULL);
 }
 
+int	get_current_directory(t_env *env, char *buffer, size_t size)
+{
+	char	*cwd = ft_getcwd(env);
+
+	if (!cwd)
+	{
+		ft_dprintf(2, "ft_getcwd: unable to determine current directory\n");
+		return (0);
+	}
+	ft_strlcpy(buffer, cwd, size);
+	free(cwd);
+	return (1);
+}
 int	set_env_var_loop(t_env *env, char *new_entry, int key_len, const char *key)
 {
 	while (env)
