@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/27 14:33:47 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:00:47 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handle_sigint(int sig)
 		g_signal_pid = sig;
 	if (g_signal_pid <= 0)
 		rl_redisplay();
-	g_signal_pid = -1;
+	g_signal_pid = 130;
 }
 
 static void	init_data(int argc, char **argv, t_shell *data)
@@ -61,6 +61,8 @@ int	main(int argc, char **argv, char **env)
 	{
 		init_data(argc, argv, data);
 		line = readline("Minishell> ");
+		if (g_signal_pid != 0)
+			data->exit_code = g_signal_pid;
 		if (!line)
 			break ;
 		if (conditions(data, line) == 1)

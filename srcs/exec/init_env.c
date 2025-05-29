@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:37:54 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/27 15:25:49 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:24:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,5 @@ void	ft_check_signals(t_shell *data)
 {
 	if (g_signal_pid == 2)
 		data->exit_code = 130;
-	if (data->exit_code == 131 && (g_signal_pid == 1 || g_signal_pid == 2))
-		ft_dprintf(2, "Quit (core dumped)\n");
 	g_signal_pid = 0;
 }
