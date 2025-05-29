@@ -15,14 +15,20 @@
 char	*cd_home(char *path)
 {
 	char	*home;
+	struct passwd *pw;
 
 	if (!path || (path[0] == '~' && (path[1] == '/' || path[1] == '\0')))
 	{
 		home = getenv("HOME");
 		if (!home)
 		{
-			ft_dprintf(2, "cd: HOME not set\n");
-			return (NULL);
+			pw = getpwuid(getuid());
+			if (!pw || !pw->pw_dir)
+			{
+				ft_dprintf(2, "cd: HOME not set\n");
+				return (NULL);
+			}
+			return (pw->pw_dir);
 		}
 		return (home);
 	}
@@ -74,7 +80,7 @@ static void	change_directory(char *path, t_shell *data)
 	char	old_dir[PATH_SIZE];
 	char	new_dir[PATH_SIZE];
 
-	if (!get_current_directory(old_dir, sizeof(old_dir)))
+	if (!get_current_directory(data->env, old_dir, sizeof(old_dir)))
 		return ;
 	if (chdir(path) != 0)
 	{
@@ -82,7 +88,7 @@ static void	change_directory(char *path, t_shell *data)
 		data->exit_code = 1;
 		return ;
 	}
-	if (!get_current_directory(new_dir, sizeof(new_dir)))
+	if (!get_current_directory(data->env, new_dir, sizeof(new_dir)))
 	{
 		perror("cd: getcwd (after chdir)");
 		data->exit_code = 1;
@@ -94,6 +100,7 @@ static void	change_directory(char *path, t_shell *data)
 	data->prev_dir[PATH_SIZE - 1] = '\0';
 	data->exit_code = 0;
 }
+
 
 void	ft_cd(t_shell *data, t_token *t)
 {

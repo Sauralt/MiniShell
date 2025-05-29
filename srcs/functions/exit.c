@@ -20,35 +20,62 @@ void	free_exit(t_shell *data)
 	rl_clear_history();
 }
 
+static int	compare_abs_str(const char *a, const char *b)
+{
+	size_t len_a;
+	size_t len_b;
+
+	len_a = ft_strlen(a);
+	len_b = ft_strlen(b);
+	if (len_a != len_b)
+		return (len_a > len_b);
+	return (ft_strcmp(a, b) > 0);
+}
+
 static int	is_numeric(const char *str)
 {
+	int			sign;
+	const char *start;
+	const char *limit;
+
+	sign = 1;
 	if (!str || !*str)
 		return (0);
-	if (ft_strcmp(str, "9223372036854775808") == 0
-		|| ft_strcmp(str, "-9223372036854775809") == 0)
-		return (0);
+
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
 	if (*str == '+' || *str == '-')
-		str++;
-	if (!*str)
-		return (0);
-	while (*str)
 	{
-		if (!ft_isdigit(*str))
-			return (0);
+		if (*str == '-')
+			sign = -1;
 		str++;
 	}
+	if (!*str)
+		return (0);
+	while (*str == '0')
+		str++;
+	start = str;
+	while (ft_isdigit(*str))
+		str++;
+	if (*str != '\0')
+		return (0);
+	if (start == str)
+		return (1);
+	limit = (sign == 1)
+		? "9223372036854775807"
+		: "9223372036854775808";
+	if (compare_abs_str(start, limit))
+		return (0);
 	return (1);
 }
 
 static long long	ft_atol(const char *str)
 {
-	long	result;
-	int		sign;
+	long long	result;
+	int			sign;
 
-	sign = 1;
 	result = 0;
+	sign = 1;
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
 	if (*str == '-' || *str == '+')
@@ -85,7 +112,7 @@ int	ft_exit(t_shell *data, t_token *str)
 			str->exit_code = 1;
 			return (1);
 		}
-		str->exit_code = ft_atol(str->str[1]);
+		str->exit_code = (unsigned char)ft_atol(str->str[1]);
 	}
 	has_arg = str->exit_code;
 	free_exit(data);
