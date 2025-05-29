@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_input.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:01:42 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/27 17:02:37 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:11:39 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,6 @@ bool	is_builtin(char *line)
 		|| ft_strcmp(line, "exit") == 0)
 		return (true);
 	return (false);
-}
-
-void	ft_waitpid(pid_t pid, t_token *cmd)
-{
-	int	status;
-
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		cmd->exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		cmd->exit_code = 128 + WTERMSIG(status);
-	else
-		cmd->exit_code = 1;
 }
 
 void	heredoc_norm(t_shell *data, t_token *t, int fd)

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:43:52 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/26 15:05:45 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:19:24 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t)
 	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
 		dup2(fd[0], STDIN_FILENO);
 	ft_close(fd);
+	waitall(data, pid);
 }
 
 void	close_files(t_shell *data)

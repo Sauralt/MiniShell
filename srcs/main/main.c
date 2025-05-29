@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/29 17:00:47 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:07:36 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	init_data(int argc, char **argv, t_shell *data)
 	(void)argv;
 	data->token = NULL;
 	data->del_num = 0;
+	data->pipe_num = 0;
 }
 
 static int	conditions(t_shell *data, char *line)

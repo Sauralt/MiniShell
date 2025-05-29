@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/27 14:27:37 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/29 19:19:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_shell
 	int		del_num;
 	int		start;
 	int		l;
+	int		pipe_num;
 	t_env	*env;
 }			t_shell;
 
@@ -159,5 +160,6 @@ void	heredoc_norm(t_shell *data, t_token *t, int fd);
 void	exit_proc(t_shell *data, int exit_flag);
 void	close_origin(int *original);
 void	ft_check_signals(t_shell *data);
+void	waitall(t_shell *data, pid_t pid);
 
 #endif
