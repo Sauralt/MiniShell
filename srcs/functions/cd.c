@@ -15,20 +15,14 @@
 char	*cd_home(char *path)
 {
 	char	*home;
-	struct passwd *pw;
 
 	if (!path || (path[0] == '~' && (path[1] == '/' || path[1] == '\0')))
 	{
 		home = getenv("HOME");
 		if (!home)
 		{
-			pw = getpwuid(getuid());
-			if (!pw || !pw->pw_dir)
-			{
-				ft_dprintf(2, "cd: HOME not set\n");
-				return (NULL);
-			}
-			return (pw->pw_dir);
+			ft_dprintf(2, "cd: HOME not set\n");
+			return (NULL);
 		}
 		return (home);
 	}
