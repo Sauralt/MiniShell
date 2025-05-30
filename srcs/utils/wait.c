@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:03:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/30 17:00:32 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:29:42 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	waitall(t_shell *data, pid_t pid)
+void	waitall(t_shell *data)
 {
 	int	status;
 	int	flag;
@@ -20,10 +20,12 @@ void	waitall(t_shell *data, pid_t pid)
 	while (data->pipe_num != 0)
 	{
 		flag = waitpid(0, &status, 0);
-		if (flag == pid)
+		if (flag == 0)
 		{
 			if (WIFEXITED(status))
 				data->exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				data->exit_code = 128 + WTERMSIG(status);
 		}
 		data->pipe_num--;
 	}

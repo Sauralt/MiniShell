@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/30 16:02:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:23:30 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	handle_sigint(int sig)
 	printf("\n");
 	if (g_signal_pid == 1)
 		g_signal_pid = sig;
-	if (g_signal_pid <= 0)
+	if (g_signal_pid <= 0 || g_signal_pid == 130)
 		rl_redisplay();
 	g_signal_pid = 130;
 }

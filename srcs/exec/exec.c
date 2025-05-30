@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/30 15:33:56 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:32:03 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 		data->exit_code = t->exit_code;
 		t = t->next;
 	}
+	waitall(data);
 	if (t->exit_code == 0 && t->type == 1 && g_signal_pid != 2)
 	{
 		if (builtin(data, t, original, 2) == 1)
