@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:52:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/27 14:10:40 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:56:27 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_getcwd(t_env *env)
 {
-	char	buffer[PATH_MAX];
+	char	buffer[PATH_SIZE];
 	char	*cwd;
 
 	if (getcwd(buffer, sizeof(buffer)))
@@ -29,8 +29,9 @@ char	*ft_getcwd(t_env *env)
 
 int	get_current_directory(t_env *env, char *buffer, size_t size)
 {
-	char	*cwd = ft_getcwd(env);
+	char	*cwd;
 
+	cwd = ft_getcwd(env);
 	if (!cwd)
 	{
 		ft_dprintf(2, "ft_getcwd: unable to determine current directory\n");
@@ -40,6 +41,7 @@ int	get_current_directory(t_env *env, char *buffer, size_t size)
 	free(cwd);
 	return (1);
 }
+
 int	set_env_var_loop(t_env *env, char *new_entry, int key_len, const char *key)
 {
 	while (env)

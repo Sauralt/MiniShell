@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/29 19:07:36 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:02:20 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	main(int argc, char **argv, char **env)
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 	init_env(data, env);
+	data->exit_code = 0;
 	while (1)
 	{
 		init_data(argc, argv, data);
