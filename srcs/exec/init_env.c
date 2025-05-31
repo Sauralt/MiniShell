@@ -31,8 +31,6 @@ void	init_env(t_shell *data, char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
-			env[i] = ft_shlvl(env[i]);
 		if (i == 0)
 			data->env = ft_new_stack(env[i]);
 		else

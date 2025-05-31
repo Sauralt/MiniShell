@@ -81,11 +81,11 @@ void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t)
 	}
 	if (pid == 0 && t->type != 2)
 	{
+		if (fd[0])
+			dup2(fd[0], STDIN_FILENO);
 		signal(SIGQUIT, SIG_DFL);
 		child_process(t, data, fd, original);
 	}
-	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
-		dup2(fd[0], STDIN_FILENO);
 	ft_close(fd);
 }
 

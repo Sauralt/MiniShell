@@ -19,7 +19,10 @@ t_env	*ft_new_stack(char *t)
 	c = malloc(sizeof(*c));
 	if (c == NULL)
 		return (NULL);
-	c->str = ft_strdup(t);
+	if (ft_strncmp(t, "SHLVL=", 6) == 0)
+		c->str = ft_shlvl(t);
+	else
+		c->str = ft_strdup(t);
 	c->next = c;
 	c->prev = c;
 	return (c);

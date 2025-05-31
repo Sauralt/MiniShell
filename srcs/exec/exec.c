@@ -33,9 +33,7 @@ static void	exec_built(t_shell *data, t_token *cmd)
 
 int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 {
-	pid_t	pid;
-
-	if (is_builtin(cmd->str[0]) && flag != 2)
+	if (is_builtin(cmd->str[0]))
 	{
 		if (flag == 1)
 			close_origin(original);
@@ -44,25 +42,13 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 			free_exit(data);
 		return (0);
 	}
-	if (!is_builtin(cmd->str[0]) || flag != 2)
-		return (1);
-	pid = fork();
-	if (pid == -1)
-		return (2);
-	if (pid == 0)
-	{
-		signal(SIGQUIT, SIG_DFL);
-		close_origin(original);
-		exec_built(data, cmd);
-		exit_proc(data, 0);
-	}
-	ft_waitpid(pid, cmd);
-	return (0);
+	return (1);
 }
 
 static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 {
 	int		fd[2];
+	pid_t	pid;
 
 	while (t->next != data->token && g_signal_pid != 2)
 	{
@@ -71,11 +57,20 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 		data->exit_code = t->exit_code;
 		t = t->next;
 	}
-	waitall(data);
 	if (t->exit_code == 0 && t->type == 1 && g_signal_pid != 2)
 	{
-		if (builtin(data, t, original, 2) == 1)
-			exec_simple(data, t, original);
+		if (builtin(data, t, original, 1) == 1)
+		{
+			pid = fork();
+			if (pid == -1)
+				return ;
+			redirected(t);
+			if (pid == 0)
+			{
+				signal(SIGQUIT, SIG_DFL);
+				exec_abs(data, t->str, data->env, original);
+			}
+		}
 	}
 	if (t->type == 0)
 	{
@@ -83,6 +78,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 		data->exit_code = 127;
 		return ;
 	}
+	waitall(data);
 	data->exit_code = t->exit_code;
 }
 

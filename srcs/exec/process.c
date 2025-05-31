@@ -77,7 +77,7 @@ int	exec_simple(t_shell *data, t_token *t, int *original)
 		signal(SIGQUIT, SIG_DFL);
 		exec_abs(data, t->str, data->env, original);
 	}
-	//ft_waitpid(pid, t);
+	ft_waitpid(pid, t);
 	return (0);
 }
 
