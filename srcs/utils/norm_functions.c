@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:43:52 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 14:13:33 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:29:14 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t)
 		signal(SIGQUIT, SIG_DFL);
 		child_process(t, data, fd, original);
 	}
-	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
-		dup2(fd[0], STDIN_FILENO);
 	ft_close(fd);
 }
 
