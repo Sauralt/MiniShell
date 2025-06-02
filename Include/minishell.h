@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 14:32:03 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:38:46 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,5 +163,6 @@ void	close_origin(int *original);
 void	ft_check_signals(t_shell *data);
 void	waitall(t_shell *data);
 char	*ft_shlvl(char *env);
+void	print_env(t_env *env);
 
 #endif

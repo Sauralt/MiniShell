@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wait.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:03:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 14:51:32 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:52:24 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,5 @@ char	*ft_shlvl(char *env)
 	new = ft_strjoin(prefix, temp);
 	free(prefix);
 	free(temp);
-
 	return (new);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/30 17:21:24 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:51:48 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,6 @@ t_env	*find_env(t_env *env, const char *key)
 			break ;
 	}
 	return (NULL);
-}
-
-void	print_env(t_env *env)
-{
-	t_env	*start;
-
-	if (!env)
-		return ;
-	start = env;
-	while (env)
-	{
-		printf("declare -x %s\n", env->str);
-		env = env->next;
-		if (env == start)
-			break ;
-	}
 }
 
 void	add_or_replace_env(t_shell *data, char *key, char *value)
@@ -85,29 +69,46 @@ int	is_valid_identifier_export(const char *str)
 	return (1);
 }
 
-int	ft_export(t_shell *data, t_token *str)
+static int	process_export_arg(t_shell *data, t_token *str,
+		int i, int *has_error)
 {
 	char	*delim;
-	int		i;
+
+	if (str->str[i][0] == '-' && str->str[i][1])
+	{
+		ft_dprintf(2, "export: `%s': invalid option\n", str->str[i]);
+		str->exit_code = 1;
+		return (-1);
+	}
+	delim = ft_strchr(str->str[i], '=');
+	if (export_norm(data, i, delim, str) == 1)
+	{
+		*has_error = 1;
+		return (0);
+	}
+	if (!delim)
+		add_or_replace_env(data, str->str[i], "");
+	return (0);
+}
+
+int	ft_export(t_shell *data, t_token *str)
+{
+	int	i;
+	int	has_error;
+	int	result;
 
 	if (!str->str[1])
 		return (print_env(data->env), 0);
+
 	i = 1;
+	has_error = 0;
 	while (str->str[i])
 	{
-		if (str->str[i][0] == '-' && str->str[i][1])
-		{
-			ft_dprintf(2, "export: `%s': invalid option\n", str->str[i]);
-			str->exit_code = 1;
+		result = process_export_arg(data, str, i, &has_error);
+		if (result == -1)
 			return (1);
-		}
-		delim = ft_strchr(str->str[i], '=');
-		if (export_norm(data, i, delim, str) == 1)
-			return (1);
-		if (!delim)
-			add_or_replace_env(data, str->str[i], "");
 		i++;
 	}
-	str->exit_code = 0;
-	return (0);
+	str->exit_code = has_error;
+	return (has_error);
 }
