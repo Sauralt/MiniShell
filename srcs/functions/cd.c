@@ -101,8 +101,10 @@ void	ft_cd(t_shell *data, t_token *t)
 	char	*resolved_path;
 
 	if (data->env->next == data->env)
+	resolved_path = ft_strjoin("OLD", data->env->str);
 		ft_add_stack(&data->env,
-			ft_new_stack(ft_strjoin("OLD", data->env->str)));
+			ft_new_stack(resolved_path));
+	free(resolved_path);
 	if (!t || !t->str || !t->str[0])
 		resolved_path = cd_home(NULL);
 	if (t->str[1] != NULL && t->str[2] != NULL)
