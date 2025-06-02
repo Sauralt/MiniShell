@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/30 17:23:30 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:33:48 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void	init_data(int argc, char **argv, t_shell *data)
 	data->token = NULL;
 	data->del_num = 0;
 	data->pipe_num = 0;
+	data->invalid = 0;
 }
 
 static int	conditions(t_shell *data, char *line)
@@ -42,7 +43,7 @@ static int	conditions(t_shell *data, char *line)
 	tok = init_tokens(data, line);
 	if (ft_strncmp(line, "\0", 2) != 0 && tok == 1)
 		return (1);
-	if (ft_strncmp(line, "\0", 2) != 0 && tok != 2)
+	if (ft_strncmp(line, "\0", 2) != 0 && tok != 2 && data->invalid == 0)
 		proc(data);
 	if (ft_strncmp(line, "\0", 2))
 		add_history(line);

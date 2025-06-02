@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/29 19:08:08 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:41:31 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static void	infile_redirect(t_shell *data, t_token *t)
 			infile_loop(t, 1, 0, 1);
 		t->next->type = 3;
 		data->exit_code = 1;
+		data->invalid = 1;
 		return ;
 	}
 	if (t != data->token)
@@ -73,6 +74,7 @@ static void	outfile_trunc(t_shell *data, t_token *t)
 			temp = temp->prev;
 		temp->exit_code = 1;
 		data->exit_code = temp->exit_code;
+		data->invalid = 1;
 		t->next->type = 3;
 		return ;
 	}
@@ -99,6 +101,7 @@ static void	outfile_append(t_shell *data, t_token *t)
 			temp = temp->prev;
 		temp->exit_code = 1;
 		data->exit_code = temp->exit_code;
+		data->invalid = 1;
 		t->next->type = 3;
 		return ;
 	}

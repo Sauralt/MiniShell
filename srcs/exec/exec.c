@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/30 18:32:03 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:29:04 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	exec_built(t_shell *data, t_token *cmd)
 
 int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 {
-	if (is_builtin(cmd->str[0]))
+	if (is_builtin(cmd->str[0]) && flag != 2)
 	{
 		if (flag == 1)
 			close_origin(original);
@@ -59,7 +59,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	}
 	if (t->exit_code == 0 && t->type == 1 && g_signal_pid != 2)
 	{
-		if (builtin(data, t, original, 1) == 1)
+		if (builtin(data, t, original, 2) == 1)
 		{
 			pid = fork();
 			if (pid == -1)
@@ -79,7 +79,6 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 		return ;
 	}
 	waitall(data);
-	data->exit_code = t->exit_code;
 }
 
 static void	exec(t_shell *data, t_token *t, int *original)

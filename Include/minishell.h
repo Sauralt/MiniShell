@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/30 18:30:25 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:32:03 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_shell
 	int		start;
 	int		l;
 	int		pipe_num;
+	int		invalid;
 	t_env	*env;
 }			t_shell;
 

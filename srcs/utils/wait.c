@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:03:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/30 18:29:42 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:51:32 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	waitall(t_shell *data)
 	int	status;
 	int	flag;
 
-	while (data->pipe_num != 0)
+	while (data->pipe_num + 1 != 0)
 	{
 		flag = waitpid(0, &status, 0);
 		if (flag == 0)
