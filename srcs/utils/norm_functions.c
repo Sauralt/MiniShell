@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:43:52 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 15:29:14 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:19:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,14 @@ void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t)
 	if (pid == 0 && t->type != 2)
 	{
 		signal(SIGQUIT, SIG_DFL);
+		if (data->prev_fd != -1)
+			close(fd[0]);
 		child_process(t, data, fd, original);
 	}
+	data->pids[data->l++] = pid;
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
+	data->prev_fd = fd[0];
 	ft_close(fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 14:29:04 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:13:45 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	int		fd[2];
 	pid_t	pid;
 
+	data->pids = malloc(sizeof(pid_t) * (data->pipe_num + 1));
+	data->l = 0;
+	data->prev_fd = -1;
 	while (t->next != data->token && g_signal_pid != 2)
 	{
 		if (t->exit_code == 0)
@@ -70,6 +73,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 				signal(SIGQUIT, SIG_DFL);
 				exec_abs(data, t->str, data->env, original);
 			}
+			data->pids[data->l++] = pid;
 		}
 	}
 	if (t->type == 0)
@@ -79,6 +83,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 		return ;
 	}
 	waitall(data);
+	free(data->pids);
 }
 
 static void	exec(t_shell *data, t_token *t, int *original)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wait.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:03:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 16:52:24 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:22:00 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 void	waitall(t_shell *data)
 {
 	int	status;
-	int	flag;
+	int	i;
 
-	while (data->pipe_num + 1 != 0)
+	i = 0;
+	while (data->pipe_num != 0)
 	{
-		flag = waitpid(0, &status, 0);
-		if (flag == 0)
+		waitpid(data->pids[i], &status, 0);
+		if (i == data->l)
 		{
 			if (WIFEXITED(status))
 				data->exit_code = WEXITSTATUS(status);
@@ -28,6 +29,7 @@ void	waitall(t_shell *data)
 				data->exit_code = 128 + WTERMSIG(status);
 		}
 		data->pipe_num--;
+		i++;
 	}
 }
 
