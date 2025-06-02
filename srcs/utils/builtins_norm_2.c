@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:48:40 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/02 16:49:17 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:54:49 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,12 @@ int	export_norm(t_shell *data, int i, char *delim, t_token *str)
 		free(value);
 	}
 	return (0);
+}
+
+void	free_exit(t_shell *data)
+{
+	free_tokens(data->token);
+	free_env(data->env);
+	free(data);
+	rl_clear_history();
 }

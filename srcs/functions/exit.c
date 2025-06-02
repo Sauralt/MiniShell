@@ -3,27 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/29 18:58:47 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:00:45 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-void	free_exit(t_shell *data)
-{
-	free_tokens(data->token);
-	free_env(data->env);
-	free(data);
-	rl_clear_history();
-}
-
 static int	compare_abs_str(const char *a, const char *b)
 {
-	size_t len_a;
-	size_t len_b;
+	size_t	len_a;
+	size_t	len_b;
 
 	len_a = ft_strlen(a);
 	len_b = ft_strlen(b);
@@ -32,16 +24,33 @@ static int	compare_abs_str(const char *a, const char *b)
 	return (ft_strcmp(a, b) > 0);
 }
 
+int	check_numeric(const char *start, const char *str, int sign)
+{
+	const char	*limit;
+
+	while (ft_isdigit(*str))
+		str++;
+	if (*str != '\0')
+		return (0);
+	if (start == str)
+		return (1);
+	if (sign == 1)
+		limit = "9223372036854775807";
+	else
+		limit = "9223372036854775808";
+	if (compare_abs_str(start, limit))
+		return (0);
+	return (1);
+}
+
 static int	is_numeric(const char *str)
 {
 	int			sign;
-	const char *start;
-	const char *limit;
+	const char	*start;
 
 	sign = 1;
 	if (!str || !*str)
 		return (0);
-
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
 	if (*str == '+' || *str == '-')
@@ -55,18 +64,7 @@ static int	is_numeric(const char *str)
 	while (*str == '0')
 		str++;
 	start = str;
-	while (ft_isdigit(*str))
-		str++;
-	if (*str != '\0')
-		return (0);
-	if (start == str)
-		return (1);
-	limit = (sign == 1)
-		? "9223372036854775807"
-		: "9223372036854775808";
-	if (compare_abs_str(start, limit))
-		return (0);
-	return (1);
+	return (check_numeric(start, str, sign));
 }
 
 static long long	ft_atol(const char *str)

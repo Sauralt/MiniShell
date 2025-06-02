@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:22:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/02 16:51:48 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:49:34 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ int	ft_export(t_shell *data, t_token *str)
 
 	if (!str->str[1])
 		return (print_env(data->env), 0);
-
 	i = 1;
 	has_error = 0;
 	while (str->str[i])

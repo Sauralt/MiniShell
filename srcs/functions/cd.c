@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/30 16:55:16 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:58:01 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,8 @@ void	ft_cd(t_shell *data, t_token *t)
 	char	*resolved_path;
 
 	if (data->env->next == data->env)
-	resolved_path = ft_strjoin("OLD", data->env->str);
 		ft_add_stack(&data->env,
-			ft_new_stack(resolved_path));
-	free(resolved_path);
+			ft_new_stack(ft_strjoin("OLD", data->env->str)));
 	if (!t || !t->str || !t->str[0])
 		resolved_path = cd_home(NULL);
 	if (t->str[1] != NULL && t->str[2] != NULL)

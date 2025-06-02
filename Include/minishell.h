@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 17:38:46 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:54:28 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,5 +164,6 @@ void	ft_check_signals(t_shell *data);
 void	waitall(t_shell *data);
 char	*ft_shlvl(char *env);
 void	print_env(t_env *env);
+void	free_exit(t_shell *data);
 
 #endif
