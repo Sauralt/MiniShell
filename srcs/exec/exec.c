@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 18:13:45 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 19:09:13 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 			if (pid == 0)
 			{
 				signal(SIGQUIT, SIG_DFL);
+				if (data->prev_fd != -1)
+				{
+					dup2(data->prev_fd, STDIN_FILENO);
+					close(data->prev_fd);
+				}
 				exec_abs(data, t->str, data->env, original);
 			}
 			data->pids[data->l++] = pid;

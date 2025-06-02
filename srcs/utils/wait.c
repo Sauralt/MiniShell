@@ -6,32 +6,62 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:03:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 18:22:00 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 18:59:34 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// void	waitall(t_shell *data)
+// {
+// 	int	status;
+// 	int	i;
+
+// 	i = 0;
+// 	if (data->prev_fd != -1)
+// 	{
+// 		close(data->prev_fd);
+// 		data->prev_fd = -1;
+// 	}
+// 	while (data->pipe_num != 0)
+// 	{
+// 		waitpid(data->pids[i], &status, 0);
+// 		if (i == data->l - 1)
+// 		{
+// 			if (WIFEXITED(status))
+// 				data->exit_code = WEXITSTATUS(status);
+// 			else if (WIFSIGNALED(status))
+// 				data->exit_code = 128 + WTERMSIG(status);
+// 		}
+// 		data->pipe_num--;
+// 		i++;
+// 	}
+// }
 
 void	waitall(t_shell *data)
 {
 	int	status;
 	int	i;
 
-	i = 0;
-	while (data->pipe_num != 0)
+	if (data->prev_fd != -1)
+	{
+		close(data->prev_fd);
+		data->prev_fd = -1;
+	}
+	for (i = 0; i < data->l; i++)
 	{
 		waitpid(data->pids[i], &status, 0);
-		if (i == data->l)
+		if (i == data->l - 1)
 		{
 			if (WIFEXITED(status))
 				data->exit_code = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 				data->exit_code = 128 + WTERMSIG(status);
 		}
-		data->pipe_num--;
-		i++;
 	}
+	data->pipe_num = 0;
 }
+
 
 void	ft_waitpid(pid_t pid, t_token *cmd)
 {
