@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/03 15:39:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:24:50 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static void	exec_built(t_shell *data, t_token *cmd)
 
 int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 {
+	pid_t	pid;
+
 	if (is_builtin(cmd->str[0]) && flag != 2)
 	{
 		if (flag == 1)
@@ -42,19 +44,28 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 			free_exit(data);
 		return (0);
 	}
-	return (1);
+	if (!is_builtin(cmd->str[0]) || flag != 2)
+		return (1);
+	pid = fork();
+	if (pid == -1)
+		return (2);
+	if (pid == 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
+		close_origin(original);
+		exec_built(data, cmd);
+		exit_proc(data, 0);
+	}
+	return (0);
 }
 
 static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 {
 	int		fd[2];
-	pid_t	pid;
 
 	data->pids = malloc(sizeof(pid_t) * (data->pipe_num + 1));
 	if (!data->pids)
 		return ;
-	data->l = 0;
-	data->prev_fd = -1;
 	while (t && t->next && t->next != data->token && g_signal_pid != 2)
 	{
 		if (t->exit_code == 0)
@@ -65,32 +76,11 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	}
 	if (t && t->exit_code == 0 && t->type == 1 && g_signal_pid != 2)
 	{
-		if (builtin(data, t, original, 1) == 1)
-		{
-			pid = fork();
-			if (pid == -1)
-				return ;
-			if (pid == 0)
-			{
-				signal(SIGQUIT, SIG_DFL);
-				redirected(t);
-				if (data->prev_fd != -1)
-				{
-					dup2(data->prev_fd, STDIN_FILENO);
-					close(data->prev_fd);
-				}
-				exec_abs(data, t->str, data->env, original);
-			}
-			data->pids[data->l++] = pid;
-		}
+		if (builtin(data, t, original, 2) == 1)
+			exec_simple(data, t, original, 1);
 	}
 	if (t && t->type == 0)
-	{
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
-		data->exit_code = 127;
-		free(data->pids);
-		return ;
-	}
 	waitall(data);
 	free(data->pids);
 }
@@ -100,6 +90,8 @@ static void	exec(t_shell *data, t_token *t, int *original)
 {
 	int	flag;
 
+	data->l = 0;
+	data->prev_fd = -1;
 	g_signal_pid = 1;
 	flag = exec_flag(data, t);
 	while (t->type != 1 && t->next != data->token)

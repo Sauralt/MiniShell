@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_norm.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:52:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 16:49:48 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:53:30 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	not_pipe(t_shell *data, t_token *t, int *original)
 	if (builtin(data, t, original, 0) == 1 && t->type != 2
 		&& t->exit_code == 0)
 	{
-		if (exec_simple(data, t, original) == 1)
+		if (exec_simple(data, t, original, 0) == 1)
 			perror("fork");
 	}
 	data->exit_code = t->exit_code;

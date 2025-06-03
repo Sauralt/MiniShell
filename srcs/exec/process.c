@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/03 16:02:41 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:58:24 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,28 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 	exit(EXIT_FAILURE);
 }
 
-int	exec_simple(t_shell *data, t_token *t, int *original)
+int	exec_simple(t_shell *data, t_token *t, int *original, int flag)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == -1)
 		return (1);
-	redirected(t);
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
+		redirected(t);
+		if (data->prev_fd != -1)
+		{
+			dup2(data->prev_fd, STDIN_FILENO);
+			close(data->prev_fd);
+		}
 		exec_abs(data, t->str, data->env, original);
 	}
-	ft_waitpid(pid, t);
+	if (flag == 0)
+		ft_waitpid(pid, t);
+	else
+		data->pids[data->l++] = pid;
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_norm_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:48:40 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/02 17:54:49 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/03 17:09:28 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ void	free_exit(t_shell *data)
 {
 	free_tokens(data->token);
 	free_env(data->env);
+	if (data->pids)
+		free(data->pids);
+	if (data->prev_fd > -1)
+		close(data->prev_fd);
 	free(data);
 	rl_clear_history();
 }

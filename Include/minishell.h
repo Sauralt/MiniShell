@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 19:04:02 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:53:22 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	close_dup(int original_stdin, int original_stdout);
 void	close_files(t_shell *data);
 
 int		proc(t_shell *data);
-int		exec_simple(t_shell *data, t_token *t, int *original);
+int		exec_simple(t_shell *data, t_token *t, int *original, int flag);
 void	exec_abs(t_shell *data, char **cmd, t_env *env, int *original);
 
 void	delfirst_stack(t_env **s);
