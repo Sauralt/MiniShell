@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 19:08:11 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/03 16:02:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,6 @@ void	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 {
 	redirected(t);
-	if (data->prev_fd != -1)
-	{
-		dup2(data->prev_fd, STDIN_FILENO);
-		close(data->prev_fd);
-	}
-	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
-		dup2(fd[1], STDOUT_FILENO);
 	ft_close(fd);
 	if (builtin(data, t, original, 1) == 0)
 		exit(EXIT_SUCCESS);
