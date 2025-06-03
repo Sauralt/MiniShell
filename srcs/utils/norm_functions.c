@@ -83,6 +83,10 @@ void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		if (data->prev_fd != -1)
+			dup2(data->prev_fd, STDIN_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
+		ft_close(fd);
+		if (data->prev_fd != -1)
 			close(data->prev_fd);
 		child_process(t, data, fd, original);
 	}
