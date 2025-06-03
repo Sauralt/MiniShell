@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 19:09:13 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/03 15:39:35 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	}
 	if (t->exit_code == 0 && t->type == 1 && g_signal_pid != 2)
 	{
-		if (builtin(data, t, original, 2) == 1)
+		if (builtin(data, t, original, 1) == 1)
 		{
 			pid = fork();
 			if (pid == -1)
