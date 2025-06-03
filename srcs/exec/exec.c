@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/03 17:24:50 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:20:23 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 			exec_simple(data, t, original, 1);
 	}
 	if (t && t->type == 0)
+	{
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
+	}
 	waitall(data);
 	free(data->pids);
 }
