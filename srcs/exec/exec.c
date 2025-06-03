@@ -51,26 +51,29 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	pid_t	pid;
 
 	data->pids = malloc(sizeof(pid_t) * (data->pipe_num + 1));
+	if (!data->pids)
+		return ;
 	data->l = 0;
 	data->prev_fd = -1;
-	while (t->next != data->token && g_signal_pid != 2)
+	while (t && t->next && t->next != data->token && g_signal_pid != 2)
 	{
 		if (t->exit_code == 0)
 			pipe_exec(data, t, fd, original);
-		data->exit_code = t->exit_code;
+		else
+			data->exit_code = t->exit_code;
 		t = t->next;
 	}
-	if (t->exit_code == 0 && t->type == 1 && g_signal_pid != 2)
+	if (t && t->exit_code == 0 && t->type == 1 && g_signal_pid != 2)
 	{
 		if (builtin(data, t, original, 1) == 1)
 		{
 			pid = fork();
 			if (pid == -1)
 				return ;
-			redirected(t);
 			if (pid == 0)
 			{
 				signal(SIGQUIT, SIG_DFL);
+				redirected(t);
 				if (data->prev_fd != -1)
 				{
 					dup2(data->prev_fd, STDIN_FILENO);
@@ -81,15 +84,17 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 			data->pids[data->l++] = pid;
 		}
 	}
-	if (t->type == 0)
+	if (t && t->type == 0)
 	{
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
 		data->exit_code = 127;
+		free(data->pids);
 		return ;
 	}
 	waitall(data);
 	free(data->pids);
 }
+
 
 static void	exec(t_shell *data, t_token *t, int *original)
 {
