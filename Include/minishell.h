@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 15:36:40 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:21:22 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	heredoc(t_shell *data, t_token *t, char *delimiter);
 bool	read_in_stdin(t_shell *data, int fd, char *delimiter);
 char	*expand_dollar(t_shell *data, char *input);
 void	check_meta_in_word(t_shell *data, t_token *t);
-void	pipe_exec(t_shell *data, t_token *t, int *fd, int *original);
+void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t);
 
 t_token	*add_param(t_shell *data, t_token *t);
 t_token	*ft_new_token(t_shell *data, char *content);
@@ -153,7 +153,6 @@ void	redirected(t_token *t);
 int		valid_path(t_shell *data, char *path);
 int		is_directory(const char *path);
 char	*get_env_value(t_env *env, const char *var_name, size_t var_len);
-void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t);
 char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path);
 void	not_pipe(t_shell *data, t_token *t, int *original);
 void	ft_waitpid(pid_t pid, t_token *cmd);

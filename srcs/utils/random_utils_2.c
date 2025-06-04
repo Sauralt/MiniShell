@@ -6,17 +6,11 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:06:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 16:14:11 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:20:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	pipe_exec(t_shell *data, t_token *t, int *fd, int *original)
-{
-	if (t->type != 2 && t->type != 3)
-		ft_pipe(fd, original, data, t);
-}
 
 static int	last_token(t_shell *data)
 {
