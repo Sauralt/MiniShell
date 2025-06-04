@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:03:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 15:40:54 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:49:53 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	waitall(t_shell *data)
 		waitpid(data->pids[i], &status, 0);
 		if (i == data->l - 1)
 		{
-			if (WIFEXITED(status) && data->exit_code)
+			if (WIFEXITED(status))
 				data->exit_code = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status) && data->exit_code)
+			else if (WIFSIGNALED(status))
 				data->exit_code = 128 + WTERMSIG(status);
 		}
 		i++;

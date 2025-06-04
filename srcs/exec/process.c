@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 15:25:01 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:48:13 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,12 @@ void	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 
 void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 {
+	if (t->type == 0)
+	{
+		ft_dprintf(2, "%s: command not found\n", t->str[0]);
+		free_exit(data);
+		exit(127);
+	}
 	redirected(t);
 	ft_close(fd);
 	if (builtin(data, t, original, 1) == 0)
@@ -71,7 +77,13 @@ int	exec_simple(t_shell *data, t_token *t, int *original, int flag)
 		return (1);
 	if (pid == 0)
 	{
-		signal(SIGQUIT, SIG_DFL);
+		if (t->type == 0)
+		{
+			ft_dprintf(2, "%s: command not found\n", t->str[0]);
+			free_exit(data);
+			exit(127);
+		}
+			signal(SIGQUIT, SIG_DFL);
 		if (data->prev_fd != -1)
 		{
 			dup2(data->prev_fd, STDIN_FILENO);
