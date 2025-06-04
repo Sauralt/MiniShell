@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/02 14:41:31 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:36:59 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,6 @@ void	check_meta_char(t_shell *data, t_token *t)
 {
 	if (t->next == t || t->next == data->token)
 		return ;
-	if (ft_strcmp(t->str[0], "|") == 0)
-		data->pipe_num++;
 	if (ft_strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, t);
 	if (ft_strcmp(t->str[0], ">") == 0)
