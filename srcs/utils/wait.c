@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 19:03:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/03 18:26:39 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:40:54 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	waitall(t_shell *data)
 		}
 		i++;
 	}
-	data->pipe_num = 0;
 }
 
 void	ft_waitpid(pid_t pid, t_token *cmd)
