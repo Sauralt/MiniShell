@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 16:30:13 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:28:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,5 +166,6 @@ void	waitall(t_shell *data);
 char	*ft_shlvl(char *env);
 void	print_env(t_env *env);
 void	free_exit(t_shell *data);
+void	free_exec_simple(t_shell *data, t_token *t, int *original);
 
 #endif

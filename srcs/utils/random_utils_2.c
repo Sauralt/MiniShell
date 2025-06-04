@@ -6,11 +6,18 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:06:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 16:20:46 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:28:13 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_exec_simple(t_shell *data, t_token *t, int *original)
+{
+	close(original[0]);
+	close(original[1]);
+	exit_proc(data, 127, 1, t);
+}
 
 static int	last_token(t_shell *data)
 {

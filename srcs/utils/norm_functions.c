@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:43:52 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 16:23:49 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:20:41 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t)
 		ft_close(fd);
 		return (perror("fork"));
 	}
-	if (pid == 0 && t->type != 2)
+	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		if (data->prev_fd != -1)
