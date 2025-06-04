@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:06:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 15:47:22 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:14:11 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,8 @@
 
 void	pipe_exec(t_shell *data, t_token *t, int *fd, int *original)
 {
-	// if (t->type == 0)
-	// {
-	// 	ft_dprintf(2, "%s: command not found\n", t->str[0]);
-	// 	data->exit_code = 127;
-	// 	return ;
-	// }
-	if (t->type == 1)
-	{
+	if (t->type != 2 && t->type != 3)
 		ft_pipe(fd, original, data, t);
-	}
 }
 
 static int	last_token(t_shell *data)

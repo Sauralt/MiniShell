@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 15:48:39 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:15:16 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 		exec_built(data, cmd);
 		exit_proc(data, 0);
 	}
+	data->pids[data->l++] = pid;
 	return (0);
 }
 
@@ -74,16 +75,12 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 			data->exit_code = t->exit_code;
 		t = t->next;
 	}
-	if (t && t->exit_code == 0 && g_signal_pid != 2)
+	if (t && t->type != 2 && t->type != 3
+		&& t->exit_code == 0 && g_signal_pid != 2)
 	{
 		if (builtin(data, t, original, 2) == 1)
 			exec_simple(data, t, original, 1);
 	}
-	// if (t && t->type == 0)
-	// {
-	// 	ft_dprintf(2, "%s: command not found\n", t->str[0]);
-	// 	data->exit_code = 127;
-	// }
 	waitall(data);
 	free(data->pids);
 }
