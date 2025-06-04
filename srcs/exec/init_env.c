@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:37:54 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 18:11:32 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:54:28 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,22 @@ int	ft_check_oldpwd(t_env *env)
 		t = t->next;
 	}
 	if (ft_strncmp(t->str, "OLDPWD=", 7) == 0)
+		return (0);
+	return (1);
+}
+
+int	ft_check_path(t_env *env)
+{
+	t_env	*t;
+
+	t = env;
+	while (t->next != env)
+	{
+		if (ft_strncmp(t->str, "PATH=", 5) == 0)
+			return (0);
+		t = t->next;
+	}
+	if (ft_strncmp(t->str, "PATH=", 5) == 0)
 		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/04 17:51:03 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 19:02:51 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ char	*cd_home(char *path)
 	if (!path || (path[0] == '~' && (path[1] == '/' || path[1] == '\0')))
 	{
 		home = getenv("HOME");
+		if (!home && path[0] == '~')
+		{
+			home = find_home();
+			return (home);
+		}
 		if (!home)
 		{
 			ft_dprintf(2, "cd: HOME not set\n");
@@ -98,13 +103,13 @@ static void	change_directory(char *path, t_shell *data)
 void	ft_cd(t_shell *data, t_token *t)
 {
 	char	new_path[PATH_SIZE];
-	char	*resolved_path;
+	char	*path;
 
 	if (ft_check_oldpwd(data->env) == 1)
 		ft_add_stack(&data->env,
 			ft_new_stack("OLDPWD="));
 	if (!t || !t->str || !t->str[0])
-		resolved_path = cd_home(NULL);
+		path = cd_home(NULL);
 	if (t->str[1] != NULL && t->str[2] != NULL)
 	{
 		ft_dprintf(2, "cd: too many arguments\n");
@@ -112,14 +117,14 @@ void	ft_cd(t_shell *data, t_token *t)
 		return ;
 	}
 	else
-		resolved_path = init_resolved_path(data, t, resolved_path);
-	if (!resolved_path)
+		path = init_resolved_path(data, t, path);
+	if (!path)
 		return ;
-	ft_strncpy(new_path, resolved_path, PATH_SIZE - 1);
+	ft_strncpy(new_path, path, PATH_SIZE - 1);
 	new_path[PATH_SIZE - 1] = '\0';
-	if (t->str[1] && t->str[1][0] != '~'
-		&& ft_strcmp(resolved_path, t->str[1]) != 0)
-		free(resolved_path);
+	if ((t->str[1] && t->str[1][0] != '~' && ft_strcmp(path, t->str[1]) != 0)
+		|| (ft_check_path(data->env) == 1 && ft_strcmp(path, t->str[1]) != 0))
+		free(path);
 	change_directory(new_path, data);
 	t->exit_code = data->exit_code;
 }
