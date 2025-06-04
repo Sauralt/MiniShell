@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/27 17:03:46 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:21:21 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,6 @@ void	heredoc(t_shell *data, t_token *t, char *delimiter)
 		return ;
 	}
 	unlink(".heredoc_tmp");
+	t->next->type = 3;
 	heredoc_norm(data, t, fd);
 }

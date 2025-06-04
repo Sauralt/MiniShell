@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/03 18:20:23 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 15:21:43 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 		return ;
 	while (t && t->next && t->next != data->token && g_signal_pid != 2)
 	{
-		if (t->exit_code == 0)
+		if (t->exit_code == 0 && t->type == 1)
 			pipe_exec(data, t, fd, original);
 		else
 			data->exit_code = t->exit_code;
@@ -82,6 +82,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	if (t && t->type == 0)
 	{
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
+		data->exit_code = 127;
 	}
 	waitall(data);
 	free(data->pids);
@@ -96,16 +97,10 @@ static void	exec(t_shell *data, t_token *t, int *original)
 	data->prev_fd = -1;
 	g_signal_pid = 1;
 	flag = exec_flag(data, t);
-	while (t->type != 1 && t->next != data->token)
-		t = t->next;
-	if (t->next == data->token && t->type != 1)
+	if (t->type == 0 && flag == 0)
 	{
-		t = t->next;
-		if (t->type == 0)
-		{
-			ft_dprintf(2, "%s: command not found\n", t->str[0]);
-			data->exit_code = 127;
-		}
+		ft_dprintf(2, "%s: command not found\n", t->str[0]);
+		data->exit_code = 127;
 		return ;
 	}
 	if (flag == 0)
