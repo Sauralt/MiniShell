@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 16:19:50 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:30:51 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 		signal(SIGQUIT, SIG_DFL);
 		close_origin(original);
 		exec_built(data, cmd);
-		exit_proc(data, 0);
+		exit_proc(data, 0, 0, cmd);
 	}
 	data->pids[data->l++] = pid;
 	return (0);
@@ -84,7 +84,6 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	waitall(data);
 	free(data->pids);
 }
-
 
 static void	exec(t_shell *data, t_token *t, int *original)
 {

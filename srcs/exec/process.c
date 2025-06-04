@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 16:00:37 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:30:06 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,21 @@ void	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 	close_files(data);
 	i = 0;
 	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
-		exit_proc(data, 0);
+		exit_proc(data, 0, 0, data->token);
 	envp = make_env_str(env);
 	path = find_path(cmd[0], env, i);
 	exit_flag = valid_path(data, path);
 	if (exit_flag != 0)
 	{
 		free_str(envp);
-		exit_proc(data, exit_flag);
+		exit_proc(data, exit_flag, 0, data->token);
 	}
 	cmd[0] = find_absolute(cmd[0]);
 	execve(path, cmd, envp);
 	perror(path);
 	free(path);
 	free_str(envp);
-	exit_proc(data, 127);
+	exit_proc(data, 127, 0, data->token);
 }
 
 void	child_process(t_token *t, t_shell *data, int *fd, int *original)
@@ -78,11 +78,7 @@ int	exec_simple(t_shell *data, t_token *t, int *original, int flag)
 	if (pid == 0)
 	{
 		if (t->type == 0)
-		{
-			ft_dprintf(2, "%s: command not found\n", t->str[0]);
-			free_exit(data);
-			exit(127);
-		}
+			exit_proc(data, 127, 1, t);
 		signal(SIGQUIT, SIG_DFL);
 		if (data->prev_fd != -1)
 		{
