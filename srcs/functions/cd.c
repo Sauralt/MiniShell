@@ -3,54 +3,87 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/04 19:02:51 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:11:03 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-char	*cd_home(char *path)
+// char	*cd_home(char *path, t_shell *data)
+// {
+// 	char	*home;
+// 	char	*expanded;
+// 	int		home_from_find;
+// 	char	*result;
+
+// 	home_from_find = 0;
+// 	if (!path || (path[0] == '~' && (path[1] == '/' || path[1] == '\0')))
+// 	{
+// 		home = getenv("HOME");
+// 		if (!home && path && path[0] == '~')
+// 		{
+// 			home = find_home();
+// 			home_from_find = 1;
+// 		}
+// 		if (!home)
+// 		{
+// 			ft_dprintf(2, "cd: HOME not set\n");
+// 			data->exit_code = 1;
+// 			return (NULL);
+// 		}
+// 		if (!path || path[1] == '\0')
+// 		{
+// 			result = ft_strdup(home);
+// 			if (home_from_find)
+// 				free(home);
+// 			return (result);
+// 		}
+// 		expanded = ft_strjoin(home, path + 1);
+// 		if (home_from_find)
+// 			free(home);
+// 		return (expanded);
+// 	}
+// 	return (ft_strdup(path));
+// }
+
+static char	*resolve_home_path(char *path, t_shell *data)
 {
 	char	*home;
+	int		home_from_find;
+	char	*result;
 
-	if (!path || (path[0] == '~' && (path[1] == '/' || path[1] == '\0')))
+	home_from_find = 0;
+	home = getenv("HOME");
+	if (!home && path && path[0] == '~')
 	{
-		home = getenv("HOME");
-		if (!home && path[0] == '~')
-		{
-			home = find_home();
-			return (home);
-		}
-		if (!home)
-		{
-			ft_dprintf(2, "cd: HOME not set\n");
-			return (NULL);
-		}
-		return (home);
+		home = find_home();
+		home_from_find = 1;
 	}
-	return (path);
-}
-
-char	*handle_cd_dash(char *path, t_shell *data)
-{
-	char	*oldpwd;
-
-	if (ft_strcmp(path, "-") != 0)
-		return (path);
-	oldpwd = get_env_value(data->env, "OLDPWD", 6);
-	if (!oldpwd || oldpwd[0] == '\0')
+	if (!home)
 	{
-		ft_dprintf(2, "cd: OLDPWD not set\n");
+		ft_dprintf(2, "cd: HOME not set\n");
 		data->exit_code = 1;
-		free(oldpwd);
 		return (NULL);
 	}
-	ft_dprintf(1, "%s\n", oldpwd);
-	return (oldpwd);
+	if (!path || path[1] == '\0')
+		result = ft_strdup(home);
+	else
+		result = ft_strjoin(home, path + 1);
+	if (home_from_find)
+		free(home);
+	return (result);
 }
+
+char	*cd_home(char *path, t_shell *data)
+{
+	if (!path || (path[0] == '~' && (path[1] == '/' || path[1] == '\0')))
+		return (resolve_home_path(path, data));
+	return (ft_strdup(path));
+}
+
 
 static void	set_env_var(t_shell *data, const char *key, const char *value)
 {
@@ -106,10 +139,9 @@ void	ft_cd(t_shell *data, t_token *t)
 	char	*path;
 
 	if (ft_check_oldpwd(data->env) == 1)
-		ft_add_stack(&data->env,
-			ft_new_stack("OLDPWD="));
+		ft_add_stack(&data->env, ft_new_stack("OLDPWD="));
 	if (!t || !t->str || !t->str[0])
-		path = cd_home(NULL);
+		path = cd_home(NULL, data);
 	if (t->str[1] != NULL && t->str[2] != NULL)
 	{
 		ft_dprintf(2, "cd: too many arguments\n");
@@ -117,14 +149,13 @@ void	ft_cd(t_shell *data, t_token *t)
 		return ;
 	}
 	else
-		path = init_resolved_path(data, t, path);
+		path = cd_home(t->str[1], data);
+	t->exit_code = data->exit_code;
 	if (!path)
 		return ;
 	ft_strncpy(new_path, path, PATH_SIZE - 1);
 	new_path[PATH_SIZE - 1] = '\0';
-	if ((t->str[1] && t->str[1][0] != '~' && ft_strcmp(path, t->str[1]) != 0)
-		|| (ft_check_path(data->env) == 1 && ft_strcmp(path, t->str[1]) != 0))
-		free(path);
+	free(path);
 	change_directory(new_path, data);
 	t->exit_code = data->exit_code;
 }

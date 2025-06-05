@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_norm.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:52:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 18:40:47 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:16:06 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,6 @@ int	set_env_var_loop(t_env *env, char *new_entry, int key_len, const char *key)
 		return (1);
 	}
 	return (0);
-}
-
-char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path)
-{
-	resolved_path = cd_home(t->str[1]);
-	if (resolved_path)
-		resolved_path = handle_cd_dash(resolved_path, data);
-	return (resolved_path);
 }
 
 void	not_pipe(t_shell *data, t_token *t, int *original)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/04 18:59:45 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:16:06 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,7 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original);
 int		builtin(t_shell *data, t_token *cmd, int *original, int flag);
 
 void	ft_cd(t_shell *data, t_token *str);
-char	*cd_home(char *path);
-char	*handle_cd_dash(char *path, t_shell *data);
+char	*cd_home(char *path, t_shell *data);
 int		ft_pwd(t_shell *data, t_token *t);
 int		ft_env(t_shell *data);
 int		ft_echo(t_token *str);
@@ -153,7 +152,6 @@ void	redirected(t_token *t);
 int		valid_path(t_shell *data, char *path);
 int		is_directory(const char *path);
 char	*get_env_value(t_env *env, const char *var_name, size_t var_len);
-char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path);
 void	not_pipe(t_shell *data, t_token *t, int *original);
 void	ft_waitpid(pid_t pid, t_token *cmd);
 void	free_exit(t_shell *data);

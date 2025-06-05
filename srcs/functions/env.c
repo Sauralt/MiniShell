@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:16:49 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/04 19:00:59 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:19:41 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,27 @@ int	ft_env(t_shell *data)
 
 char	*find_home(void)
 {
-	char	*home;
-	char	*temp;
+	char	*cwd;
+	int		slash_count;
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
-	home = getcwd(NULL, 0);
-	while (j < 3)
+	slash_count = 0;
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (NULL);
+	while (cwd[i])
 	{
-		if (home[i] == '/')
-			j++;
+		if (cwd[i] == '/')
+			slash_count++;
+		if (slash_count == 3)
+			break ;
 		i++;
 	}
-	temp = ft_strndup(home, 0, i);
-	free(home);
-	return (temp);
+	if (slash_count < 3)
+	{
+		return (cwd);
+	}
+	cwd[i + 1] = '\0';
+	return (cwd);
 }
