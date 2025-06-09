@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	exec_built(t_shell *data, t_token *cmd)
+static void	exec_built(t_shell *data, t_token *cmd, int flag)
 {
 	redirected(cmd);
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
@@ -28,7 +28,7 @@ static void	exec_built(t_shell *data, t_token *cmd)
 	else if (ft_strncmp(cmd->str[0], "unset", 6) == 0)
 		ft_unset(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "exit", 5) == 0)
-		ft_exit(data, cmd);
+		ft_exit(data, cmd, flag);
 }
 
 int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
@@ -39,9 +39,9 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 	{
 		if (flag == 1)
 			close_origin(original);
-		exec_built(data, cmd);
+		exec_built(data, cmd, flag);
 		if (flag == 1)
-			free_exit(data);
+			free_exit(data, flag);
 		return (0);
 	}
 	if (!is_builtin(cmd->str[0]) || flag != 2)
@@ -53,7 +53,7 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		close_origin(original);
-		exec_built(data, cmd);
+		exec_built(data, cmd, flag);
 		exit_proc(data, 0, 0, cmd);
 	}
 	data->pids[data->l++] = pid;

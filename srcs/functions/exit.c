@@ -90,18 +90,20 @@ static long long	ft_atol(const char *str)
 	return (result * sign);
 }
 
-int	ft_exit(t_shell *data, t_token *str)
+int	ft_exit(t_shell *data, t_token *str, int flag)
 {
 	int	has_arg;
 
+
+	if (flag == 0)
+		printf("exit\n");
 	has_arg = (str && str->str && str->str[1]);
-	printf("exit\n");
 	if (has_arg)
 	{
 		if (!is_numeric(str->str[1]))
 		{
 			ft_dprintf(2, "exit: %s: numeric argument required\n", str->str[1]);
-			free_exit(data);
+			free_exit(data, flag);
 			exit(2);
 		}
 		if (str->str[2])
@@ -115,6 +117,6 @@ int	ft_exit(t_shell *data, t_token *str)
 		has_arg = str->exit_code;
 	else
 		has_arg = data->exit_code;
-	free_exit(data);
+	free_exit(data, flag);
 	exit(has_arg);
 }

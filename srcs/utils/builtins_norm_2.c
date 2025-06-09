@@ -57,14 +57,17 @@ int	export_norm(t_shell *data, int i, char *delim, t_token *str)
 	return (0);
 }
 
-void	free_exit(t_shell *data)
+void	free_exit(t_shell *data, int flag)
 {
 	free_tokens(data->token);
 	free_env(data->env);
-	if (data->pids)
-		free(data->pids);
-	if (data->prev_fd > -1)
-		close(data->prev_fd);
+	if (flag > 0)
+	{
+		if (data->pids)
+			free(data->pids);
+		if (data->prev_fd > -1)
+			close(data->prev_fd);
+	}
 	free(data);
 	rl_clear_history();
 }

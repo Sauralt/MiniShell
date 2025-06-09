@@ -34,7 +34,7 @@ void	exit_proc(t_shell *data, int exit_flag, int f, t_token *t)
 {
 	if (f == 1)
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
-	free_exit(data);
+	free_exit(data, 1);
 	exit(exit_flag);
 }
 

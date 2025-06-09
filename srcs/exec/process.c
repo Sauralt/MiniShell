@@ -58,7 +58,7 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 		close(original[0]);
 		close(original[1]);
 		ft_close(fd);
-		free_exit(data);
+		free_exit(data, 1);
 		exit(127);
 	}
 	redirected(t);
