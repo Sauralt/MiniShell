@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/05 15:16:06 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:40:21 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ bool	is_builtin(char *cmd);
 void	child_process(t_token *t, t_shell *data, int *fd, int *original);
 int		builtin(t_shell *data, t_token *cmd, int *original, int flag);
 
+int		compare_abs_str(const char *a, const char *b);
+int		check_numeric(const char *start, const char *str, int sign);
 void	ft_cd(t_shell *data, t_token *str);
 char	*cd_home(char *path, t_shell *data);
 int		ft_pwd(t_shell *data, t_token *t);
@@ -103,7 +105,7 @@ int		ft_env(t_shell *data);
 int		ft_echo(t_token *str);
 int		ft_unset(t_shell *data, t_token *str);
 int		ft_export(t_shell *data, t_token *str);
-int		ft_exit(t_shell *data, t_token *str);
+int		ft_exit(t_shell *data, t_token *str, int flag);
 
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 int		set_env_var_loop(t_env *env, char *new_entry, int key_len,
@@ -154,7 +156,6 @@ int		is_directory(const char *path);
 char	*get_env_value(t_env *env, const char *var_name, size_t var_len);
 void	not_pipe(t_shell *data, t_token *t, int *original);
 void	ft_waitpid(pid_t pid, t_token *cmd);
-void	free_exit(t_shell *data);
 void	infile_loop(t_token *t, int flag, int infile, int exit_code);
 void	heredoc_norm(t_shell *data, t_token *t, int fd);
 void	exit_proc(t_shell *data, int exit_flag, int f, t_token *t);
@@ -163,7 +164,7 @@ void	ft_check_signals(t_shell *data);
 void	waitall(t_shell *data);
 char	*ft_shlvl(char *env);
 void	print_env(t_env *env);
-void	free_exit(t_shell *data);
+void	free_exit(t_shell *data, int flag);
 void	free_exec_simple(t_shell *data, t_token *t, int *original);
 int		ft_check_oldpwd(t_env *env);
 int		ft_check_path(t_env *env);

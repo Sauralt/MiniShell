@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_norm_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:48:40 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/03 17:09:28 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:39:44 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,23 @@ void	free_exit(t_shell *data, int flag)
 	}
 	free(data);
 	rl_clear_history();
+}
+
+int	check_numeric(const char *start, const char *str, int sign)
+{
+	const char	*limit;
+
+	while (ft_isdigit(*str))
+		str++;
+	if (*str != '\0')
+		return (0);
+	if (start == str)
+		return (1);
+	if (sign == 1)
+		limit = "9223372036854775807";
+	else
+		limit = "9223372036854775808";
+	if (compare_abs_str(start, limit))
+		return (0);
+	return (1);
 }

@@ -6,48 +6,11 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/05 17:11:03 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:26:12 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
-
-// char	*cd_home(char *path, t_shell *data)
-// {
-// 	char	*home;
-// 	char	*expanded;
-// 	int		home_from_find;
-// 	char	*result;
-
-// 	home_from_find = 0;
-// 	if (!path || (path[0] == '~' && (path[1] == '/' || path[1] == '\0')))
-// 	{
-// 		home = getenv("HOME");
-// 		if (!home && path && path[0] == '~')
-// 		{
-// 			home = find_home();
-// 			home_from_find = 1;
-// 		}
-// 		if (!home)
-// 		{
-// 			ft_dprintf(2, "cd: HOME not set\n");
-// 			data->exit_code = 1;
-// 			return (NULL);
-// 		}
-// 		if (!path || path[1] == '\0')
-// 		{
-// 			result = ft_strdup(home);
-// 			if (home_from_find)
-// 				free(home);
-// 			return (result);
-// 		}
-// 		expanded = ft_strjoin(home, path + 1);
-// 		if (home_from_find)
-// 			free(home);
-// 		return (expanded);
-// 	}
-// 	return (ft_strdup(path));
-// }
 
 static char	*resolve_home_path(char *path, t_shell *data)
 {
@@ -83,7 +46,6 @@ char	*cd_home(char *path, t_shell *data)
 		return (resolve_home_path(path, data));
 	return (ft_strdup(path));
 }
-
 
 static void	set_env_var(t_shell *data, const char *key, const char *value)
 {

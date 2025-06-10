@@ -6,13 +6,13 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/02 18:00:45 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:40:23 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-static int	compare_abs_str(const char *a, const char *b)
+int	compare_abs_str(const char *a, const char *b)
 {
 	size_t	len_a;
 	size_t	len_b;
@@ -22,25 +22,6 @@ static int	compare_abs_str(const char *a, const char *b)
 	if (len_a != len_b)
 		return (len_a > len_b);
 	return (ft_strcmp(a, b) > 0);
-}
-
-int	check_numeric(const char *start, const char *str, int sign)
-{
-	const char	*limit;
-
-	while (ft_isdigit(*str))
-		str++;
-	if (*str != '\0')
-		return (0);
-	if (start == str)
-		return (1);
-	if (sign == 1)
-		limit = "9223372036854775807";
-	else
-		limit = "9223372036854775808";
-	if (compare_abs_str(start, limit))
-		return (0);
-	return (1);
 }
 
 static int	is_numeric(const char *str)
@@ -90,28 +71,35 @@ static long long	ft_atol(const char *str)
 	return (result * sign);
 }
 
+static int	handle_exit_args(t_shell *data, t_token *str, int flag)
+{
+	if (!is_numeric(str->str[1]))
+	{
+		ft_dprintf(2, "exit: %s: numeric argument required\n", str->str[1]);
+		free_exit(data, flag);
+		exit(2);
+	}
+	if (str->str[2])
+	{
+		str->exit_code = 1;
+		ft_dprintf(2, "minishell: exit: too many arguments\n");
+		return (1);
+	}
+	str->exit_code = (unsigned char)ft_atol(str->str[1]);
+	return (0);
+}
+
 int	ft_exit(t_shell *data, t_token *str, int flag)
 {
 	int	has_arg;
-
 
 	if (flag == 0)
 		printf("exit\n");
 	has_arg = (str && str->str && str->str[1]);
 	if (has_arg)
 	{
-		if (!is_numeric(str->str[1]))
-		{
-			ft_dprintf(2, "exit: %s: numeric argument required\n", str->str[1]);
-			free_exit(data, flag);
-			exit(2);
-		}
-		if (str->str[2])
-		{
-			str->exit_code = 1;
-			return (ft_dprintf(2, "minishell: exit: too many arguments\n"), 1);
-		}
-		str->exit_code = (unsigned char)ft_atol(str->str[1]);
+		if (handle_exit_args(data, str, flag))
+			return (1);
 	}
 	if (data->exit_code == 0)
 		has_arg = str->exit_code;
