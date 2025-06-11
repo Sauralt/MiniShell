@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:48:40 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/11 16:25:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:08:43 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	free_exit(t_shell *data, int flag)
 {
 	free_tokens(data->token);
 	free_env(data->env);
-	if (flag > 0)
+	if (flag >= 0)
 	{
 		if (data->pids)
 			free(data->pids);
