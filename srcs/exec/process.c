@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/11 18:04:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:14:44 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,10 @@ int	exec_simple(t_shell *data, t_token *t, int *original, int flag)
 				ft_dprintf(2, "%s: Permission denied\n", t->invalid);
 			if (t->infile == -3 || t->outfile == -3)
 				ft_dprintf(2, "%s: Is a directory\n", t->invalid);
-			free_exec_simple(data, t, original, -1);
+			if (flag == 0)
+				free_exec_simple(data, t, original, -1);
+			else
+				free_exec_simple(data, t, original, 1);
 		}
 		redirected(t);
 		exec_abs(data, t->str, data->env, original);
