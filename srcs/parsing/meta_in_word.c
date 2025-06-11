@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:30:55 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/24 10:12:26 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:02:37 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	**n_token(int i, int start, t_token *t, char **temp)
 			|| t->str[0][i] == '|'))
 		{
 			i++;
-			if (t->str[0][i] == t->str[0][i - 1])
+			if (t->str[0][i] == t->str[0][i - 1] && t->str[0][i] != '|')
 				i++;
 			temp[j++] = ft_strndup(t->str[0], start, i - start);
 		}
@@ -61,14 +61,15 @@ int	count_len(t_token *t, int len)
 	{
 		len += 2;
 		i++;
-		if (t->str[0][i] == t->str[0][i - 1])
+		if (t->str[0][i] == t->str[0][i - 1] && t->str[0][i] != '|')
 			i++;
 	}
 	while (t->str[0][i])
 	{
 		if (t->str[0][i] == '<' || t->str[0][i] == '>' || t->str[0][i] == '|')
 		{
-			if (t->str[0][i + 1] != t->str[0][i] && t->str[0][i] == '|')
+			if (t->str[0][i + 1] && t->str[0][i + 1] != t->str[0][i]
+				&& t->str[0][i] != '|')
 				i++;
 			len += 3;
 		}

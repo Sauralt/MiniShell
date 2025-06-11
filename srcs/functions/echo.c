@@ -6,7 +6,7 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:13:26 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/28 14:28:26 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:33:39 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ int	ft_echo(t_token *str)
 	while (str->str[i])
 	{
 		if (i > 1 && str->str[i - 1] && flag == 0)
-			ft_dprintf(str->outfile, " ");
+			printf(" ");
 		flag = 0;
-		ft_dprintf(str->outfile, "%s", str->str[i]);
+		printf("%s", str->str[i]);
 		i++;
 	}
 	if (!no_newline)
-		ft_dprintf(str->outfile, "\n");
+		printf("\n");
 	return (0);
 }

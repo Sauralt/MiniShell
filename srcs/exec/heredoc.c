@@ -3,39 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 16:48:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 16:51:04 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:54:59 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strjoin_free(char *s1, char *s2)
+static char	*expand_exit_code(t_shell *data, char *result, int *i)
 {
-	char	*res;
+	char	*val;
 
-	if (!s1 && !s2)
-		return (NULL);
-	if (!s1)
-		return (s2);
-	if (!s2)
-		return (s1);
-	res = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (res);
+	val = ft_itoa(data->exit_code);
+	result = ft_strjoin_free(result, val);
+	*i += 2;
+	return (result);
+}
+
+static char	*expand_variable(t_shell *data, char *input, int *i, char *result)
+{
+	int		j;
+	char	*var;
+	char	*val;
+	t_env	*env;
+
+	j = *i + 1;
+	val = NULL;
+	while (input[j] && (ft_isalnum(input[j]) || input[j] == '_'))
+		j++;
+	var = ft_substr(input, *i + 1, j - (*i + 1));
+	env = find_env(data->env, var);
+	if (env)
+	{
+		val = ft_strchr(env->str, '=');
+		if (val)
+			result = ft_strjoin_free(result, ft_strdup(val + 1));
+	}
+	free(var);
+	*i = j;
+	return (result);
+}
+
+static char	*append_char(char *result, char c)
+{
+	char	tmp[2];
+
+	tmp[0] = c;
+	tmp[1] = '\0';
+	return (ft_strjoin_free(result, ft_strdup(tmp)));
 }
 
 char	*expand_dollar(t_shell *data, char *input)
 {
 	int		i;
 	char	*result;
-	char	*var;
-	char	*val;
-	int		j;
-	t_env	*env;
 
 	i = 0;
 	result = ft_strdup("");
@@ -43,91 +66,45 @@ char	*expand_dollar(t_shell *data, char *input)
 	{
 		if (input[i] == '$' && input[i + 1])
 		{
-			j = i + 1;
-			if (input[j] == '?')
-			{
-				val = ft_itoa(data->exit_code);
-				result = ft_strjoin_free(result, val);
-				i += 2;
-				continue ;
-			}
-			while (input[j] && (ft_isalnum(input[j]) || input[j] == '_'))
-				j++;
-			var = ft_substr(input, i + 1, j - (i + 1));
-			env = find_env(data->env, var);
-			if (env && (val = ft_strchr(env->str, '=')))
-				result = ft_strjoin_free(result, ft_strdup(val + 1));
-			free(var);
-			i = j;
+			if (input[i + 1] == '?')
+				result = expand_exit_code(data, result, &i);
+			else
+				result = expand_variable(data, input, &i, result);
 		}
 		else
 		{
-			char	tmp[2] = {input[i], '\0'};
-			result = ft_strjoin_free(result, ft_strdup(tmp));
+			result = append_char(result, input[i]);
 			i++;
 		}
 	}
 	return (result);
 }
 
-static bool	read_in_stdin(t_shell *data, int fd, char *delimiter)
+void	heredoc(t_shell *data, t_token *t, char *delimiter)
 {
-	char	*buf;
-	char	*expanded;
+	int	fd;
 
-	while (1)
-	{
-		buf = readline("heredoc> ");
-		if (!buf)
-		{
-			ft_dprintf(2, "warning: here-document \
-				delimited by end-of-file (wanted '%s')\n", delimiter);
-			break ;
-		}
-		if (ft_strcmp(buf, delimiter) == 0)
-		{
-			free(buf);
-			break ;
-		}
-		expanded = expand_dollar(data, buf);
-		if (!expanded)
-		{
-			free(buf);
-			perror("malloc");
-			return (false);
-		}
-		write(fd, expanded, ft_strlen(expanded));
-		write(fd, "\n", 1);
-
-		free(buf);
-		free(expanded);
-	}
-	close(fd);
-	return (true);
-}
-
-void	heredoc(t_shell *data, t_token *t)
-{
-	int		infile;
-	char	*delimiter;
-
-	delimiter = t->next->str[0];
-	infile = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (infile == -1)
+	fd = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd < 0)
 	{
 		perror("heredoc: open");
 		data->exit_code = 1;
 		return ;
 	}
-	if (!read_in_stdin(data, infile, delimiter))
+	if (!read_in_stdin(data, fd, delimiter))
 	{
 		unlink(".heredoc_tmp");
 		data->exit_code = 1;
 		return ;
 	}
-	infile = open(".heredoc_tmp", O_RDONLY);
+	fd = open(".heredoc_tmp", O_RDONLY);
+	if (fd < 0)
+	{
+		perror("heredoc: reopen");
+		data->exit_code = 1;
+		return ;
+	}
 	unlink(".heredoc_tmp");
-	t->infile = infile;
-	if (t->next && t->next->next)
-		t->next->type = 2;
+	heredoc_norm(data, t, fd);
+	t->next->type = 3;
 }

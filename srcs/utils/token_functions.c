@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 14:27:23 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:46:28 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,9 @@ t_token	*ft_new_token(t_shell *data, char *content)
 		return (NULL);
 	}
 	c->str[0] = ft_strdup(content);
-	if (!c->str[0])
-	{
-		free_str(c->str);
-		free(c);
+	if (last_init(c, data, content) == 1)
 		return (NULL);
-	}
-	c->type = set_token_type(data, content);
-	c->str[1] = NULL;
-	c->infile = 0;
-	c->outfile = 1;
-	c->next = c;
-	c->prev = c;
+	c->invalid = NULL;
 	return (c);
 }
 
@@ -102,42 +93,30 @@ void	delone(t_shell *data, t_token *t)
 	t = NULL;
 }
 
-
 t_token	*add_param(t_shell *data, t_token *t)
 {
 	t_token	*temp;
-	t_token	*temp2;
 	char	*str;
 	int		len;
-	int		i;
 
 	if (!t || !t->next || t->next == t)
 		return (t);
 	temp = t->next;
 	len = 1;
-	while (temp->type != 2 && temp != t)
+	while (temp != t && temp != data->token)
 	{
+		if (ft_strcmp(temp->str[0], "|") != 0 && temp->type == 2)
+			temp = temp->next->next;
+		if (temp == t || temp == data->token || temp->type == 2)
+			break ;
 		len++;
 		temp = temp->next;
 	}
-	temp = t->next;
 	str = ft_strdup(t->str[0]);
 	free_str(t->str);
 	t->str = malloc(sizeof(char *) * (len + 2));
 	if (!t->str)
 		return (t);
-	t->str[0] = str;
-	len--;
-	i = 1;
-	while (len > 0)
-	{
-		temp2 = temp->next;
-		t->str[i] = ft_strdup(temp->str[0]);
-		delone(data, temp);
-		temp = temp2;
-		i++;
-		len--;
-	}
-	t->str[i] = NULL;
+	change_tok_str(t, str, len, data);
 	return (t);
 }

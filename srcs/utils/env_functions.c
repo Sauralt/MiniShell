@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 15:25:22 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/15 13:27:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/04 18:08:23 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ t_env	*ft_new_stack(char *t)
 	c = malloc(sizeof(*c));
 	if (c == NULL)
 		return (NULL);
-	c->str = ft_strdup(t);
+	if (ft_strncmp(t, "SHLVL=", 6) == 0)
+		c->str = ft_shlvl(t);
+	else
+		c->str = ft_strdup(t);
 	c->next = c;
 	c->prev = c;
 	return (c);
@@ -66,4 +69,12 @@ void	delfirst_stack(t_env **s)
 	*s = (*s)->next;
 	free(t->str);
 	free(t);
+}
+
+void	free_env(t_env *env)
+{
+	while (env)
+	{
+		delfirst_stack(&env);
+	}
 }

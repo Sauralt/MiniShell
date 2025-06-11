@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 14:29:30 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:43:53 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,13 @@ void	free_tokens(t_token *t)
 {
 	while (t)
 	{
-		if (t->infile != STDIN_FILENO)
+		if (t->infile > STDIN_FILENO)
 			close(t->infile);
-		if (t->outfile != STDOUT_FILENO)
+		if (t->outfile > STDOUT_FILENO)
 			close(t->outfile);
+		if (t->invalid)
+			free(t->invalid);
 		delfirst(&t);
-	}
-}
-
-void	free_env(t_env *env)
-{
-	while (env)
-	{
-		delfirst_stack(&env);
 	}
 }
 
@@ -60,4 +54,20 @@ void	ft_close(int *fd)
 {
 	close(fd[0]);
 	close(fd[1]);
+}
+
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*res;
+
+	if (!s1 && !s2)
+		return (NULL);
+	if (!s1)
+		return (s2);
+	if (!s2)
+		return (s1);
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (res);
 }

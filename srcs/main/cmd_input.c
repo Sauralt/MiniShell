@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:01:42 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/03/18 15:56:20 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:17:49 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,28 @@ bool	is_builtin(char *line)
 		|| ft_strcmp(line, "exit") == 0)
 		return (true);
 	return (false);
+}
+
+void	heredoc_norm(t_shell *data, t_token *t, int fd)
+{
+	if (t != data->token)
+		infile_loop(t, 0, fd, 0);
+	else
+		infile_loop(t, 1, fd, 0);
+}
+
+void	exit_proc(t_shell *data, int exit_flag, int f, t_token *t)
+{
+	if (f == 1)
+		ft_dprintf(2, "%s: command not found\n", t->str[0]);
+	free_exit(data, exit_flag);
+	if (exit_flag == -1)
+		exit_flag = 1;
+	exit(exit_flag);
+}
+
+void	close_origin(int *original)
+{
+	close(original[0]);
+	close(original[1]);
 }

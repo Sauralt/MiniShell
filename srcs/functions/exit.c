@@ -6,79 +6,105 @@
 /*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/04/23 17:57:47 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/10 13:40:23 by mgarsaul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-static long	ft_atol(const char *str)
+int	compare_abs_str(const char *a, const char *b)
 {
-	long	result;
-	int		sign;
+	size_t	len_a;
+	size_t	len_b;
+
+	len_a = ft_strlen(a);
+	len_b = ft_strlen(b);
+	if (len_a != len_b)
+		return (len_a > len_b);
+	return (ft_strcmp(a, b) > 0);
+}
+
+static int	is_numeric(const char *str)
+{
+	int			sign;
+	const char	*start;
+
+	sign = 1;
+	if (!str || !*str)
+		return (0);
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	if (!*str)
+		return (0);
+	while (*str == '0')
+		str++;
+	start = str;
+	return (check_numeric(start, str, sign));
+}
+
+static long long	ft_atol(const char *str)
+{
+	long long	result;
+	int			sign;
 
 	result = 0;
 	sign = 1;
 	while (*str == ' ' || (*str >= 9 && *str <= 13))
 		str++;
-	if (*str == '-')
-		sign = -1;
-	else
-		str++;
-	while (*str >= '0' && *str <= '9')
+	if (*str == '-' || *str == '+')
 	{
-		if (result > LONG_MAX / 10
-			|| (result == LONG_MAX / 10 && (*str - '0') > LONG_MAX % 10))
-		{
-			if (sign == 1)
-				return (LONG_MAX);
-			return (LONG_MIN);
-		}
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str && ft_isdigit(*str))
+	{
 		result = result * 10 + (*str - '0');
 		str++;
 	}
 	return (result * sign);
 }
 
-static int	is_numeric(const char *str)
+static int	handle_exit_args(t_shell *data, t_token *str, int flag)
 {
-	if (!str || !*str)
-		return (0);
-	if (*str == '+' || *str == '-')
-		str++;
-	while (*str)
+	if (!is_numeric(str->str[1]))
 	{
-		if (!ft_isdigit(*str))
-			return (0);
-		str++;
+		ft_dprintf(2, "exit: %s: numeric argument required\n", str->str[1]);
+		free_exit(data, flag);
+		exit(2);
 	}
-	return (1);
+	if (str->str[2])
+	{
+		str->exit_code = 1;
+		ft_dprintf(2, "minishell: exit: too many arguments\n");
+		return (1);
+	}
+	str->exit_code = (unsigned char)ft_atol(str->str[1]);
+	return (0);
 }
 
-int	ft_exit(t_shell *data, t_token *str)
+int	ft_exit(t_shell *data, t_token *str, int flag)
 {
-	int		has_argument;
+	int	has_arg;
 
-	has_argument = (str && str->str && str->str[1]);
-	if (has_argument)
+	if (flag == 0)
+		printf("exit\n");
+	has_arg = (str && str->str && str->str[1]);
+	if (has_arg)
 	{
-		if (!is_numeric(str->str[1]))
-		{
-			ft_dprintf(2, "%s: numeric argument required\n", str->str[0]);
+		if (handle_exit_args(data, str, flag))
 			return (1);
-		}
-		else
-		{
-			data->exit_code = ft_atol(str->str[1]);
-			if (data->exit_code < 0 || data->exit_code > 255)
-				data->exit_code %= 256;
-		}
-		if (str->str[2])
-		{
-			ft_dprintf(2, "minishell: exit: too many arguments\n");
-			return (1);
-		}
 	}
-	printf("exit\n");
-	exit((unsigned char)data->exit_code);
+	if (data->exit_code == 0)
+		has_arg = str->exit_code;
+	else
+		has_arg = data->exit_code;
+	free_exit(data, flag);
+	exit(has_arg);
 }

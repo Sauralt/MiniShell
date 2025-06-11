@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/28 14:30:09 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:21:33 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,9 @@ void	init_list_tok(t_shell *data, char *str, char quote)
 
 int	meta_char(char *str)
 {
-	int	len;
-
-	len = ft_strlen(str);
-	if (strcmp(str, "<") != 0 && strcmp(str, ">") != 0
-		&& ft_strncmp(str, ">>", len) != 0 && strcmp(str, "<<") != 0
-		&& strcmp(str, "|") != 0)
+	if (ft_strcmp(str, "<") != 0 && ft_strcmp(str, ">") != 0
+		&& ft_strcmp(str, ">>") != 0 && ft_strcmp(str, "<<") != 0
+		&& ft_strcmp(str, "|") != 0)
 		return (1);
 	return (0);
 }
@@ -69,25 +66,47 @@ static void	full_cmd(t_shell *data)
 	{
 		if (t->type == 1)
 			t = add_param(data, t);
-		else if (t->type == 2)
-			check_meta_char(data, t);
+		if (t->next == data->token)
+			break ;
 		t = t->next;
 	}
-	if (t->type == 1)
-		t = add_param(data, t);
-	else if (t->type == 2)
-		check_meta_char(data, t);
+	t = data->token;
+	while (t->next != data->token)
+	{
+		if (t->type == 2)
+		{
+			check_meta_char(data, t);
+		}
+		if (t->next == data->token)
+			break ;
+		t = t->next;
+	}
 }
 
 int	init_tokens(t_shell *data, char *line)
 {
-	int	flag;
+	int		flag;
+	char	*temp;
 
-	flag = parsing(data, line);
-	if (flag == 1)
+	temp = remove_closed_quotes(line);
+	if (!temp)
 		return (1);
+	flag = parsing(data, line);
+	if (!data->token)
+		return (free(temp), 2);
+	if (flag == 1)
+	{
+		free(temp);
+		return (1);
+	}
 	if (flag == 2)
+	{
+		free(temp);
+		return (2);
+	}
+	free(temp);
+	if (check_tok_order(data) == 2)
 		return (2);
 	full_cmd(data);
-	return (0);
+	return (last_check(data));
 }

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:37:50 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/04/23 16:43:01 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:37:54 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*find_path(char *cmd, t_env *env, int i)
 		part_path = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(part_path, cmd);
 		free(part_path);
-		if (access(path, X_OK) == 0)
+		if (access(path, F_OK) == 0)
 		{
 			free_str(paths);
 			return (path);
@@ -80,5 +80,24 @@ char	*find_path(char *cmd, t_env *env, int i)
 		i++;
 	}
 	free_str(paths);
+	return (0);
+}
+
+int	last_check(t_shell *data)
+{
+	if (data->token->str[0][0] == '!')
+	{
+		if (data->token->next == data->token)
+			return (2);
+		else if (ft_strcmp(data->token->next->str[0], data->token->str[0]) == 0)
+		{
+			ft_dprintf(2, "parse error near: !\n");
+			return (2);
+		}
+		else
+			delone(data, data->token);
+	}
+	if (data->token->str[0][0] == ':')
+		return (2);
 	return (0);
 }
