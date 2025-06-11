@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/11 17:12:17 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:48:46 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 		return (2);
 	if (pid == 0)
 	{
-		if ((cmd->infile < 0 || cmd->outfile < 0) && flag == 0)
+		if ((cmd->infile < 0 || cmd->outfile < 0))
 		{
 			if (cmd->infile == -1)
 				ft_dprintf(2, "%s: No such file or directory\n", cmd->invalid);
