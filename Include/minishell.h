@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/11 14:53:36 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:45:59 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_shell
 	int		del_num;
 	int		start;
 	int		l;
+	int		exec_cancel;
 	int		func_num;
 	int		invalid;
 	int		prev_fd;
