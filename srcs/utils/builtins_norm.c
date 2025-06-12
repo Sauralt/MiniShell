@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_norm.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:52:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/05 15:16:06 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:40:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,32 @@ void	not_pipe(t_shell *data, t_token *t, int *original)
 			perror("fork");
 	}
 	data->exit_code = t->exit_code;
+}
+
+void	outfile_loop(t_token *t, int flag, int outfile)
+{
+	t_token	*temp;
+
+	temp = t;
+	if (flag == 0)
+	{
+		while (temp->type != 1 && temp->prev != t)
+			temp = temp->prev;
+	}
+	else
+	{
+		while (temp->type != 1 && temp->next != t)
+			temp = temp->next;
+	}
+	if (temp->outfile < 0 && outfile > 0)
+	{
+		close(outfile);
+		return ;
+	}
+	if (temp->infile > 0)
+		close(temp->infile);
+	if (temp != t)
+		temp->outfile = outfile;
+	if (outfile < 0)
+		temp->invalid = ft_strdup(t->next->str[0]);
 }

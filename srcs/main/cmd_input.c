@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:01:42 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/12 13:27:27 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:27:40 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ bool	is_builtin(char *line)
 void	heredoc_norm(t_shell *data, t_token *t, int fd)
 {
 	if (t != data->token)
-		infile_loop(t, 0, fd, 0);
+		infile_loop(t, 0, fd);
 	else
-		infile_loop(t, 1, fd, 0);
+		infile_loop(t, 1, fd);
 }
 
 void	exit_proc(t_shell *data, int exit_flag, int f, t_token *t)

@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/12 14:47:56 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:43:03 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	infile_loop(t_token *t, int flag, int infile, int exit_code)
+void	infile_loop(t_token *t, int flag, int infile)
 {
 	t_token	*temp;
 
@@ -27,15 +27,17 @@ void	infile_loop(t_token *t, int flag, int infile, int exit_code)
 		while (temp->type != 1 && temp->next != t)
 			temp = temp->next;
 	}
-	if (temp->infile < 0)
+	if (temp->infile < 0 && infile > 0)
+	{
+		close(infile);
 		return ;
+	}
 	if (temp->infile > 0)
 		close(temp->infile);
 	if (temp != t)
 		temp->infile = infile;
 	if (infile < 0)
 		temp->invalid = ft_strdup(t->next->str[0]);
-	temp->exit_code = exit_code;
 }
 
 static void	infile_redirect(t_shell *data, t_token *t)
@@ -55,18 +57,17 @@ static void	infile_redirect(t_shell *data, t_token *t)
 		if (t != data->token && (t->prev->type == 1
 				|| t->next->next->str[0][0] == '|'
 			|| t->next->next == data->token))
-			infile_loop(t, 0, error, 0);
+			infile_loop(t, 0, error);
 		else
-			infile_loop(t, 1, error, 0);
+			infile_loop(t, 1, error);
 		t->next->type = 3;
-		data->exec_cancel = 1;
 		return ;
 	}
 	if (t != data->token && (t->prev->type == 1
 			|| t->next->next->str[0][0] == '|' || t->next->next == data->token))
-		infile_loop(t, 0, infile, 0);
+		infile_loop(t, 0, infile);
 	else
-		infile_loop(t, 1, infile, 0);
+		infile_loop(t, 1, infile);
 	t->next->type = 3;
 }
 
@@ -74,9 +75,7 @@ static void	outfile_trunc(t_shell *data, t_token *t)
 {
 	int		outfile;
 	int		error;
-	t_token	*temp;
 
-	temp = t;
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
 	{
@@ -87,41 +86,17 @@ static void	outfile_trunc(t_shell *data, t_token *t)
 		if (t != data->token && (t->prev->type == 1
 				|| t->next->next->str[0][0] == '|'
 			|| t->next->next == data->token))
-		{
-			while (temp->type != 1 && temp->prev != t)
-				temp = temp->prev;
-		}
+			outfile_loop(t, 0, error);
 		else
-		{
-			while (temp->type != 1 && temp->next != t)
-				temp = temp->next;
-		}
-		if (temp->outfile < 0)
-			return ;
-		if (temp->outfile > 1)
-			close(temp->outfile);
-		temp->outfile = error;
+			outfile_loop(t, 1, error);
 		t->next->type = 3;
-		temp->invalid = ft_strdup(t->next->str[0]);
-		data->exec_cancel = 1;
 		return ;
 	}
 	if (t != data->token && (t->prev->type == 1
 			|| t->next->next->str[0][0] == '|' || t->next->next == data->token))
-	{
-		while (temp->type != 1 && temp->prev != t)
-			temp = temp->prev;
-	}
+		outfile_loop(t, 0, outfile);
 	else
-	{
-		while (temp->type != 1 && temp->next != t)
-			temp = temp->next;
-	}
-	if (temp->outfile < 0)
-		return ;
-	if (temp->outfile > 1)
-		close(temp->outfile);
-	temp->outfile = outfile;
+		outfile_loop(t, 1, outfile);
 	t->next->type = 3;
 }
 
@@ -129,9 +104,7 @@ static void	outfile_append(t_shell *data, t_token *t)
 {
 	int		outfile;
 	int		error;
-	t_token	*temp;
 
-	temp = t;
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (outfile == -1)
 	{
@@ -142,41 +115,17 @@ static void	outfile_append(t_shell *data, t_token *t)
 		if (t != data->token && (t->prev->type == 1
 				|| t->next->next->str[0][0] == '|'
 			|| t->next->next == data->token))
-		{
-			while (temp->type != 1 && temp->prev != t)
-				temp = temp->prev;
-		}
+			outfile_loop(t, 0, error);
 		else
-		{
-			while (temp->type != 1 && temp->next != t)
-				temp = temp->next;
-		}
-		if (temp->outfile < 0)
-			return ;
-		if (temp->outfile > 1)
-			close(temp->outfile);
-		temp->outfile = error;
+			outfile_loop(t, 1, error);
 		t->next->type = 3;
-		temp->invalid = ft_strdup(t->next->str[0]);
-		data->exec_cancel = 1;
 		return ;
 	}
 	if (t != data->token && (t->prev->type == 1
 			|| t->next->next->str[0][0] == '|' || t->next->next == data->token))
-	{
-		while (temp->type != 1 && temp->prev != t)
-			temp = temp->prev;
-	}
+		outfile_loop(t, 0, outfile);
 	else
-	{
-		while (temp->type != 1 && temp->next != t)
-			temp = temp->next;
-	}
-	if (temp->outfile < 0)
-		return ;
-	if (temp->outfile > 1)
-		close(temp->outfile);
-	temp->outfile = outfile;
+		outfile_loop(t, 1, outfile);
 	t->next->type = 3;
 }
 

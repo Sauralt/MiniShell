@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/12 14:45:59 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:29:07 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef struct s_shell
 	int		del_num;
 	int		start;
 	int		l;
-	int		exec_cancel;
 	int		func_num;
 	int		invalid;
 	int		prev_fd;
@@ -158,7 +157,7 @@ int		is_directory(const char *path);
 char	*get_env_value(t_env *env, const char *var_name, size_t var_len);
 void	not_pipe(t_shell *data, t_token *t, int *original);
 void	ft_waitpid(pid_t pid, t_token *cmd);
-void	infile_loop(t_token *t, int flag, int infile, int exit_code);
+void	infile_loop(t_token *t, int flag, int infile);
 void	heredoc_norm(t_shell *data, t_token *t, int fd);
 void	exit_proc(t_shell *data, int exit_flag, int f, t_token *t);
 void	close_origin(int *original);
@@ -172,5 +171,6 @@ void	free_exec_simple(t_shell *data, t_token *t, int *original,
 int		ft_check_oldpwd(t_env *env);
 int		ft_check_path(t_env *env);
 char	*find_home(void);
+void	outfile_loop(t_token *t, int flag, int outfile);
 
 #endif

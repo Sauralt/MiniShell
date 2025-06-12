@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 12:27:41 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/12 14:46:31 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:17:22 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	init_data(int argc, char **argv, t_shell *data)
 	data->del_num = 0;
 	data->func_num = 0;
 	data->invalid = 0;
-	data->exec_cancel = 0;
 }
 
 static int	conditions(t_shell *data, char *line)
