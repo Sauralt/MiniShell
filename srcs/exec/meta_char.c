@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/12 14:09:42 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:16:48 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ static void	outfile_append(t_shell *data, t_token *t)
 		}
 		if (temp->outfile < 0)
 			return ;
-		if (temp->outfile > 0)
+		if (temp->outfile > 1)
 			close(temp->outfile);
 		temp->outfile = error;
 		t->next->type = 3;
