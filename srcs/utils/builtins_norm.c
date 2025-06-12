@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:52:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/12 15:40:56 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:51:33 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,10 @@ void	outfile_loop(t_token *t, int flag, int outfile)
 		while (temp->type != 1 && temp->next != t)
 			temp = temp->next;
 	}
-	if (temp->outfile < 0 && outfile > 0)
+	if (temp->outfile < 0)
 	{
-		close(outfile);
+		if (outfile > 0)
+			close(outfile);
 		return ;
 	}
 	if (temp->infile > 0)

@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/12 15:43:03 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:23:53 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ void	infile_loop(t_token *t, int flag, int infile)
 		while (temp->type != 1 && temp->next != t)
 			temp = temp->next;
 	}
-	if (temp->infile < 0 && infile > 0)
+	if (temp->infile < 0)
 	{
-		close(infile);
+		if (infile > 0)
+			close(infile);
 		return ;
 	}
 	if (temp->infile > 0)
@@ -54,12 +55,7 @@ static void	infile_redirect(t_shell *data, t_token *t)
 			error = -2;
 		else if (is_directory(t->next->str[0]))
 			error = -3;
-		if (t != data->token && (t->prev->type == 1
-				|| t->next->next->str[0][0] == '|'
-			|| t->next->next == data->token))
-			infile_loop(t, 0, error);
-		else
-			infile_loop(t, 1, error);
+		infile_loop(t, 0, error);
 		t->next->type = 3;
 		return ;
 	}

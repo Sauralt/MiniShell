@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/12 15:16:14 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:35:04 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	exec_built(t_shell *data, t_token *cmd, int flag)
+void	exec_built(t_shell *data, t_token *cmd, int flag)
 {
 	redirected(cmd);
 	if (ft_strncmp(cmd->str[0], "pwd", 4) == 0)
@@ -39,13 +39,7 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 	{
 		if ((cmd->infile < 0 || cmd->outfile < 0) && flag == 0)
 		{
-			if (cmd->infile == -1)
-				ft_dprintf(2, "%s: No such file or directory\n", cmd->invalid);
-			if (cmd->infile == -2 || cmd->outfile == -2)
-				ft_dprintf(2, "%s: Permission denied\n", cmd->invalid);
-			if (cmd->infile == -3 || cmd->outfile == -3)
-				ft_dprintf(2, "%s: Is a directory\n", cmd->invalid);
-			cmd->exit_code = 1;
+			err_msg(data, cmd, original, -1);
 			return (0);
 		}
 		if (flag == 1)
@@ -61,22 +55,7 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 	if (pid == -1)
 		return (2);
 	if (pid == 0)
-	{
-		if ((cmd->infile < 0 || cmd->outfile < 0))
-		{
-			if (cmd->infile == -1)
-				ft_dprintf(2, "%s: No such file or directory\n", cmd->invalid);
-			if (cmd->infile == -2 || cmd->outfile == -2)
-				ft_dprintf(2, "%s: Permission denied\n", cmd->invalid);
-			if (cmd->infile == -3 || cmd->outfile == -3)
-				ft_dprintf(2, "%s: Is a directory\n", cmd->invalid);
-			free_exec_simple(data, cmd, original, 1);
-		}
-		signal(SIGQUIT, SIG_DFL);
-		close_origin(original);
-		exec_built(data, cmd, flag);
-		exit_proc(data, 0, 0, cmd);
-	}
+		builtin_proc(data, cmd, original, flag);
 	data->pids[data->l++] = pid;
 	return (0);
 }

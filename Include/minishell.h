@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/12 15:29:07 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:35:11 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,9 @@ int		ft_check_oldpwd(t_env *env);
 int		ft_check_path(t_env *env);
 char	*find_home(void);
 void	outfile_loop(t_token *t, int flag, int outfile);
+void	err_msg(t_shell *data, t_token *cmd, int *original, int flag);
+void	builtin_proc(t_shell *data, t_token *cmd, int *original, int flag);
+void	exec_error(t_shell *data, t_token *cmd, int *original, int flag);
+void	exec_built(t_shell *data, t_token *cmd, int flag);
 
 #endif

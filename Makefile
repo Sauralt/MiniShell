@@ -21,7 +21,7 @@ PARSING =	srcs/parsing/dollar.c srcs/parsing/parsing.c srcs/parsing/init_types.c
 			srcs/parsing/dollar_2.c srcs/parsing/change_str.c 
 
 UTILS =		srcs/utils/env_functions.c srcs/utils/find.c srcs/utils/free.c \
-			srcs/utils/random_utils.c srcs/utils/token_functions.c \
+			srcs/utils/random_utils.c srcs/utils/token_functions.c srcs/utils/last_norm.c \
 			srcs/utils/random_utils_2.c srcs/utils/norm_functions.c \
 			srcs/utils/builtins_norm.c srcs/utils/wait.c srcs/utils/builtins_norm_2.c
 

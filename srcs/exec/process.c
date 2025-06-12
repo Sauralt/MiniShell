@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/12 13:03:50 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:30:56 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,8 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 	}
 	if (t->infile < 0 || t->outfile < 0)
 	{
-		if (t->infile == -1)
-			ft_dprintf(2, "%s: No such file or directory\n", t->invalid);
-		if (t->infile == -2 || t->outfile == -2)
-			ft_dprintf(2, "%s: Permission denied\n", t->invalid);
-		if (t->infile == -3 || t->outfile == -3)
-			ft_dprintf(2, "%s: Is a directory\n", t->invalid);
 		ft_close(fd);
-		free_exec_simple(data, t, original, 1);
+		err_msg(data, t, original, 1);
 	}
 	redirected(t);
 	ft_close(fd);
@@ -100,18 +94,7 @@ int	exec_simple(t_shell *data, t_token *t, int *original, int flag)
 			close(data->prev_fd);
 		}
 		if (t->infile < 0 || t->outfile < 1)
-		{
-			if (t->infile == -1)
-				ft_dprintf(2, "%s: No such file or directory\n", t->invalid);
-			if (t->infile == -2 || t->outfile == -2)
-				ft_dprintf(2, "%s: Permission denied\n", t->invalid);
-			if (t->infile == -3 || t->outfile == -3)
-				ft_dprintf(2, "%s: Is a directory\n", t->invalid);
-			if (flag == 0)
-				free_exec_simple(data, t, original, -1);
-			else
-				free_exec_simple(data, t, original, 1);
-		}
+			exec_error(data, t, original, flag);
 		redirected(t);
 		exec_abs(data, t->str, data->env, original);
 	}

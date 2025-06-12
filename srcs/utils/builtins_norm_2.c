@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:48:40 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/11 18:08:43 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:33:23 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,23 @@ int	check_numeric(const char *start, const char *str, int sign)
 	if (compare_abs_str(start, limit))
 		return (0);
 	return (1);
+}
+
+void	err_msg(t_shell *data, t_token *cmd, int *original, int flag)
+{
+	if (cmd->infile == -1)
+		ft_dprintf(2, "%s: No such file or directory\n", cmd->invalid);
+	if (cmd->infile == -2 || cmd->outfile == -2)
+		ft_dprintf(2, "%s: Permission denied\n", cmd->invalid);
+	if (cmd->infile == -3 || cmd->outfile == -3)
+		ft_dprintf(2, "%s: Is a directory\n", cmd->invalid);
+	if (flag == -1)
+	{
+		cmd->exit_code = 1;
+		return ;
+	}
+	if (flag == 0)
+		free_exec_simple(data, cmd, original, -1);
+	else
+		free_exec_simple(data, cmd, original, -1);
 }
