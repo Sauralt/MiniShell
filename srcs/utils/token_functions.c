@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/11 14:46:28 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:01:45 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_token	*add_param(t_shell *data, t_token *t)
 	char	*str;
 	int		len;
 
-	if (!t || !t->next || t->next == t)
+	if (!t || !t->next || t->next == t || t->next == data->token)
 		return (t);
 	temp = t->next;
 	len = 1;

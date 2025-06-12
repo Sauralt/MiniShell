@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/11 15:46:35 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:45:29 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ void	infile_loop(t_token *t, int flag, int infile, int exit_code)
 		while (temp->type != 1 && temp->next != t)
 			temp = temp->next;
 	}
+	if (temp->infile < 0)
+		return ;
 	if (temp->infile > 0)
 		close(temp->infile);
 	if (temp != t)
 		temp->infile = infile;
-	temp->invalid = ft_strdup(t->next->str[0]);
+	if (infile < 0)
+		temp->invalid = ft_strdup(t->next->str[0]);
 	temp->exit_code = exit_code;
 }
 
@@ -49,21 +52,21 @@ static void	infile_redirect(t_shell *data, t_token *t)
 			error = -2;
 		else if (is_directory(t->next->str[0]))
 			error = -3;
-		if (t != data->token)
+		if (t != data->token && (t->prev->type == 1 || t->next->str[0][0] == '|'))
 			infile_loop(t, 0, error, 0);
 		else
 			infile_loop(t, 1, error, 0);
 		t->next->type = 3;
 		return ;
 	}
-	if (t != data->token)
+	if (t != data->token && (t->prev->type == 1 || t->next->str[0][0] == '|'))
 		infile_loop(t, 0, infile, 0);
 	else
 		infile_loop(t, 1, infile, 0);
 	t->next->type = 3;
 }
 
-static void	outfile_trunc(t_token *t)
+static void	outfile_trunc(t_shell *data, t_token *t)
 {
 	int		outfile;
 	int		error;
@@ -77,22 +80,44 @@ static void	outfile_trunc(t_token *t)
 			error = -2;
 		else if (is_directory(t->next->str[0]))
 			error = -3;
-		while (temp->type != 1 && temp->prev != t)
-			temp = temp->prev;
+		if (t != data->token && (t->prev->type == 1 || t->next->str[0][0] == '|'))
+		{
+			while (temp->type != 1 && temp->prev != t)
+				temp = temp->prev;
+		}
+		else
+		{
+			while (temp->type != 1 && temp->next != t)
+				temp = temp->next;
+		}
+		if (temp->outfile < 0)
+			return ;
+		if (temp->outfile > 1)
+			close(temp->outfile);
 		temp->outfile = error;
 		t->next->type = 3;
 		temp->invalid = ft_strdup(t->next->str[0]);
 		return ;
 	}
-	while (temp->type != 1 && temp->prev != t)
-		temp = temp->prev;
+	if (t != data->token && (t->prev->type == 1 || t->next->str[0][0] == '|'))
+	{
+		while (temp->type != 1 && temp->prev != t)
+			temp = temp->prev;
+	}
+	else
+	{
+		while (temp->type != 1 && temp->next != t)
+			temp = temp->next;
+	}
+	if (temp->outfile < 0)
+		return ;
 	if (temp->outfile > 1)
 		close(temp->outfile);
 	temp->outfile = outfile;
 	t->next->type = 3;
 }
 
-static void	outfile_append(t_token *t)
+static void	outfile_append(t_shell *data, t_token *t)
 {
 	int		outfile;
 	int		error;
@@ -106,15 +131,37 @@ static void	outfile_append(t_token *t)
 			error = -2;
 		else if (is_directory(t->next->str[0]))
 			error = -3;
-		while (temp->type != 1 && temp->prev != t)
-			temp = temp->prev;
+		if (t != data->token && (t->prev->type == 1 || t->next->str[0][0] == '|'))
+		{
+			while (temp->type != 1 && temp->prev != t)
+				temp = temp->prev;
+		}
+		else
+		{
+			while (temp->type != 1 && temp->next != t)
+				temp = temp->next;
+		}
+		if (temp->outfile < 0)
+			return ;
+		if (temp->outfile > 0)
+			close(temp->outfile);
 		temp->outfile = error;
 		t->next->type = 3;
 		temp->invalid = ft_strdup(t->next->str[0]);
 		return ;
 	}
-	while (temp->type != 1 && temp->prev != t)
-		temp = temp->prev;
+	if (t != data->token && (t->prev->type == 1 || t->next->str[0][0] == '|'))
+	{
+		while (temp->type != 1 && temp->prev != t)
+			temp = temp->prev;
+	}
+	else
+	{
+		while (temp->type != 1 && temp->next != t)
+			temp = temp->next;
+	}
+	if (temp->outfile < 0)
+		return ;
 	if (temp->outfile > 1)
 		close(temp->outfile);
 	temp->outfile = outfile;
@@ -130,9 +177,9 @@ void	check_meta_char(t_shell *data, t_token *t)
 	if (ft_strcmp(t->str[0], "<") == 0)
 		infile_redirect(data, t);
 	if (ft_strcmp(t->str[0], ">") == 0)
-		outfile_trunc(t);
+		outfile_trunc(data, t);
 	if (ft_strcmp(t->str[0], ">>") == 0)
-		outfile_append(t);
+		outfile_append(data, t);
 	if (ft_strcmp(t->str[0], "<<") == 0)
 		heredoc(data, t, t->next->str[0]);
 }

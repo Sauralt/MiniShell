@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/11 18:14:44 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:03:50 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	exec_simple(t_shell *data, t_token *t, int *original, int flag)
 			dup2(data->prev_fd, STDIN_FILENO);
 			close(data->prev_fd);
 		}
-		if (t->infile < 0 || t->outfile < 0)
+		if (t->infile < 0 || t->outfile < 1)
 		{
 			if (t->infile == -1)
 				ft_dprintf(2, "%s: No such file or directory\n", t->invalid);

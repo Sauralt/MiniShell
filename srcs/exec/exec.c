@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/11 18:08:23 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:28:54 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	builtin(t_shell *data, t_token *cmd, int *original, int flag)
 				ft_dprintf(2, "%s: Permission denied\n", cmd->invalid);
 			if (cmd->infile == -3 || cmd->outfile == -3)
 				ft_dprintf(2, "%s: Is a directory\n", cmd->invalid);
+			cmd->exit_code = 1;
 			return (0);
 		}
 		if (flag == 1)
@@ -97,6 +98,8 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 			data->exit_code = t->exit_code;
 		t = t->next;
 	}
+	while ((t->type == 2 || t->type == 3) && t != data->token)
+		t = t->next;
 	if (t && t->type != 2 && t->type != 3
 		&& t->exit_code == 0 && g_signal_pid != 2)
 	{
@@ -115,6 +118,8 @@ static void	exec(t_shell *data, t_token *t, int *original)
 	data->prev_fd = -1;
 	g_signal_pid = 1;
 	flag = exec_flag(data, t);
+	while ((t->type == 2 || t->type == 3) && t != data->token)
+		t = t->next;
 	if (t->type == 0 && flag == 0)
 	{
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
