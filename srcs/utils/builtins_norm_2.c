@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:48:40 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/12 16:33:23 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/18 19:00:20 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,5 @@ void	err_msg(t_shell *data, t_token *cmd, int *original, int flag)
 	if (flag == 0)
 		free_exec_simple(data, cmd, original, -1);
 	else
-		free_exec_simple(data, cmd, original, -1);
+		free_exec_simple(data, cmd, original, 1);
 }
