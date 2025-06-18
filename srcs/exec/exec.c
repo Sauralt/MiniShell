@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/12 16:35:04 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:56:53 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	exec_built(t_shell *data, t_token *cmd, int flag)
 		ft_pwd(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "env", 4) == 0)
 		ft_env(data);
-	else if (ft_strncmp(cmd->str[0], "cd", 3) == 0 && cmd->next == cmd->prev)
+	else if (ft_strncmp(cmd->str[0], "cd", 3) == 0)
 		ft_cd(data, cmd);
 	else if (ft_strncmp(cmd->str[0], "echo", 5) == 0)
 		ft_echo(cmd);
