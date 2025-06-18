@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:51:51 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/10 13:40:23 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:55:13 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ int	ft_exit(t_shell *data, t_token *str, int flag)
 
 	if (flag == 0)
 		printf("exit\n");
+	if (flag == 0)
+		flag = -1;
 	has_arg = (str && str->str && str->str[1]);
 	if (has_arg)
 	{
