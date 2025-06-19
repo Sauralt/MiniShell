@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/19 13:59:04 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:24:19 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ static void	exec(t_shell *data, t_token *t, int *original)
 	}
 	if (flag == 0)
 	{
+		data->invalid = 1;
 		not_pipe(data, t, original);
 		return ;
 	}

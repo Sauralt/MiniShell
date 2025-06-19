@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:01:42 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/06/12 15:27:40 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:26:24 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	exit_proc(t_shell *data, int exit_flag, int f, t_token *t)
 	if (f == 1)
 		ft_dprintf(2, "%s: command not found\n", t->str[0]);
 	free_exit(data, exit_flag);
-	if (exit_flag == -1)
+	if (exit_flag == -1 || exit_flag)
 		exit_flag = 1;
 	exit(exit_flag);
 }
