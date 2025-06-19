@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 15:58:48 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/18 17:56:53 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/19 13:59:04 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	data->pids = malloc(sizeof(pid_t) * (data->func_num + 1));
 	if (!data->pids)
 		return ;
-	while (t && t->next && t->next != data->token && g_signal_pid != 2)
+	while (t && t->next && t->next != data->token)
 	{
 		if (exec_flag(data, t) == 0)
 			break ;
@@ -80,7 +80,7 @@ static void	handle_pipeline(t_shell *data, t_token *t, int *original)
 	while ((t->type == 2 || t->type == 3) && t != data->token)
 		t = t->next;
 	if (t && t->type != 2 && t->type != 3
-		&& t->exit_code == 0 && g_signal_pid != 2)
+		&& t->exit_code == 0)
 	{
 		if (builtin(data, t, original, 2) == 1)
 			exec_simple(data, t, original, 1);
