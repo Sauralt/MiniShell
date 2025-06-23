@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:15:33 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/23 14:10:59 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:25:17 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ static void	outfile_trunc(t_shell *data, t_token *t)
 	int		outfile;
 	int		error;
 
-	temp = t;
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile == -1)
 	{
@@ -102,7 +101,6 @@ static void	outfile_append(t_shell *data, t_token *t)
 	int		outfile;
 	int		error;
 
-	temp = t;
 	outfile = open(t->next->str[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (outfile == -1)
 	{

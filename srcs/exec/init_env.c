@@ -6,13 +6,13 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 14:37:54 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/06/23 14:09:36 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:24:51 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_check_env(char **env)
+static int	ft_check_env(char **env, t_shell *data)
 {
 	int	i;
 
@@ -35,7 +35,7 @@ void	init_env(t_shell *data, char **env)
 	char	*cwd;
 
 	g_signal_pid = 0;
-	if (!(*env) || ft_check_env(env) == 1)
+	if (!(*env) || ft_check_env(env, data) == 1)
 	{
 		cwd = getcwd(NULL, 0);
 		temp = ft_strjoin("PWD=", cwd);
