@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_functions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 12:34:34 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 17:24:11 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:22:13 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_token	*ft_new_token(t_shell *data, char *content)
 	c->str[0] = ft_strdup(content);
 	if (last_init(c, data, content) == 1)
 		return (NULL);
+	c->invalid = NULL;
 	return (c);
 }
 
@@ -98,7 +99,7 @@ t_token	*add_param(t_shell *data, t_token *t)
 	char	*str;
 	int		len;
 
-	if (!t || !t->next || t->next == t)
+	if (!t || !t->next || t->next == t || t->next == data->token)
 		return (t);
 	temp = t->next;
 	len = 1;

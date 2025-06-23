@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:29:08 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 14:40:34 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:11:55 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_directory(const char *path)
 	return (0);
 }
 
-int	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
+void	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 {
 	char	*path;
 	char	**envp;
@@ -33,27 +33,42 @@ int	exec_abs(t_shell *data, char **cmd, t_env *env, int *original)
 	close_files(data);
 	i = 0;
 	if (!cmd || !cmd[0] || cmd[0][0] == '\0')
-		exit(0);
+		exit_proc(data, 0, 0, data->token);
 	envp = make_env_str(env);
 	path = find_path(cmd[0], env, i);
 	exit_flag = valid_path(data, path);
 	if (exit_flag != 0)
-		exit(exit_flag);
+	{
+		free_str(envp);
+		exit_proc(data, exit_flag, 0, data->token);
+	}
 	cmd[0] = find_absolute(cmd[0]);
 	execve(path, cmd, envp);
 	perror(path);
 	free(path);
-	data->exit_code = 127;
-	exit(127);
+	free_str(envp);
+	exit_proc(data, 127, 0, data->token);
 }
 
 void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 {
+	if (t->type == 0)
+	{
+		ft_dprintf(2, "%s: command not found\n", t->str[0]);
+		close(original[0]);
+		close(original[1]);
+		ft_close(fd);
+		free_exit(data, 1);
+		exit(127);
+	}
+	if (t->infile < 0 || t->outfile < 0)
+	{
+		ft_close(fd);
+		err_msg(data, t, original, 1);
+	}
 	redirected(t);
-	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
-		dup2(fd[1], STDOUT_FILENO);
 	ft_close(fd);
-	if (builtin(data, t, 2, original) == 0)
+	if (builtin(data, t, original, 1) == 0)
 		exit(EXIT_SUCCESS);
 	else
 		exec_abs(data, t->str, data->env, original);
@@ -61,7 +76,7 @@ void	child_process(t_token *t, t_shell *data, int *fd, int *original)
 	exit(EXIT_FAILURE);
 }
 
-int	exec_simple(t_shell *data, t_token *t, int *original)
+int	exec_simple(t_shell *data, t_token *t, int *original, int flag)
 {
 	pid_t	pid;
 	int		status;
@@ -71,16 +86,25 @@ int	exec_simple(t_shell *data, t_token *t, int *original)
 	pid = fork();
 	if (pid == -1)
 		return (1);
-	redirected(t);
 	if (pid == 0)
+	{
+		if (t->type == 0)
+			free_exec_simple(data, t, original, 127);
+		signal(SIGQUIT, SIG_DFL);
+		if (data->prev_fd != -1)
+		{
+			dup2(data->prev_fd, STDIN_FILENO);
+			close(data->prev_fd);
+		}
+		if (t->infile < 0 || t->outfile < 1)
+			exec_error(data, t, original, flag);
+		redirected(t);
 		exec_abs(data, t->str, data->env, original);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		t->exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		t->exit_code = 128 + WTERMSIG(status);
+	}
+	if (flag == 0)
+		ft_waitpid(pid, t);
 	else
-		t->exit_code = 1;
+		data->pids[data->l++] = pid;
 	return (0);
 }
 

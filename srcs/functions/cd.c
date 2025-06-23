@@ -3,48 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:10:21 by mgarsaul          #+#    #+#             */
-/*   Updated: 2025/05/19 13:59:03 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:14:11 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../Include/minishell.h"
 
-char	*cd_home(char *path)
+static char	*resolve_home_path(char *path, t_shell *data)
 {
 	char	*home;
+	int		home_from_find;
+	char	*result;
 
-	if (!path || (path[0] == '~' && (path[1] == '/' || path[1] == '\0')))
+	home_from_find = 0;
+	home = getenv("HOME");
+	if (!home && path && path[0] == '~')
 	{
-		home = getenv("HOME");
-		if (!home)
-		{
-			ft_dprintf(2, "cd: HOME not set\n");
-			return (NULL);
-		}
-		return (home);
+		home = find_home();
+		home_from_find = 1;
 	}
-	return (path);
-}
-
-char	*handle_cd_dash(char *path, t_shell *data)
-{
-	char	*oldpwd;
-
-	if (ft_strcmp(path, "-") != 0)
-		return (path);
-	oldpwd = get_env_value(data->env, "OLDPWD", 6);
-	if (!oldpwd || oldpwd[0] == '\0')
+	if (!home)
 	{
-		ft_dprintf(2, "cd: OLDPWD not set\n");
+		ft_dprintf(2, "cd: HOME not set\n");
 		data->exit_code = 1;
-		free(oldpwd);
 		return (NULL);
 	}
-	ft_dprintf(1, "%s\n", oldpwd);
-	return (oldpwd);
+	if (!path || path[1] == '\0')
+		result = ft_strdup(home);
+	else
+		result = ft_strjoin(home, path + 1);
+	if (home_from_find)
+		free(home);
+	return (result);
+}
+
+char	*cd_home(char *path, t_shell *data)
+{
+	if (!path || (path[0] == '~' && (path[1] == '/' || path[1] == '\0')))
+		return (resolve_home_path(path, data));
+	return (ft_strdup(path));
 }
 
 static void	set_env_var(t_shell *data, const char *key, const char *value)
@@ -71,39 +71,39 @@ static void	set_env_var(t_shell *data, const char *key, const char *value)
 
 static void	change_directory(char *path, t_shell *data)
 {
-	char	current_dir[PATH_SIZE];
-	char	*pwd;
+	char	old_dir[PATH_SIZE];
+	char	new_dir[PATH_SIZE];
 
-	if (!get_current_directory(current_dir, sizeof(current_dir)))
+	if (!get_current_directory(data->env, old_dir, sizeof(old_dir)))
 		return ;
 	if (chdir(path) != 0)
 	{
 		perror("cd");
 		data->exit_code = 1;
+		return ;
 	}
-	else
+	if (!get_current_directory(data->env, new_dir, sizeof(new_dir)))
 	{
-		pwd = getenv("PWD");
-		if (pwd == NULL)
-			pwd = current_dir;
-		ft_strncpy(data->prev_dir, pwd, PATH_SIZE - 1);
-		data->prev_dir[PATH_SIZE - 1] = '\0';
-		if (get_current_directory(current_dir, sizeof(current_dir)))
-		{
-			set_env_var(data, "PWD", current_dir);
-			set_env_var(data, "OLDPWD", data->prev_dir);
-		}
-		data->exit_code = 0;
+		perror("cd: getcwd (after chdir)");
+		data->exit_code = 1;
+		return ;
 	}
+	set_env_var(data, "OLDPWD", old_dir);
+	set_env_var(data, "PWD", new_dir);
+	ft_strncpy(data->prev_dir, old_dir, PATH_SIZE - 1);
+	data->prev_dir[PATH_SIZE - 1] = '\0';
+	data->exit_code = 0;
 }
 
 void	ft_cd(t_shell *data, t_token *t)
 {
 	char	new_path[PATH_SIZE];
-	char	*resolved_path;
+	char	*path;
 
+	if (ft_check_oldpwd(data->env) == 1)
+		ft_add_stack(&data->env, ft_new_stack("OLDPWD="));
 	if (!t || !t->str || !t->str[0])
-		resolved_path = cd_home(NULL);
+		path = cd_home(NULL, data);
 	if (t->str[1] != NULL && t->str[2] != NULL)
 	{
 		ft_dprintf(2, "cd: too many arguments\n");
@@ -111,14 +111,13 @@ void	ft_cd(t_shell *data, t_token *t)
 		return ;
 	}
 	else
-		resolved_path = init_resolved_path(data, t, resolved_path);
-	if (!resolved_path)
+		path = cd_home(t->str[1], data);
+	t->exit_code = data->exit_code;
+	if (!path)
 		return ;
-	ft_strncpy(new_path, resolved_path, PATH_SIZE - 1);
+	ft_strncpy(new_path, path, PATH_SIZE - 1);
 	new_path[PATH_SIZE - 1] = '\0';
-	if (t->str[1] && t->str[1][0] != '~'
-		&& ft_strcmp(resolved_path, t->str[1]) != 0)
-		free(resolved_path);
+	free(path);
 	change_directory(new_path, data);
 	t->exit_code = data->exit_code;
 }

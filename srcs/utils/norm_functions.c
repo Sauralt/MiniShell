@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:43:52 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 14:48:12 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:21:23 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,28 @@
 
 int	exec_flag(t_shell *data, t_token *t)
 {
-	int	flag;
+	int		flag;
+	t_token	*temp;
 
 	flag = 0;
-	while (t->next != data->token)
+	temp = t;
+	while (temp->next != data->token)
 	{
-		if (t->str[0][0] == '|')
+		if (temp->str[0][0] == '|')
 			flag = 1;
-		t = t->next;
+		temp = temp->next;
 	}
-	t = t->next;
 	return (flag);
 }
 
 void	redirected(t_token *t)
 {
-	if (t->infile != STDIN_FILENO)
+	if (t->infile > STDIN_FILENO)
 	{
 		dup2(t->infile, STDIN_FILENO);
 		close(t->infile);
 	}
-	if (t->outfile != STDOUT_FILENO)
+	if (t->outfile > STDOUT_FILENO)
 	{
 		dup2(t->outfile, STDOUT_FILENO);
 		close(t->outfile);
@@ -73,19 +74,27 @@ void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t)
 
 	if (pipe(fd) == -1)
 		return (perror("pipe"));
-	if (g_signal_pid == 2)
-		return ;
 	pid = fork();
 	if (pid < 0)
 	{
 		ft_close(fd);
 		return (perror("fork"));
 	}
-	if (pid == 0 && t->type != 2)
+	if (pid == 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
+		if (data->prev_fd != -1)
+			dup2(data->prev_fd, STDIN_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
+		if (data->prev_fd != -1)
+			close(data->prev_fd);
 		child_process(t, data, fd, original);
-	if (t->next && ft_strcmp(t->next->str[0], "|") == 0)
-		dup2(fd[0], STDIN_FILENO);
-	ft_close(fd);
+	}
+	data->pids[data->l++] = pid;
+	if (data->prev_fd != -1)
+		close(data->prev_fd);
+	data->prev_fd = fd[0];
+	close(fd[1]);
 }
 
 void	close_files(t_shell *data)
@@ -93,16 +102,16 @@ void	close_files(t_shell *data)
 	t_token	*t;
 
 	t = data->token;
-	if (t->infile != STDIN_FILENO)
+	if (t->infile > STDIN_FILENO)
 		close(t->infile);
-	if (t->outfile != STDOUT_FILENO)
+	if (t->outfile > STDOUT_FILENO)
 		close(t->outfile);
 	t = t->next;
 	while (t != data->token)
 	{
-		if (t->infile != STDIN_FILENO)
+		if (t->infile > STDIN_FILENO)
 			close(t->infile);
-		if (t->outfile != STDOUT_FILENO)
+		if (t->outfile > STDOUT_FILENO)
 			close(t->outfile);
 		t = t->next;
 	}

@@ -3,22 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_norm.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:52:39 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 14:19:57 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:19:58 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_current_directory(char *buffer, size_t size)
+char	*ft_getcwd(t_env *env)
 {
-	if (getcwd(buffer, size) == NULL)
+	char	buffer[PATH_SIZE];
+	char	*cwd;
+
+	if (getcwd(buffer, sizeof(buffer)))
+		return (ft_strdup(buffer));
+	cwd = get_env_value(env, "PWD", 3);
+	if (cwd && *cwd)
+		return (cwd);
+	if (cwd)
+		free(cwd);
+	return (NULL);
+}
+
+int	get_current_directory(t_env *env, char *buffer, size_t size)
+{
+	char	*cwd;
+
+	cwd = ft_getcwd(env);
+	if (!cwd)
 	{
-		perror("getcwd");
+		ft_dprintf(2, "ft_getcwd: unable to determine current directory\n");
 		return (0);
 	}
+	ft_strlcpy(buffer, cwd, size);
+	free(cwd);
 	return (1);
 }
 
@@ -34,44 +54,13 @@ int	set_env_var_loop(t_env *env, char *new_entry, int key_len, const char *key)
 		}
 		env = env->next;
 	}
-	return (0);
-}
-
-int	export_norm(t_shell *data, int i, char *delim, t_token *str)
-{
-	char	*key;
-	char	*value;
-
-	key = NULL;
-	value = NULL;
-	if (!str->str[i] || delim == str->str[i]
-		|| !is_valid_identifier_export(str->str[i]))
+	if (ft_strncmp(env->str, key, key_len) == 0 && env->str[key_len] == '=')
 	{
-		ft_dprintf(2, "export: `%s': not a valid identifier\n", str->str[i]);
-		str->exit_code = 1;
+		free(env->str);
+		env->str = new_entry;
 		return (1);
 	}
-	if (delim)
-	{
-		if (delim < str->str[i] || delim > str->str[i] + ft_strlen(str->str[i]))
-			return (ft_dprintf(2, "export: internal error\n"), 1);
-		key = ft_strndup(str->str[i], 0, delim - str->str[i]);
-		value = ft_strdup(delim + 1);
-		if (!key || !value)
-			return (free(key), free(value), perror("malloc"), 1);
-		add_or_replace_env(data, key, value);
-		free(key);
-		free(value);
-	}
 	return (0);
-}
-
-char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path)
-{
-	resolved_path = cd_home(t->str[1]);
-	if (resolved_path)
-		resolved_path = handle_cd_dash(resolved_path, data);
-	return (resolved_path);
 }
 
 void	not_pipe(t_shell *data, t_token *t, int *original)
@@ -81,11 +70,40 @@ void	not_pipe(t_shell *data, t_token *t, int *original)
 		close(original[0]);
 		close(original[1]);
 	}
-	if (builtin(data, t, 0, original) == 1 && t->type != 2
+	if (builtin(data, t, original, 0) == 1 && t->type != 2
 		&& t->exit_code == 0)
 	{
-		if (exec_simple(data, t, original) == 1)
+		if (exec_simple(data, t, original, 0) == 1)
 			perror("fork");
 	}
 	data->exit_code = t->exit_code;
+}
+
+void	outfile_loop(t_token *t, int flag, int outfile)
+{
+	t_token	*temp;
+
+	temp = t;
+	if (flag == 0)
+	{
+		while (temp->type != 1 && temp->prev != t)
+			temp = temp->prev;
+	}
+	else
+	{
+		while (temp->type != 1 && temp->next != t)
+			temp = temp->next;
+	}
+	if (temp->outfile < 0)
+	{
+		if (outfile > 1)
+			close(outfile);
+		return ;
+	}
+	if (temp->outfile > 1)
+		close(temp->outfile);
+	if (temp != t)
+		temp->outfile = outfile;
+	if (outfile < 0)
+		temp->invalid = ft_strdup(t->next->str[0]);
 }

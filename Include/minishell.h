@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:01:25 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 14:44:32 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:07:17 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <sys/stat.h>
 # include <signal.h>
 # include <stdarg.h>
+# include <pwd.h>
 
 # define BUFFER_SIZE 1024
 # define PATH_SIZE 1024
@@ -29,6 +30,7 @@ typedef struct s_token
 	int				type;
 	int				exit_code;
 	char			**str;
+	char			*invalid;
 	int				infile;
 	int				outfile;
 	struct s_token	*prev;
@@ -51,6 +53,10 @@ typedef struct s_shell
 	int		del_num;
 	int		start;
 	int		l;
+	int		func_num;
+	int		invalid;
+	int		prev_fd;
+	int		*pids;
 	t_env	*env;
 }			t_shell;
 
@@ -70,8 +76,7 @@ void	heredoc(t_shell *data, t_token *t, char *delimiter);
 bool	read_in_stdin(t_shell *data, int fd, char *delimiter);
 char	*expand_dollar(t_shell *data, char *input);
 void	check_meta_in_word(t_shell *data, t_token *t);
-void	pipe_exec(t_shell *data, t_token *t, int *fd, int *original);
-
+void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t);
 t_token	*add_param(t_shell *data, t_token *t);
 t_token	*ft_new_token(t_shell *data, char *content);
 char	*ft_dollar(t_shell *data, char *str);
@@ -81,7 +86,6 @@ int		len_var(t_shell *data, char **var);
 void	ft_add_token(t_token **s, t_token *new);
 void	delfirst(t_token **s);
 void	delone(t_shell *data, t_token *t);
-
 char	*find_path(char *cmd, t_env *envp, int i);
 char	*find_absolute(char *cmd);
 t_env	*find_env(t_env *env, const char *key);
@@ -89,22 +93,23 @@ t_env	*find_env(t_env *env, const char *key);
 void	handle_sigint(int sig);
 bool	is_builtin(char *cmd);
 void	child_process(t_token *t, t_shell *data, int *fd, int *original);
-int		builtin(t_shell *data, t_token *cmd, int flag, int *original);
+int		builtin(t_shell *data, t_token *cmd, int *original, int flag);
 
+int		compare_abs_str(const char *a, const char *b);
+int		check_numeric(const char *start, const char *str, int sign);
 void	ft_cd(t_shell *data, t_token *str);
-char	*cd_home(char *path);
-char	*handle_cd_dash(char *path, t_shell *data);
+char	*cd_home(char *path, t_shell *data);
 int		ft_pwd(t_shell *data, t_token *t);
 int		ft_env(t_shell *data);
 int		ft_echo(t_token *str);
 int		ft_unset(t_shell *data, t_token *str);
 int		ft_export(t_shell *data, t_token *str);
-int		ft_exit(t_token *str);
+int		ft_exit(t_shell *data, t_token *str, int flag);
 
 char	*ft_strjoin3(const char *s1, const char *s2, const char *s3);
 int		set_env_var_loop(t_env *env, char *new_entry, int key_len,
 			const char *key);
-int		get_current_directory(char *buffer, size_t size);
+int		get_current_directory(t_env *env, char *buffer, size_t size);
 int		export_norm(t_shell *data, int i, char *delim, t_token *str);
 int		is_valid_identifier_export(const char *str);
 void	add_or_replace_env(t_shell *data, char *key, char *value);
@@ -118,8 +123,8 @@ void	close_dup(int original_stdin, int original_stdout);
 void	close_files(t_shell *data);
 
 int		proc(t_shell *data);
-int		exec_simple(t_shell *data, t_token *t, int *original);
-int		exec_abs(t_shell *data, char **cmd, t_env *env, int *original);
+int		exec_simple(t_shell *data, t_token *t, int *original, int flag);
+void	exec_abs(t_shell *data, char **cmd, t_env *env, int *original);
 
 void	delfirst_stack(t_env **s);
 void	ft_add_stack(t_env **s, t_env *new);
@@ -148,8 +153,26 @@ void	redirected(t_token *t);
 int		valid_path(t_shell *data, char *path);
 int		is_directory(const char *path);
 char	*get_env_value(t_env *env, const char *var_name, size_t var_len);
-void	ft_pipe(int *fd, int *original, t_shell *data, t_token *t);
-char	*init_resolved_path(t_shell *data, t_token *t, char *resolved_path);
 void	not_pipe(t_shell *data, t_token *t, int *original);
+void	ft_waitpid(pid_t pid, t_token *cmd);
+void	infile_loop(t_token *t, int flag, int infile);
+void	heredoc_norm(t_shell *data, t_token *t, int fd);
+void	exit_proc(t_shell *data, int exit_flag, int f, t_token *t);
+void	close_origin(int *original);
+void	ft_check_signals(t_shell *data);
+void	waitall(t_shell *data);
+char	*ft_shlvl(char *env);
+void	print_env(t_env *env);
+void	free_exit(t_shell *data, int flag);
+void	free_exec_simple(t_shell *data, t_token *t, int *original,
+			int exit_code);
+int		ft_check_oldpwd(t_env *env);
+int		ft_check_path(t_env *env);
+char	*find_home(void);
+void	outfile_loop(t_token *t, int flag, int outfile);
+void	err_msg(t_shell *data, t_token *cmd, int *original, int flag);
+void	builtin_proc(t_shell *data, t_token *cmd, int *original, int flag);
+void	exec_error(t_shell *data, t_token *cmd, int *original, int flag);
+void	exec_built(t_shell *data, t_token *cmd, int flag);
 
 #endif

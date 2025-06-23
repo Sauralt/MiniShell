@@ -6,7 +6,7 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:38:30 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/13 14:53:47 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:20:29 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ void	free_tokens(t_token *t)
 {
 	while (t)
 	{
-		if (t->infile != STDIN_FILENO)
+		if (t->infile > STDIN_FILENO)
 			close(t->infile);
-		if (t->outfile != STDOUT_FILENO)
+		if (t->outfile > STDOUT_FILENO)
 			close(t->outfile);
+		if (t->invalid)
+			free(t->invalid);
 		delfirst(&t);
 	}
 }

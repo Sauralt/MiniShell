@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_types.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mgarsaul <mgarsaul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 15:20:01 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/19 14:10:23 by mgarsaul         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:18:18 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	full_cmd(t_shell *data)
 	{
 		if (t->type == 2)
 			check_meta_char(data, t);
-		if (t->next == data->token || data->exit_code != 0)
+		if (t->next == data->token)
 			break ;
 		t = t->next;
 	}

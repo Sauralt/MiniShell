@@ -6,24 +6,23 @@
 /*   By: cfleuret <cfleuret@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:06:28 by cfleuret          #+#    #+#             */
-/*   Updated: 2025/05/15 18:07:22 by cfleuret         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:21:55 by cfleuret         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pipe_exec(t_shell *data, t_token *t, int *fd, int *original)
+void	free_exec_simple(t_shell *data, t_token *t, int *original,
+		int exit_code)
 {
-	if (t->type == 0)
-	{
-		ft_dprintf(2, "%s: command not found\n", t->str[0]);
-		data->exit_code = 127;
-		return ;
-	}
-	if (t->type == 1)
-	{
-		ft_pipe(fd, original, data, t);
-	}
+	close(original[0]);
+	close(original[1]);
+	if (exit_code == -1)
+		exit_proc(data, exit_code, 0, t);
+	else if (exit_code == 1)
+		exit_proc(data, exit_code, 0, t);
+	else
+		exit_proc(data, exit_code, 1, t);
 }
 
 static int	last_token(t_shell *data)
@@ -46,8 +45,9 @@ int	check_tok_order(t_shell *data)
 	}
 	while (t->next != data->token)
 	{
-		if ((t->type == 2 && ft_strcmp(t->str[0], t->next->str[0]) == 0)
-			|| (t->type == 2 && t->next->str[0][0] == '|'))
+		if (t->type == 2 && t->next->type == 2
+			&& ft_strcmp(t->next->str[0], "|") != 0
+			&& ft_strcmp(t->str[0], "|") != 0)
 		{
 			data->exit_code = 2;
 			return (ft_dprintf(2, " syntax error near unexpected token `%s'\n",
